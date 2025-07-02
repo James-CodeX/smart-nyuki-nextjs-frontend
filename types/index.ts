@@ -291,3 +291,164 @@ export interface SmartDeviceStore {
   deleteDevice: (id: string) => Promise<void>;
   fetchDevice: (id: string) => Promise<void>;
 }
+
+// Stage 4: Inspection Types
+export interface InspectionSchedule {
+  id: string;
+  hive: {
+    id: string;
+    name: string;
+    apiary: {
+      id: string;
+      name: string;
+      latitude: string;
+      longitude: string;
+    };
+    type: string;
+    type_display: string;
+    installation_date: string;
+    has_smart_device: boolean;
+    is_active: boolean;
+  };
+  scheduled_date: string;
+  notes?: string;
+  is_completed: boolean;
+  weather_conditions?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface InspectionReport {
+  id: string;
+  schedule?: {
+    id: string;
+    scheduled_date: string;
+    is_completed: boolean;
+  } | null;
+  hive: {
+    id: string;
+    name: string;
+    apiary: {
+      id: string;
+      name: string;
+    };
+  };
+  inspector: {
+    id: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    full_name: string;
+  };
+  inspection_date: string;
+  queen_present?: boolean;
+  honey_level: 'Low' | 'Medium' | 'High';
+  honey_level_display: string;
+  colony_health: 'Poor' | 'Fair' | 'Good' | 'Excellent';
+  colony_health_display: string;
+  varroa_mite_count?: number;
+  brood_pattern: 'Solid' | 'Spotty' | 'None';
+  brood_pattern_display: string;
+  pest_observations?: string;
+  actions_taken?: string;
+  notes?: string;
+  created_at: string;
+}
+
+export interface CreateInspectionScheduleRequest {
+  hive: string; // UUID
+  scheduled_date: string; // YYYY-MM-DD
+  notes?: string;
+  weather_conditions?: string;
+}
+
+export interface UpdateInspectionScheduleRequest {
+  scheduled_date?: string;
+  notes?: string;
+  weather_conditions?: string;
+}
+
+export interface CreateInspectionReportRequest {
+  schedule?: string; // UUID - optional link to schedule
+  hive: string; // UUID
+  inspection_date: string; // YYYY-MM-DD
+  queen_present?: boolean;
+  honey_level: 'Low' | 'Medium' | 'High';
+  colony_health: 'Poor' | 'Fair' | 'Good' | 'Excellent';
+  varroa_mite_count?: number;
+  brood_pattern: 'Solid' | 'Spotty' | 'None';
+  pest_observations?: string;
+  actions_taken?: string;
+  notes?: string;
+}
+
+export interface UpdateInspectionReportRequest {
+  honey_level?: 'Low' | 'Medium' | 'High';
+  colony_health?: 'Poor' | 'Fair' | 'Good' | 'Excellent';
+  varroa_mite_count?: number;
+  brood_pattern?: 'Solid' | 'Spotty' | 'None';
+  pest_observations?: string;
+  actions_taken?: string;
+  notes?: string;
+}
+
+export interface InspectionScheduleStats {
+  total_schedules: number;
+  completed_schedules: number;
+  pending_schedules: number;
+  overdue_schedules: number;
+  completion_rate: number;
+}
+
+export interface InspectionReportStats {
+  total_reports: number;
+  reports_this_month: number;
+  average_colony_health: string;
+  queen_presence_rate: number;
+  health_distribution: {
+    excellent_count: number;
+    good_count: number;
+    fair_count: number;
+    poor_count: number;
+  };
+}
+
+export interface HealthTrend {
+  month: string;
+  total_reports: number;
+  excellent_count: number;
+  good_count: number;
+  fair_count: number;
+  poor_count: number;
+}
+
+// Inspection Store State
+export interface InspectionStore {
+  schedules: InspectionSchedule[];
+  reports: InspectionReport[];
+  currentSchedule: InspectionSchedule | null;
+  currentReport: InspectionReport | null;
+  isLoading: boolean;
+  
+  // Schedule methods
+  fetchSchedules: (filters?: Record<string, any>) => Promise<void>;
+  createSchedule: (data: CreateInspectionScheduleRequest) => Promise<void>;
+  updateSchedule: (id: string, data: UpdateInspectionScheduleRequest) => Promise<void>;
+  deleteSchedule: (id: string) => Promise<void>;
+  fetchSchedule: (id: string) => Promise<void>;
+  completeSchedule: (id: string, isCompleted: boolean, notes?: string) => Promise<void>;
+  fetchUpcomingSchedules: () => Promise<InspectionSchedule[]>;
+  fetchOverdueSchedules: () => Promise<InspectionSchedule[]>;
+  fetchScheduleStats: () => Promise<InspectionScheduleStats>;
+  
+  // Report methods
+  fetchReports: (filters?: Record<string, any>) => Promise<void>;
+  createReport: (data: CreateInspectionReportRequest) => Promise<void>;
+  updateReport: (id: string, data: UpdateInspectionReportRequest) => Promise<void>;
+  deleteReport: (id: string) => Promise<void>;
+  fetchReport: (id: string) => Promise<void>;
+  fetchRecentReports: () => Promise<InspectionReport[]>;
+  fetchReportsByHive: (hiveId: string) => Promise<InspectionReport[]>;
+  fetchReportStats: () => Promise<InspectionReportStats>;
+  fetchHealthTrends: () => Promise<HealthTrend[]>;
+}

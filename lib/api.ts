@@ -20,6 +20,15 @@ import {
   SmartDevice,
   CreateSmartDeviceRequest,
   UpdateSmartDeviceRequest,
+  InspectionSchedule,
+  InspectionReport,
+  CreateInspectionScheduleRequest,
+  UpdateInspectionScheduleRequest,
+  CreateInspectionReportRequest,
+  UpdateInspectionReportRequest,
+  InspectionScheduleStats,
+  InspectionReportStats,
+  HealthTrend,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -467,6 +476,199 @@ class ApiClient {
 
   async getSmartDeviceStats(id: string): Promise<any> {
     return this.request<any>(`/devices/devices/${id}/stats/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  // Stage 4: Inspection Schedule endpoints
+  async getInspectionSchedules(filters?: Record<string, any>): Promise<PaginatedResponse<InspectionSchedule>> {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, value.toString());
+        }
+      });
+    }
+    
+    const queryString = params.toString();
+    const endpoint = `/inspections/schedules/${queryString ? `?${queryString}` : ''}`;
+    
+    return this.request<PaginatedResponse<InspectionSchedule>>(endpoint, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async createInspectionSchedule(data: CreateInspectionScheduleRequest): Promise<InspectionSchedule> {
+    return this.request<InspectionSchedule>('/inspections/schedules/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getInspectionSchedule(id: string): Promise<InspectionSchedule> {
+    return this.request<InspectionSchedule>(`/inspections/schedules/${id}/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async updateInspectionSchedule(id: string, data: UpdateInspectionScheduleRequest): Promise<InspectionSchedule> {
+    return this.request<InspectionSchedule>(`/inspections/schedules/${id}/`, {
+      method: 'PATCH',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteInspectionSchedule(id: string): Promise<void> {
+    return this.request<void>(`/inspections/schedules/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async completeInspectionSchedule(id: string, isCompleted: boolean, notes?: string): Promise<{ message: string; is_completed: boolean }> {
+    return this.request<{ message: string; is_completed: boolean }>(`/inspections/schedules/${id}/complete/`, {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify({ is_completed: isCompleted, notes }),
+    });
+  }
+
+  async getUpcomingInspectionSchedules(): Promise<{ count: number; results: InspectionSchedule[] }> {
+    return this.request<{ count: number; results: InspectionSchedule[] }>('/inspections/schedules/upcoming/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getOverdueInspectionSchedules(): Promise<{ count: number; results: InspectionSchedule[] }> {
+    return this.request<{ count: number; results: InspectionSchedule[] }>('/inspections/schedules/overdue/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getInspectionScheduleStats(): Promise<InspectionScheduleStats> {
+    return this.request<InspectionScheduleStats>('/inspections/schedules/statistics/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  // Stage 4: Inspection Report endpoints
+  async getInspectionReports(filters?: Record<string, any>): Promise<PaginatedResponse<InspectionReport>> {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, value.toString());
+        }
+      });
+    }
+    
+    const queryString = params.toString();
+    const endpoint = `/inspections/reports/${queryString ? `?${queryString}` : ''}`;
+    
+    return this.request<PaginatedResponse<InspectionReport>>(endpoint, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async createInspectionReport(data: CreateInspectionReportRequest): Promise<InspectionReport> {
+    return this.request<InspectionReport>('/inspections/reports/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getInspectionReport(id: string): Promise<InspectionReport> {
+    return this.request<InspectionReport>(`/inspections/reports/${id}/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async updateInspectionReport(id: string, data: UpdateInspectionReportRequest): Promise<InspectionReport> {
+    return this.request<InspectionReport>(`/inspections/reports/${id}/`, {
+      method: 'PATCH',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteInspectionReport(id: string): Promise<void> {
+    return this.request<void>(`/inspections/reports/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getRecentInspectionReports(): Promise<{ count: number; results: InspectionReport[] }> {
+    return this.request<{ count: number; results: InspectionReport[] }>('/inspections/reports/recent/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getInspectionReportsByHive(hiveId: string): Promise<PaginatedResponse<InspectionReport>> {
+    return this.request<PaginatedResponse<InspectionReport>>(`/inspections/reports/by-hive/${hiveId}/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getInspectionReportStats(): Promise<InspectionReportStats> {
+    return this.request<InspectionReportStats>('/inspections/reports/statistics/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getHealthTrends(): Promise<HealthTrend[]> {
+    return this.request<HealthTrend[]>('/inspections/reports/health-trends/', {
       method: 'GET',
       headers: {
         ...this.getAuthHeaders(),
