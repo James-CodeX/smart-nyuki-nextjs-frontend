@@ -108,15 +108,20 @@ The frontend integrates with the Smart Nyuki Django REST API:
 
 ## Development Roadmap
 
-### ✅ Stage 1: Accounts (Current)
+### ✅ Stage 1: Accounts
 - User registration and authentication
 - Profile management
 - Beekeeper profile creation
 
-### 🚧 Stage 2: Apiaries (Planned)
-- Apiary management
-- Location tracking
+### ✅ Stage 2: Apiaries (Current)
+- Apiary management with full CRUD operations
+- Location tracking with coordinates
 - Multi-apiary support
+- Hive management within apiaries
+- Hive type categorization (Langstroth, Top Bar, Warre, Flow Hive, Other)
+- Smart device integration flags
+- Collapsible sidebar navigation
+- Comprehensive dashboard with real-time statistics
 
 ### 🚧 Stage 3: Devices (Planned)
 - Smart device integration

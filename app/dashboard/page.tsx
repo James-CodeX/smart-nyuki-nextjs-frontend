@@ -1,33 +1,33 @@
 'use client'
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Navbar } from '@/components/dashboard/navbar'
+import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/store/auth'
+import { useApiaryStore } from '@/store/apiary'
+import { useHiveStore } from '@/store/hive'
 import { Home, MapPin, Calendar, Plus, Edit } from 'lucide-react'
 import Link from 'next/link'
+import { useEffect } from 'react'
 
 export default function DashboardPage() {
-  const router = useRouter()
-  const { user, isAuthenticated } = useAuthStore()
+  const { user } = useAuthStore()
+  const { apiaries, fetchApiaries } = useApiaryStore()
+  const { hives, fetchHives } = useHiveStore()
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/auth/login')
+    if (user?.beekeeper_profile) {
+      fetchApiaries().catch(console.error)
+      fetchHives().catch(console.error)
     }
-  }, [isAuthenticated, router])
+  }, [user, fetchApiaries, fetchHives])
 
-  if (!isAuthenticated || !user) {
-    return null
-  }
+  const totalHives = hives.length
+  const activeHives = hives.filter(hive => hive.is_active).length
+  const totalApiaries = apiaries.length
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <DashboardLayout>
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
             Welcome back, {user.first_name}!
@@ -45,7 +45,7 @@ export default function DashboardPage() {
                 <Home className="h-8 w-8 text-amber-600" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Total Hives</p>
-                  <p className="text-2xl font-bold text-gray-900">0</p>
+                  <p className="text-2xl font-bold text-gray-900">{totalHives}</p>
                 </div>
               </div>
             </CardContent>
@@ -57,7 +57,7 @@ export default function DashboardPage() {
                 <MapPin className="h-8 w-8 text-green-600" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Apiaries</p>
-                  <p className="text-2xl font-bold text-gray-900">0</p>
+                  <p className="text-2xl font-bold text-gray-900">{totalApiaries}</p>
                 </div>
               </div>
             </CardContent>
@@ -142,21 +142,54 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <Button variant="outline" className="w-full justify-start" disabled>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add New Apiary
-                </Button>
-                <Button variant="outline" className="w-full justify-start" disabled>
-                  <Home className="mr-2 h-4 w-4" />
-                  Add Hive
-                </Button>
-                <Button variant="outline" className="w-full justify-start" disabled>
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Schedule Inspection
-                </Button>
-                <p className="text-xs text-gray-500 mt-4">
-                  * These features will be available in upcoming stages
-                </p>
+                {user.beekeeper_profile ? (
+                  <>
+                    <Link href="/apiaries/create" className="block">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add New Apiary
+                      </Button>
+                    </Link>
+                    {totalApiaries > 0 ? (
+                      <Link href="/hives/create" className="block">
+                        <Button variant="outline" className="w-full justify-start">
+                          <Home className="mr-2 h-4 w-4" />
+                          Add Hive
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button variant="outline" className="w-full justify-start" disabled>
+                        <Home className="mr-2 h-4 w-4" />
+                        Add Hive (Create apiary first)
+                      </Button>
+                    )}
+                    <Button variant="outline" className="w-full justify-start" disabled>
+                      <Calendar className="mr-2 h-4 w-4" />
+                      Schedule Inspection
+                    </Button>
+                    <p className="text-xs text-gray-500 mt-4">
+                      * Inspections will be available in Stage 4
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <Button variant="outline" className="w-full justify-start" disabled>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add New Apiary
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start" disabled>
+                      <Home className="mr-2 h-4 w-4" />
+                      Add Hive
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start" disabled>
+                      <Calendar className="mr-2 h-4 w-4" />
+                      Schedule Inspection
+                    </Button>
+                    <p className="text-xs text-gray-500 mt-4">
+                      * Create a beekeeper profile to access these features
+                    </p>
+                  </>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -200,7 +233,6 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
-      </main>
-    </div>
+    </DashboardLayout>
   )
 }

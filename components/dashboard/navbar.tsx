@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { LogOut, User, Settings } from 'lucide-react'
 import Link from 'next/link'
+import { SidebarToggle } from '@/components/ui/sidebar'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -17,7 +18,11 @@ import {
 import { useAuthStore } from '@/store/auth'
 import { useToast } from '@/components/ui/use-toast'
 
-export function Navbar() {
+interface NavbarProps {
+  onSidebarToggle: () => void;
+}
+
+export function Navbar({ onSidebarToggle }: NavbarProps) {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
@@ -45,11 +50,15 @@ export function Navbar() {
   }
 
   return (
-    <nav className="border-b bg-background px-6 py-4">
+    <nav className="border-b bg-background px-4 py-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <h1 className="text-2xl font-bold">🐝 Smart Nyuki</h1>
-          <span className="text-sm text-muted-foreground">Apiary Management</span>
+          <SidebarToggle onToggle={onSidebarToggle} />
+          <div className="flex items-center space-x-2">
+            <span className="text-xl">🐝</span>
+            <h1 className="text-xl font-bold">Smart Nyuki</h1>
+          </div>
+          <span className="text-sm text-muted-foreground hidden sm:inline">Apiary Management</span>
         </div>
         
         <div className="flex items-center space-x-4">

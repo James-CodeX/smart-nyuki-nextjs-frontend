@@ -152,6 +152,42 @@ export const useAuthStore = create<AuthStore>()(
           throw error;
         }
       },
+
+      initializeAuth: async () => {
+        set({ isLoading: true });
+        try {
+          // Check if we have tokens in localStorage
+          const accessToken = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+          const refreshToken = typeof window !== 'undefined' ? localStorage.getItem('refresh_token') : null;
+
+          if (!accessToken || !refreshToken) {
+            // No tokens found, clear any persisted state
+            get().clearAuth();
+            set({ isLoading: false });
+            return;
+          }
+
+          // Try to fetch user profile to validate token
+          const userProfile = await apiClient.getUserProfile();
+          
+          // Update the auth store with the restored state
+          set({
+            user: userProfile,
+            tokens: {
+              access: accessToken,
+              refresh: refreshToken
+            },
+            isAuthenticated: true,
+            isLoading: false
+          });
+        } catch (error) {
+          // Token is invalid, clear everything
+          console.error('Failed to initialize auth state:', error);
+          get().clearAuth();
+          set({ isLoading: false });
+          throw error;
+        }
+      },
     }),
     {
       name: 'auth-storage',
