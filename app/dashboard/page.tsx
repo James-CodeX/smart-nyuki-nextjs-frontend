@@ -30,7 +30,7 @@ export default function DashboardPage() {
     <DashboardLayout>
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            Welcome back, {user.first_name}!
+            Welcome back, {user?.first_name}!
           </h1>
           <p className="text-gray-600 mt-2">
             Here's what's happening in your apiary today.
@@ -98,7 +98,7 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {user.beekeeper_profile ? (
+              {user?.beekeeper_profile ? (
                 <div className="space-y-4">
                   <p className="text-sm text-green-600 font-medium">
                     ✓ Beekeeper profile completed
@@ -142,7 +142,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {user.beekeeper_profile ? (
+                {user?.beekeeper_profile ? (
                   <>
                     <Link href="/apiaries/create" className="block">
                       <Button variant="outline" className="w-full justify-start">
@@ -216,10 +216,10 @@ export default function DashboardPage() {
                   </Link>
                 </div>
                 <div className="space-y-2 text-sm text-gray-600">
-                  <p><strong>Name:</strong> {user.full_name}</p>
-                  <p><strong>Email:</strong> {user.email}</p>
-                  <p><strong>Phone:</strong> {user.phone_number || 'Not provided'}</p>
-                  <p><strong>Member since:</strong> {new Date(user.created_at).toLocaleDateString()}</p>
+                  <p><strong>Name:</strong> {user?.full_name}</p>
+                  <p><strong>Email:</strong> {user?.email}</p>
+                  <p><strong>Phone:</strong> {user?.phone_number || 'Not provided'}</p>
+                  <p><strong>Member since:</strong> {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'Unknown'}</p>
                 </div>
               </div>
               <div>
@@ -227,7 +227,7 @@ export default function DashboardPage() {
                 <div className="space-y-2 text-sm text-gray-600">
                   <p><strong>Status:</strong> <span className="text-green-600">Active</span></p>
                   <p><strong>Plan:</strong> Free Tier</p>
-                  <p><strong>Stage:</strong> Accounts (Stage 1)</p>
+                  <p><strong>Stage:</strong> Smart Devices (Stage 3)</p>
                 </div>
               </div>
             </div>

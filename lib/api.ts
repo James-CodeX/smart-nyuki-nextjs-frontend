@@ -17,6 +17,9 @@ import {
   UpdateHiveRequest,
   ApiaryStats,
   PaginatedResponse,
+  SmartDevice,
+  CreateSmartDeviceRequest,
+  UpdateSmartDeviceRequest,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -395,6 +398,75 @@ class ApiClient {
 
   async getHivesByType(): Promise<Record<string, Hive[]>> {
     return this.request<Record<string, Hive[]>>('/apiaries/hives/by_type/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  // Stage 3: Smart Device endpoints
+  async getSmartDevices(filters?: Record<string, any>): Promise<PaginatedResponse<SmartDevice>> {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, value.toString());
+        }
+      });
+    }
+    
+    const queryString = params.toString();
+    const endpoint = `/devices/devices/${queryString ? `?${queryString}` : ''}`;
+    
+    return this.request<PaginatedResponse<SmartDevice>>(endpoint, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async createSmartDevice(data: CreateSmartDeviceRequest): Promise<SmartDevice> {
+    return this.request<SmartDevice>('/devices/devices/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getSmartDevice(id: string): Promise<SmartDevice> {
+    return this.request<SmartDevice>(`/devices/devices/${id}/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async updateSmartDevice(id: string, data: UpdateSmartDeviceRequest): Promise<SmartDevice> {
+    return this.request<SmartDevice>(`/devices/devices/${id}/`, {
+      method: 'PATCH',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteSmartDevice(id: string): Promise<void> {
+    return this.request<void>(`/devices/devices/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getSmartDeviceStats(id: string): Promise<any> {
+    return this.request<any>(`/devices/devices/${id}/stats/`, {
       method: 'GET',
       headers: {
         ...this.getAuthHeaders(),

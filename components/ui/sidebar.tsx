@@ -16,12 +16,16 @@ import {
   ChevronLeft,
   ChevronRight,
   Shield,
-  LogOut
+  LogOut,
+  Smartphone
 } from 'lucide-react'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
 import { useSidebar } from './sidebar-context'
 import { useAuthStore } from '@/store/auth'
+import { useApiaryStore } from '@/store/apiary'
+import { useEffect } from 'react'
+import { AddSmartDeviceModal } from '@/components/smart-device/add-smart-device-modal'
 
 interface SidebarProps {
   isOpen: boolean
@@ -62,6 +66,12 @@ const navigationSections = {
         name: 'Hives',
         href: '/hives',
         icon: Layers,
+        section: 'management' as const
+      },
+      {
+        name: 'Smart Devices',
+        href: '/smart-devices',
+        icon: Smartphone,
         section: 'management' as const
       },
       {
@@ -282,6 +292,13 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 {navigationSections.account.items.map((item) => (
                   <NavigationItem key={item.name} item={item} />
                 ))}
+                
+                {/* Smart-Nyuki Device Button */}
+                {user?.beekeeper_profile && !isCollapsed && (
+                  <div className="px-3 py-1">
+                    <SmartDeviceButton />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -317,14 +334,38 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
               <div className="text-xs text-gray-400 font-mono">v2.0</div>
             ) : (
               <div className="text-xs text-gray-500">
-                <p className="font-medium">Smart Nyuki v2.0</p>
-                <p>Stage 2: Apiaries & Hives</p>
+                <p className="font-medium">Smart Nyuki v3.0</p>
+                <p>Stage 3: Smart Devices</p>
               </div>
             )}
           </div>
         </div>
       </aside>
     </>
+  )
+}
+
+// Smart Device button component with honey theme
+function SmartDeviceButton() {
+  const { apiaries, fetchApiaries } = useApiaryStore()
+  
+  useEffect(() => {
+    fetchApiaries().catch(console.error)
+  }, [fetchApiaries])
+  
+  return (
+    <div className="w-full">
+      <AddSmartDeviceModal apiaries={apiaries}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full bg-gradient-to-r from-amber-100 to-orange-100 border-amber-300 text-amber-800 hover:from-amber-200 hover:to-orange-200 hover:border-amber-400 font-medium transition-all duration-200 shadow-sm"
+        >
+          <span className="mr-2 text-lg">🍯</span>
+          Add Smart-Nyuki Device
+        </Button>
+      </AddSmartDeviceModal>
+    </div>
   )
 }
 

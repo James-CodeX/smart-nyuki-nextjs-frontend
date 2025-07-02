@@ -41,7 +41,6 @@ export function HiveForm({ hive, isEdit = false, preselectedApiaryId }: HiveForm
     name: '',
     hive_type: 'Langstroth',
     installation_date: '',
-    has_smart_device: false,
     is_active: true
   })
 
@@ -60,7 +59,6 @@ export function HiveForm({ hive, isEdit = false, preselectedApiaryId }: HiveForm
         name: hive.name,
         hive_type: hive.hive_type,
         installation_date: hive.installation_date,
-        has_smart_device: hive.has_smart_device,
         is_active: hive.is_active
       })
     }
@@ -131,7 +129,6 @@ export function HiveForm({ hive, isEdit = false, preselectedApiaryId }: HiveForm
           name: formData.name !== hive.name ? formData.name : undefined,
           hive_type: formData.hive_type !== hive.hive_type ? formData.hive_type : undefined,
           installation_date: formData.installation_date !== hive.installation_date ? formData.installation_date : undefined,
-          has_smart_device: formData.has_smart_device !== hive.has_smart_device ? formData.has_smart_device : undefined,
           is_active: formData.is_active !== hive.is_active ? formData.is_active : undefined
         }
         
@@ -318,20 +315,6 @@ export function HiveForm({ hive, isEdit = false, preselectedApiaryId }: HiveForm
               {errors.installation_date && (
                 <p className="text-sm text-red-500 mt-1">{errors.installation_date[0]}</p>
               )}
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <input
-                id="has_smart_device"
-                name="has_smart_device"
-                type="checkbox"
-                checked={formData.has_smart_device}
-                onChange={handleChange}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <Label htmlFor="has_smart_device">
-                Has Smart Device
-              </Label>
             </div>
 
             <div className="flex items-center space-x-2">

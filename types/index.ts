@@ -165,7 +165,6 @@ export interface CreateHiveRequest {
   name: string;
   hive_type: 'Langstroth' | 'Top Bar' | 'Warre' | 'Flow Hive' | 'Other';
   installation_date: string; // YYYY-MM-DD format
-  has_smart_device?: boolean;
   is_active?: boolean;
 }
 
@@ -173,7 +172,6 @@ export interface UpdateHiveRequest {
   name?: string;
   hive_type?: 'Langstroth' | 'Top Bar' | 'Warre' | 'Flow Hive' | 'Other';
   installation_date?: string;
-  has_smart_device?: boolean;
   is_active?: boolean;
 }
 
@@ -233,4 +231,63 @@ export interface HiveStore {
   fetchHive: (id: string) => Promise<void>;
   activateHive: (id: string) => Promise<void>;
   deactivateHive: (id: string) => Promise<void>;
+}
+
+// Stage 3: Smart Device Types
+export interface SmartDevice {
+  id: string;
+  serial_number: string;
+  beekeeper: {
+    id: string;
+    user: {
+      id: string;
+      email: string;
+      first_name: string;
+      last_name: string;
+      full_name: string;
+    };
+    experience_level: string;
+  };
+  hive?: {
+    id: string;
+    name: string;
+    apiary: {
+      id: string;
+      name: string;
+    };
+  } | null;
+  device_type: string;
+  last_sync_at?: string;
+  battery_level?: number;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface CreateSmartDeviceRequest {
+  serial_number: string;
+  hive?: string; // UUID of the hive (optional - can be unassigned)
+  device_type: string;
+  battery_level?: number;
+  is_active?: boolean;
+  beekeeper?: string; // UUID of the beekeeper (will be added automatically by the store)
+}
+
+export interface UpdateSmartDeviceRequest {
+  serial_number?: string;
+  hive?: string | null; // UUID of the hive or null to unassign
+  device_type?: string;
+  battery_level?: number;
+  is_active?: boolean;
+}
+
+// Smart Device Store State
+export interface SmartDeviceStore {
+  devices: SmartDevice[];
+  currentDevice: SmartDevice | null;
+  isLoading: boolean;
+  fetchDevices: (filters?: Record<string, any>) => Promise<void>;
+  createDevice: (data: CreateSmartDeviceRequest) => Promise<void>;
+  updateDevice: (id: string, data: UpdateSmartDeviceRequest) => Promise<void>;
+  deleteDevice: (id: string) => Promise<void>;
+  fetchDevice: (id: string) => Promise<void>;
 }
