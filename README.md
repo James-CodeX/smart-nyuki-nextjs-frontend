@@ -179,19 +179,21 @@ The frontend integrates with the Smart Nyuki Django REST API:
 - Assignment/unassignment workflows
 - Real-time device statistics
 
-### 🚧 Stage 4: Inspections (Planned)
-- Hive inspection tracking and history
-- Inspection scheduling and reminders
-- Health monitoring and alerts
-- Inspection templates and checklists
-- Photo and note management
+### ✅ Stage 4: Inspections (Completed)
+- Hive inspection scheduling with calendar interface
+- Inspection report creation and management
+- Health monitoring and tracking
+- Calendar navigation with month controls
+- Detailed inspection report viewing
+- Comprehensive inspection analytics
 
-### 🚧 Stage 5: Production (Planned)
-- Honey production tracking
-- Harvest management and records
-- Analytics and reporting dashboard
-- Yield predictions and trends
-- Export capabilities
+### ✅ Stage 5: Production & Monitoring (Completed)
+- Harvest record management and tracking
+- Alert system for hive monitoring
+- Production analytics and statistics
+- Alert severity management (Low/Medium/High/Critical)
+- Harvest details with honey, wax, and pollen tracking
+- Alert resolution and notification system
 
 ## Available Scripts
 

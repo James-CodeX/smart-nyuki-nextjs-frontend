@@ -86,8 +86,8 @@ const navigationSections = {
         name: 'Production',
         href: '/production',
         icon: TrendingUp,
-        badge: 'Soon',
-        disabled: true,
+        badge: 'Available',
+        disabled: false,
         section: 'management' as const
       }
     ]
@@ -334,8 +334,8 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
               <div className="text-xs text-gray-400 font-mono">v2.0</div>
             ) : (
               <div className="text-xs text-gray-500">
-                <p className="font-medium">Smart Nyuki v4.0</p>
-                <p>Stage 4: Inspections</p>
+                <p className="font-medium">Smart Nyuki v5.0</p>
+                <p>Stage 5: Production</p>
               </div>
             )}
           </div>

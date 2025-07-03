@@ -48,7 +48,7 @@ export function AssignDeviceModal({ device, apiaries, hives, open, onOpenChange 
           <DialogTitle>Assign Smart Device to Hive</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          <Select onValueChange={setSelectedHive} value={selectedHive} placeholder="Select Hive">
+          <Select onValueChange={setSelectedHive} value={selectedHive}>
             <SelectTrigger>
               <SelectValue placeholder="Select a hive to assign" />
             </SelectTrigger>

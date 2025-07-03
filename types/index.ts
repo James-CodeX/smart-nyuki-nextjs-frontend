@@ -452,3 +452,140 @@ export interface InspectionStore {
   fetchReportStats: () => Promise<InspectionReportStats>;
   fetchHealthTrends: () => Promise<HealthTrend[]>;
 }
+
+// Stage 5: Production Types
+export interface Harvest {
+  id: string;
+  hive: {
+    id: string;
+    name: string;
+    apiary: {
+      id: string;
+      name: string;
+    };
+  };
+  harvest_date: string;
+  honey_kg: number;
+  wax_kg?: number;
+  pollen_kg?: number;
+  processing_method?: string;
+  harvested_by: {
+    id: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    full_name: string;
+  };
+  quality_notes?: string;
+  created_at: string;
+}
+
+export interface Alert {
+  id: string;
+  hive: {
+    id: string;
+    name: string;
+    apiary: {
+      id: string;
+      name: string;
+    };
+  };
+  alert_type: string;
+  alert_type_display: string;
+  message: string;
+  severity: 'Low' | 'Medium' | 'High' | 'Critical';
+  severity_display: string;
+  trigger_values?: Record<string, any>;
+  is_resolved: boolean;
+  resolved_at?: string;
+  resolved_by?: {
+    id: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    full_name: string;
+  };
+  resolution_notes?: string;
+  created_at: string;
+}
+
+export interface CreateHarvestRequest {
+  hive: string; // UUID
+  harvest_date: string; // YYYY-MM-DD
+  honey_kg: number;
+  wax_kg?: number;
+  pollen_kg?: number;
+  processing_method?: string;
+  quality_notes?: string;
+}
+
+export interface UpdateHarvestRequest {
+  harvest_date?: string;
+  honey_kg?: number;
+  wax_kg?: number;
+  pollen_kg?: number;
+  processing_method?: string;
+  quality_notes?: string;
+}
+
+export interface CreateAlertRequest {
+  hive: string; // UUID
+  alert_type: string;
+  message: string;
+  severity: 'Low' | 'Medium' | 'High' | 'Critical';
+  trigger_values?: Record<string, any> | string; // Can be string in form, converted to object before API call
+}
+
+export interface ResolveAlertRequest {
+  resolution_notes?: string;
+}
+
+export interface ProductionStats {
+  total_harvests: number;
+  total_honey_kg: number;
+  total_wax_kg: number;
+  total_pollen_kg: number;
+  harvests_this_month: number;
+  honey_this_month: number;
+  average_harvest_per_hive: number;
+  top_producing_hives: Array<{
+    hive_id: string;
+    hive_name: string;
+    total_honey: number;
+  }>;
+}
+
+export interface AlertStats {
+  total_alerts: number;
+  unresolved_alerts: number;
+  critical_alerts: number;
+  alerts_this_week: number;
+  alert_types_distribution: Record<string, number>;
+  severity_distribution: Record<string, number>;
+}
+
+// Production Store State
+export interface ProductionStore {
+  harvests: Harvest[];
+  alerts: Alert[];
+  currentHarvest: Harvest | null;
+  currentAlert: Alert | null;
+  isLoading: boolean;
+  
+  // Harvest methods
+  fetchHarvests: (filters?: Record<string, any>) => Promise<void>;
+  createHarvest: (data: CreateHarvestRequest) => Promise<void>;
+  updateHarvest: (id: string, data: UpdateHarvestRequest) => Promise<void>;
+  deleteHarvest: (id: string) => Promise<void>;
+  fetchHarvest: (id: string) => Promise<void>;
+  
+  // Alert methods
+  fetchAlerts: (filters?: Record<string, any>) => Promise<void>;
+  createAlert: (data: CreateAlertRequest) => Promise<void>;
+  resolveAlert: (id: string, data: ResolveAlertRequest) => Promise<void>;
+  fetchAlert: (id: string) => Promise<void>;
+  
+  // Stats methods
+  fetchProductionStats: () => Promise<ProductionStats>;
+  fetchAlertStats: () => Promise<AlertStats>;
+}

@@ -29,6 +29,14 @@ import {
   InspectionScheduleStats,
   InspectionReportStats,
   HealthTrend,
+  Harvest,
+  Alert,
+  CreateHarvestRequest,
+  UpdateHarvestRequest,
+  CreateAlertRequest,
+  ResolveAlertRequest,
+  ProductionStats,
+  AlertStats,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -669,6 +677,135 @@ class ApiClient {
 
   async getHealthTrends(): Promise<HealthTrend[]> {
     return this.request<HealthTrend[]>('/inspections/reports/health-trends/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  // Stage 5: Harvest endpoints
+  async getHarvests(filters?: Record<string, any>): Promise<PaginatedResponse<Harvest>> {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, value.toString());
+        }
+      });
+    }
+    
+    const queryString = params.toString();
+    const endpoint = `/production/harvests/${queryString ? `?${queryString}` : ''}`;
+    
+    return this.request<PaginatedResponse<Harvest>>(endpoint, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async createHarvest(data: CreateHarvestRequest): Promise<Harvest> {
+    return this.request<Harvest>('/production/harvests/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getHarvest(id: string): Promise<Harvest> {
+    return this.request<Harvest>(`/production/harvests/${id}/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async updateHarvest(id: string, data: UpdateHarvestRequest): Promise<Harvest> {
+    return this.request<Harvest>(`/production/harvests/${id}/`, {
+      method: 'PATCH',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteHarvest(id: string): Promise<void> {
+    return this.request<void>(`/production/harvests/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  // Stage 5: Alert endpoints
+  async getAlerts(filters?: Record<string, any>): Promise<PaginatedResponse<Alert>> {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, value.toString());
+        }
+      });
+    }
+    
+    const queryString = params.toString();
+    const endpoint = `/production/alerts/${queryString ? `?${queryString}` : ''}`;
+    
+    return this.request<PaginatedResponse<Alert>>(endpoint, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async createAlert(data: CreateAlertRequest): Promise<Alert> {
+    return this.request<Alert>('/production/alerts/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getAlert(id: string): Promise<Alert> {
+    return this.request<Alert>(`/production/alerts/${id}/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async resolveAlert(id: string, data: ResolveAlertRequest): Promise<{ message: string; is_resolved: boolean }> {
+    return this.request<{ message: string; is_resolved: boolean }>(`/production/alerts/${id}/resolve/`, {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getProductionStats(): Promise<ProductionStats> {
+    return this.request<ProductionStats>('/production/stats/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getAlertStats(): Promise<AlertStats> {
+    return this.request<AlertStats>('/production/alert-stats/', {
       method: 'GET',
       headers: {
         ...this.getAuthHeaders(),
