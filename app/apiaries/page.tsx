@@ -8,6 +8,7 @@ import { useApiaryStore } from '@/store/apiary'
 import { useAuthStore } from '@/store/auth'
 import { Plus, MapPin, Edit, Trash2, BarChart3 } from 'lucide-react'
 import Link from 'next/link'
+import { CreateBeekeeperProfileDialog } from '@/components/dialogs/create-beekeeper-profile-dialog'
 
 export default function ApiariesPage() {
   const { user } = useAuthStore()
@@ -44,12 +45,12 @@ export default function ApiariesPage() {
             You need to create a beekeeper profile before managing apiaries.
           </p>
           <div className="mt-6">
-            <Link href="/profile/beekeeper/create">
+            <CreateBeekeeperProfileDialog>
               <Button>
                 <Plus className="mr-2 h-4 w-4" />
                 Create Beekeeper Profile
               </Button>
-            </Link>
+            </CreateBeekeeperProfileDialog>
           </div>
         </div>
       </DashboardLayout>

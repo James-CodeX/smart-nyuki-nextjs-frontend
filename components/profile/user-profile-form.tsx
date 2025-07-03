@@ -141,7 +141,12 @@ export function UserProfileForm({ onSuccess, onCancel }: UserProfileFormProps) {
           </div>
         </div>
         <div className="flex gap-4 mt-6">
-          <Button type="submit" disabled={isLoading} className="w-full">
+          {onCancel && (
+            <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1">
+              Cancel
+            </Button>
+          )}
+          <Button type="submit" disabled={isLoading} className="flex-1">
             {isLoading ? 'Updating...' : 'Update Profile'}
           </Button>
         </div>

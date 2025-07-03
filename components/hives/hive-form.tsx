@@ -14,6 +14,7 @@ import { CreateHiveRequest, UpdateHiveRequest, Hive } from '@/types'
 import { useToast } from '@/components/ui/use-toast'
 import { Layers, ArrowLeft, MapPin } from 'lucide-react'
 import Link from 'next/link'
+import { CreateBeekeeperProfileDialog } from '@/components/dialogs/create-beekeeper-profile-dialog'
 
 interface HiveFormProps {
   hive?: Hive | null
@@ -187,11 +188,11 @@ export function HiveForm({ hive, isEdit = false, preselectedApiaryId }: HiveForm
           You need to create a beekeeper profile before creating hives.
         </p>
         <div className="mt-6">
-          <Link href="/profile/beekeeper/create">
+          <CreateBeekeeperProfileDialog>
             <Button>
               Create Beekeeper Profile
             </Button>
-          </Link>
+          </CreateBeekeeperProfileDialog>
         </div>
       </div>
     )

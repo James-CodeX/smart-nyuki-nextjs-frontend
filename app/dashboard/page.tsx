@@ -1,16 +1,17 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { useAuthStore } from '@/store/auth'
 import { useApiaryStore } from '@/store/apiary'
 import { useHiveStore } from '@/store/hive'
+import { useAuthStore } from '@/store/auth'
 import { EditUserProfileDialog } from '@/components/dialogs/edit-user-profile-dialog'
 import { EditBeekeeperProfileDialog } from '@/components/dialogs/edit-beekeeper-profile-dialog'
-import { Plus, Edit, Home, Calendar, MapPin, Layers } from 'lucide-react'
+import { CreateBeekeeperProfileDialog } from '@/components/dialogs/create-beekeeper-profile-dialog'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { Plus, Edit, Home, MapPin, Calendar } from 'lucide-react'
 
 export default function DashboardPage() {
   const { user } = useAuthStore()
@@ -124,12 +125,12 @@ export default function DashboardPage() {
                   <p className="text-sm text-gray-600">
                     Create your beekeeper profile to unlock all features of Smart Nyuki.
                   </p>
-                  <Link href="/profile/beekeeper/create">
+                  <CreateBeekeeperProfileDialog>
                     <Button className="w-full">
                       <Plus className="mr-2 h-4 w-4" />
                       Create Beekeeper Profile
                     </Button>
-                  </Link>
+                  </CreateBeekeeperProfileDialog>
                 </div>
               )}
             </CardContent>

@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { LogOut, User, Settings } from 'lucide-react'
-import Link from 'next/link'
 import { SidebarToggle } from '@/components/ui/sidebar'
+import { EditUserProfileDialog } from '@/components/dialogs/edit-user-profile-dialog'
+import { EditBeekeeperProfileDialog } from '@/components/dialogs/edit-beekeeper-profile-dialog'
+import { CreateBeekeeperProfileDialog } from '@/components/dialogs/create-beekeeper-profile-dialog'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -50,27 +52,26 @@ export function Navbar({ onSidebarToggle }: NavbarProps) {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-amber-500 to-orange-500 shadow-lg">
-      <div className="flex items-center justify-between px-4 py-3">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+      <div className="flex items-center justify-between px-4 py-2">
         <div className="flex items-center space-x-4">
           <SidebarToggle onToggle={onSidebarToggle} />
           <div className="flex items-center space-x-3">
             <span className="text-2xl">🐝</span>
-            <div className="text-white">
+            <div className="text-gray-900">
               <h1 className="text-xl font-bold leading-tight">Smart Nyuki</h1>
-              <p className="text-xs text-amber-100 leading-none">Apiary Management</p>
             </div>
           </div>
         </div>
         
         <div className="flex items-center space-x-4">
-          <span className="text-sm text-white font-medium">
+          <span className="text-sm text-gray-700 font-medium">
             Welcome, {user?.first_name}!
           </span>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="relative h-8 w-8 rounded-full text-white hover:bg-white/20">
+              <Button variant="ghost" size="sm" className="relative h-8 w-8 rounded-full text-gray-700 hover:bg-gray-100">
                 <User className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -84,26 +85,26 @@ export function Navbar({ onSidebarToggle }: NavbarProps) {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <Link href="/profile/user/edit">
+              <EditUserProfileDialog>
                 <DropdownMenuItem className="cursor-pointer">
                   <User className="mr-2 h-4 w-4" />
                   <span>Edit Profile</span>
                 </DropdownMenuItem>
-              </Link>
+              </EditUserProfileDialog>
               {user?.beekeeper_profile ? (
-                <Link href="/profile/beekeeper/edit">
+                <EditBeekeeperProfileDialog profile={user.beekeeper_profile}>
                   <DropdownMenuItem className="cursor-pointer">
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Beekeeper Profile</span>
                   </DropdownMenuItem>
-                </Link>
+                </EditBeekeeperProfileDialog>
               ) : (
-                <Link href="/profile/beekeeper/create">
+                <CreateBeekeeperProfileDialog>
                   <DropdownMenuItem className="cursor-pointer">
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Create Beekeeper Profile</span>
                   </DropdownMenuItem>
-                </Link>
+                </CreateBeekeeperProfileDialog>
               )}
               <DropdownMenuSeparator />
               <DropdownMenuItem 

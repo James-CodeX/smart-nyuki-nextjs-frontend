@@ -13,6 +13,7 @@ import { AddSmartDeviceModal } from '@/components/smart-device/add-smart-device-
 import { SmartDevice } from '@/types'
 import { Plus, Wifi, WifiOff, Smartphone } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { CreateBeekeeperProfileDialog } from '@/components/dialogs/create-beekeeper-profile-dialog'
 
 export default function SmartDevicesPage() {
   const { user } = useAuthStore()
@@ -53,9 +54,11 @@ export default function SmartDevicesPage() {
             You need to create a beekeeper profile before managing smart devices.
           </p>
           <div className="mt-6">
-            <Button onClick={() => window.location.href = '/profile/beekeeper/create'}>
-              Create Beekeeper Profile
-            </Button>
+            <CreateBeekeeperProfileDialog>
+              <Button>
+                Create Beekeeper Profile
+              </Button>
+            </CreateBeekeeperProfileDialog>
           </div>
         </div>
       </DashboardLayout>

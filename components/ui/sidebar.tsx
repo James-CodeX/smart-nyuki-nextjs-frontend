@@ -26,6 +26,7 @@ import { useAuthStore } from '@/store/auth'
 import { useApiaryStore } from '@/store/apiary'
 import { useEffect } from 'react'
 import { AddSmartDeviceModal } from '@/components/smart-device/add-smart-device-modal'
+import { EditUserProfileDialog } from '@/components/dialogs/edit-user-profile-dialog'
 
 interface SidebarProps {
   isOpen: boolean
@@ -97,7 +98,7 @@ const navigationSections = {
     items: [
       {
         name: 'Profile',
-        href: '/profile/user/edit',
+        href: '#',
         icon: User,
         section: 'account' as const
       },
@@ -185,6 +186,25 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       )
     }
 
+    // Special handling for Profile item
+    if (item.name === 'Profile') {
+      return (
+        <EditUserProfileDialog>
+          <div 
+            title={isCollapsed ? item.name : undefined}
+            className="block relative cursor-pointer"
+            onClick={() => {
+              if (window.innerWidth < 1024) {
+                onToggle()
+              }
+            }}
+          >
+            {content}
+          </div>
+        </EditUserProfileDialog>
+      )
+    }
+
     return (
       <Link
         href={item.href}
@@ -213,7 +233,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       
       {/* Sidebar */}
       <aside className={cn(
-        'fixed left-0 top-16 z-40 h-[calc(100vh-64px)] bg-white border-r border-gray-200 transition-all duration-300 ease-in-out',
+        'fixed left-0 top-0 z-40 h-screen bg-white border-r border-gray-200 transition-all duration-300 ease-in-out',
         'flex flex-col shadow-xl lg:shadow-none',
         isCollapsed ? 'w-16' : 'w-72',
         'hidden lg:flex',
@@ -238,7 +258,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-6 px-3 overflow-y-auto">
+        <nav className="flex-1 py-6 px-3 overflow-y-auto mt-14">
           <div className="space-y-6">
             {/* Main Section */}
             <div>
@@ -267,13 +287,13 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 {navigationSections.account.items.map((item) => (
                   <NavigationItem key={item.name} item={item} />
                 ))}
-                
-                {/* Smart-Nyuki Device Button */}
-                {user?.beekeeper_profile && !isCollapsed && (
-                  <div className="px-3 py-1">
-                    <SmartDeviceButton />
-                  </div>
-                )}
+      
+      {/* Smart-Nyuki Device Button */}
+      {user?.beekeeper_profile && !isCollapsed && (
+        <div className="px-3 py-1">
+          <SmartDeviceButton />
+        </div>
+      )}
               </div>
             </div>
           </div>

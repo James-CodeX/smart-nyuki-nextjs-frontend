@@ -24,14 +24,14 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
       {/* Full-width top bar */}
       <Navbar onSidebarToggle={toggleSidebar} />
       
-      <div className="flex pt-16">
-        {/* Sidebar positioned below top bar */}
+      <div className="flex pt-12">
+        {/* Sidebar positioned to touch top bar */}
         <Sidebar isOpen={sidebarOpen} onToggle={toggleSidebar} />
         
-        {/* Main content with proper spacing for sidebar */}
+        {/* Main content with proper spacing for sidebar and border */}
         <main className={`flex-1 transition-all duration-300 ${
           isCollapsed ? 'lg:ml-16' : 'lg:ml-72'
-        } p-4 overflow-auto min-h-[calc(100vh-64px)]`}>
+        } p-4 overflow-auto min-h-[calc(100vh-48px)] border-l border-gray-200`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {children}
           </div>

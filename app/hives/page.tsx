@@ -9,6 +9,7 @@ import { useApiaryStore } from '@/store/apiary'
 import { useAuthStore } from '@/store/auth'
 import { Plus, Layers, Edit, Trash2, MapPin, Power, PowerOff } from 'lucide-react'
 import Link from 'next/link'
+import { CreateBeekeeperProfileDialog } from '@/components/dialogs/create-beekeeper-profile-dialog'
 
 export default function HivesPage() {
   const { user } = useAuthStore()
@@ -74,12 +75,12 @@ export default function HivesPage() {
             You need to create a beekeeper profile before managing hives.
           </p>
           <div className="mt-6">
-            <Link href="/profile/beekeeper/create">
+            <CreateBeekeeperProfileDialog>
               <Button>
                 <Plus className="mr-2 h-4 w-4" />
                 Create Beekeeper Profile
               </Button>
-            </Link>
+            </CreateBeekeeperProfileDialog>
           </div>
         </div>
       </DashboardLayout>

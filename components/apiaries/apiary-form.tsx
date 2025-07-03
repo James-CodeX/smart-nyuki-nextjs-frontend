@@ -12,6 +12,7 @@ import { CreateApiaryRequest, UpdateApiaryRequest, Apiary } from '@/types'
 import { useToast } from '@/components/ui/use-toast'
 import { MapPin, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import { CreateBeekeeperProfileDialog } from '@/components/dialogs/create-beekeeper-profile-dialog'
 
 interface ApiaryFormProps {
   apiary?: Apiary | null
@@ -186,11 +187,11 @@ export function ApiaryForm({ apiary, isEdit = false }: ApiaryFormProps) {
           You need to create a beekeeper profile before creating apiaries.
         </p>
         <div className="mt-6">
-          <Link href="/profile/beekeeper/create">
+          <CreateBeekeeperProfileDialog>
             <Button>
               Create Beekeeper Profile
             </Button>
-          </Link>
+          </CreateBeekeeperProfileDialog>
         </div>
       </div>
     )
