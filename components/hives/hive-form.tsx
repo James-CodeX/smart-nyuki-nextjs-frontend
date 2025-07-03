@@ -56,7 +56,7 @@ export function HiveForm({ hive, isEdit = false, preselectedApiaryId }: HiveForm
   useEffect(() => {
     if (isEdit && hive) {
       setFormData({
-        apiary: hive.apiary.id,
+        apiary: hive.apiary,
         name: hive.name,
         hive_type: hive.hive_type,
         installation_date: hive.installation_date,

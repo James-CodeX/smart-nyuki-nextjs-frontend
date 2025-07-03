@@ -255,7 +255,7 @@ export default function HiveDetailPage() {
                 <MapPin className="h-5 w-5 text-gray-400 mr-3" />
                 <div>
                   <p className="font-medium">Apiary Name</p>
-                  <p className="text-gray-600">{hive.apiary.name}</p>
+                  <p className="text-gray-600">{hive.apiary_name || 'Unknown Apiary'}</p>
                 </div>
               </div>
               <div className="flex items-center">
@@ -265,23 +265,13 @@ export default function HiveDetailPage() {
                 <div>
                   <p className="font-medium">Location</p>
                   <p className="text-gray-600">
-                    {hive.apiary.address || `${hive.apiary.latitude}, ${hive.apiary.longitude}`}
+                    Location details unavailable (requires apiary detail fetch)
                   </p>
                 </div>
               </div>
-              {hive.apiary.description && (
-                <div className="flex items-start">
-                  <div className="h-5 w-5 text-gray-400 mr-3 flex items-center justify-center text-sm mt-0.5">
-                    📝
-                  </div>
-                  <div>
-                    <p className="font-medium">Description</p>
-                    <p className="text-gray-600">{hive.apiary.description}</p>
-                  </div>
-                </div>
-              )}
+              {/* TODO: Description requires full apiary details from backend */}
               <div className="pt-4 border-t">
-                <Link href={`/apiaries/${hive.apiary.id}`}>
+                <Link href={`/apiaries/${hive.apiary}`}>
                   <Button variant="outline" size="sm" className="w-full">
                     View Apiary Details
                   </Button>

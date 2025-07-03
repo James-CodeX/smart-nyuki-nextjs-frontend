@@ -101,7 +101,7 @@ export function InspectionScheduleForm({ hiveId, selectedDate, onSuccess }: Insp
               <SelectContent>
                 {hives.map((hive) => (
                   <SelectItem key={hive.id} value={hive.id}>
-                    {hive.name} - {hive.apiary.name}
+                    {hive.name} - {hive.apiary_name || 'Unknown Apiary'}
                   </SelectItem>
                 ))}
               </SelectContent>

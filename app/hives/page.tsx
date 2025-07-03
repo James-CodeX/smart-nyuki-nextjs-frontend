@@ -199,7 +199,7 @@ export default function HivesPage() {
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center">
                     <MapPin className="h-4 w-4 mr-2" />
-                    <span>{hive.apiary.name}</span>
+                    <span>{hive.apiary_name || 'Unknown Apiary'}</span>
                   </div>
                   <div className="flex items-center">
                     <span className="font-medium mr-2">Status:</span>
@@ -276,7 +276,7 @@ export default function HivesPage() {
                 <div className="ml-4">
                   <p className="text-sm font-medium text-muted-foreground">Locations</p>
                   <p className="text-2xl font-bold text-foreground">
-                    {new Set(hives.map(hive => hive.apiary.id)).size}
+                    {new Set(hives.map(hive => hive.apiary)).size}
                   </p>
                 </div>
               </div>

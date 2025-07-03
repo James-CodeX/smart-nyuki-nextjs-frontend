@@ -126,15 +126,8 @@ export interface Apiary {
 
 export interface Hive {
   id: string;
-  apiary: {
-    id: string;
-    name: string;
-    latitude: string;
-    longitude: string;
-    coordinates: [number, number];
-    address?: string;
-    description?: string;
-  };
+  apiary: string; // UUID
+  apiary_name: string;
   name: string;
   hive_type: 'Langstroth' | 'Top Bar' | 'Warre' | 'Flow Hive' | 'Other';
   installation_date: string;
@@ -460,40 +453,25 @@ export interface InspectionStore {
 // Stage 5: Production Types
 export interface Harvest {
   id: string;
-  hive: {
-    id: string;
-    name: string;
-    apiary: {
-      id: string;
-      name: string;
-    };
-  };
+  hive: string; // UUID
+  hive_name: string;
+  apiary_name: string;
   harvest_date: string;
   honey_kg: number;
   wax_kg?: number;
   pollen_kg?: number;
   processing_method?: string;
-  harvested_by: {
-    id: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    full_name: string;
-  };
+  harvested_by: string; // UUID
+  harvested_by_name: string;
   quality_notes?: string;
   created_at: string;
 }
 
 export interface Alert {
   id: string;
-  hive: {
-    id: string;
-    name: string;
-    apiary: {
-      id: string;
-      name: string;
-    };
-  };
+  hive: string; // UUID
+  hive_name: string;
+  apiary_name: string;
   alert_type: string;
   alert_type_display: string;
   message: string;

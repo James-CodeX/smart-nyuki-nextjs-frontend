@@ -83,8 +83,8 @@ export function ResolveAlertDialog({ alert, open, onClose, onResolve }: ResolveA
           {/* Alert Details */}
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="flex items-center space-x-2 mb-3">
-              <h3 className="font-medium text-gray-900">{alert.hive?.name || 'Unknown Hive'}</h3>
-              <Badge variant="outline">{alert.hive?.apiary?.name || 'Unknown Apiary'}</Badge>
+              <h3 className="font-medium text-gray-900">{alert.hive_name || 'Unknown Hive'}</h3>
+              <Badge variant="outline">{alert.apiary_name || 'Unknown Apiary'}</Badge>
               <Badge className={`${getSeverityColor(alert.severity)} flex items-center`}>
                 <AlertTriangle className="h-3 w-3 mr-1" />
                 {alert.severity}
