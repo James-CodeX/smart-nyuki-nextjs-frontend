@@ -213,49 +213,24 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       
       {/* Sidebar */}
       <aside className={cn(
-        'fixed left-0 top-0 z-50 h-full bg-white border-r border-gray-200 transition-all duration-300 ease-in-out',
+        'fixed left-0 top-16 z-40 h-[calc(100vh-64px)] bg-white border-r border-gray-200 transition-all duration-300 ease-in-out',
         'flex flex-col shadow-xl lg:shadow-none',
         isCollapsed ? 'w-16' : 'w-72',
         'hidden lg:flex',
         isOpen && 'flex'
       )}>
-        {/* Header */}
+        {/* Header - Mobile close only */}
         <div className={cn(
-          'flex items-center border-b border-gray-200 bg-gradient-to-r from-amber-500 to-orange-500',
-          isCollapsed ? 'h-16 px-2' : 'h-16 px-6'
+          'flex items-center justify-end border-b border-gray-200 bg-gray-50',
+          'h-12 px-3 lg:hidden'
         )}>
-          <div className="flex items-center space-x-3 text-white">
-            <div className="text-2xl">🐝</div>
-            {!isCollapsed && (
-              <div>
-                <h1 className="text-lg font-bold">Smart Nyuki</h1>
-                <p className="text-xs text-amber-100">Apiary Management</p>
-              </div>
-            )}
-          </div>
-          
-          <div className="ml-auto flex items-center space-x-1">
-            {/* Collapse toggle */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleCollapse}
-              className="hidden lg:flex text-white hover:bg-white/20 h-8 w-8"
-              title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            >
-              {isCollapsed ? (
-                <ChevronRight className="h-4 w-4" />
-              ) : (
-                <ChevronLeft className="h-4 w-4" />
-              )}
-            </Button>
-            
+          <div className="flex items-center space-x-1">
             {/* Mobile close */}
             <Button
               variant="ghost"
               size="sm"
               onClick={onToggle}
-              className="lg:hidden text-white hover:bg-white/20 h-8 w-8"
+              className="text-gray-600 hover:bg-gray-200 h-8 w-8"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -304,42 +279,29 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
           </div>
         </nav>
 
-        {/* User Profile & Footer */}
-        <div className="border-t border-gray-200 bg-gray-50">
-          {/* User info */}
-          {!isCollapsed && user && (
-            <div className="p-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                  {user.first_name?.[0]?.toUpperCase() || 'U'}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">
-                    {user.full_name}
-                  </p>
-                  <p className="text-xs text-gray-500 truncate">
-                    {user.email}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {/* Version info */}
-          <div className={cn(
-            'px-4 py-3 border-t border-gray-200',
-            isCollapsed ? 'text-center' : ''
-          )}>
-            {isCollapsed ? (
-              <div className="text-xs text-gray-400 font-mono">v2.0</div>
-            ) : (
-              <div className="text-xs text-gray-500">
-                <p className="font-medium">Smart Nyuki v5.0</p>
-                <p>Stage 5: Production</p>
-              </div>
+        {/* Collapse button at bottom */}
+        <div className="border-t border-gray-200 p-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleCollapse}
+            className={cn(
+              "w-full text-gray-600 hover:bg-gray-100 h-8",
+              isCollapsed ? "px-0" : "justify-start"
             )}
-          </div>
+            title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            {isCollapsed ? (
+              <ChevronRight className="h-4 w-4" />
+            ) : (
+              <>
+                <ChevronLeft className="h-4 w-4 mr-2" />
+                <span className="text-sm">Collapse</span>
+              </>
+            )}
+          </Button>
         </div>
+
       </aside>
     </>
   )

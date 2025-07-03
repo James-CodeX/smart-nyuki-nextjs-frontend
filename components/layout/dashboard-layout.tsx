@@ -21,15 +21,17 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Sidebar isOpen={sidebarOpen} onToggle={toggleSidebar} />
+      {/* Full-width top bar */}
+      <Navbar onSidebarToggle={toggleSidebar} />
       
-      {/* Main content with proper spacing for fixed sidebar */}
-      <div className={`transition-all duration-300 flex flex-col min-h-screen ${
-        isCollapsed ? 'lg:ml-16' : 'lg:ml-72'
-      }`}>
-        <Navbar onSidebarToggle={toggleSidebar} />
+      <div className="flex pt-16">
+        {/* Sidebar positioned below top bar */}
+        <Sidebar isOpen={sidebarOpen} onToggle={toggleSidebar} />
         
-        <main className="flex-1 py-4 overflow-auto">
+        {/* Main content with proper spacing for sidebar */}
+        <main className={`flex-1 transition-all duration-300 ${
+          isCollapsed ? 'lg:ml-16' : 'lg:ml-72'
+        } p-4 overflow-auto min-h-[calc(100vh-64px)]`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {children}
           </div>
