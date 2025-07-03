@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { useApiaryStore } from '@/store/apiary'
 import { useHiveStore } from '@/store/hive'
 import { useAuthStore } from '@/store/auth'
+import { useInspectionStore } from '@/store/inspection'
+import { useProductionStore } from '@/store/production'
 import { EditUserProfileDialog } from '@/components/dialogs/edit-user-profile-dialog'
 import { EditBeekeeperProfileDialog } from '@/components/dialogs/edit-beekeeper-profile-dialog'
 import { CreateBeekeeperProfileDialog } from '@/components/dialogs/create-beekeeper-profile-dialog'
@@ -15,19 +17,19 @@ import { Plus, Edit, Home, MapPin, Calendar } from 'lucide-react'
 
 export default function DashboardPage() {
   const { user } = useAuthStore()
-  const { apiaries, fetchApiaries } = useApiaryStore()
-  const { hives, fetchHives } = useHiveStore()
-
-  useEffect(() => {
-    if (user?.beekeeper_profile) {
-      fetchApiaries().catch(console.error)
-      fetchHives().catch(console.error)
-    }
-  }, [user, fetchApiaries, fetchHives])
+  const { apiaries } = useApiaryStore()
+  const { hives } = useHiveStore()
+  const { reports } = useInspectionStore()
+  const { harvests } = useProductionStore()
 
   const totalHives = hives.length
   const activeHives = hives.filter(hive => hive.is_active).length
   const totalApiaries = apiaries.length
+  const totalInspections = reports.length
+  const totalHoneyKg = Array.isArray(harvests) ? harvests.reduce((total, harvest) => {
+    const honeyKg = parseFloat(harvest.honey_kg?.toString() || '0')
+    return total + (isNaN(honeyKg) ? 0 : honeyKg)
+  }, 0) : 0
 
   return (
     <DashboardLayout>
@@ -72,7 +74,7 @@ export default function DashboardPage() {
                 <Calendar className="h-8 w-8 text-blue-600" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-muted-foreground">Inspections</p>
-                  <p className="text-2xl font-bold text-foreground">0</p>
+                  <p className="text-2xl font-bold text-foreground">{totalInspections}</p>
                 </div>
               </div>
             </CardContent>
@@ -84,58 +86,15 @@ export default function DashboardPage() {
                 <div className="h-8 w-8 text-yellow-600 flex items-center justify-center">🍯</div>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-muted-foreground">Honey (kg)</p>
-                  <p className="text-2xl font-bold text-foreground">0</p>
+                  <p className="text-2xl font-bold text-foreground">{totalHoneyKg.toFixed(1)}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Getting Started Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>Getting Started</CardTitle>
-              <CardDescription>
-                Set up your beekeeper profile to begin managing your apiary
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {user?.beekeeper_profile ? (
-                <div className="space-y-4">
-                  <p className="text-sm text-green-600 font-medium">
-                    ✓ Beekeeper profile completed
-                  </p>
-                  <div className="text-sm text-muted-foreground">
-                    <p><strong>Experience:</strong> {user.beekeeper_profile.experience_level}</p>
-                    <p><strong>Location:</strong> {user.beekeeper_profile.address || 'Not specified'}</p>
-                    <p><strong>Established:</strong> {user.beekeeper_profile.established_date}</p>
-                  </div>
-                  <div className="flex gap-2 mt-4">
-                    <EditBeekeeperProfileDialog profile={user.beekeeper_profile}>
-                      <Button variant="outline" size="sm" className="w-full">
-                        <Edit className="mr-2 h-4 w-4" />
-                        Edit Profile
-                      </Button>
-                    </EditBeekeeperProfileDialog>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    Create your beekeeper profile to unlock all features of Smart Nyuki.
-                  </p>
-                  <CreateBeekeeperProfileDialog>
-                    <Button className="w-full">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Create Beekeeper Profile
-                    </Button>
-                  </CreateBeekeeperProfileDialog>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
+        {/* Quick Actions Section */}
+        <div className="max-w-lg mx-auto">
           <Card>
             <CardHeader>
               <CardTitle>Quick Actions</CardTitle>
@@ -154,7 +113,7 @@ export default function DashboardPage() {
                       </Button>
                     </Link>
                     {totalApiaries > 0 ? (
-                      <Link href="/hives/create" className="block">
+                    <Link href="/hives/create" className="block">
                         <Button variant="outline" className="w-full justify-start">
                           <Home className="mr-2 h-4 w-4" />
                           Add Hive
@@ -166,13 +125,12 @@ export default function DashboardPage() {
                         Add Hive (Create apiary first)
                       </Button>
                     )}
-                    <Button variant="outline" className="w-full justify-start" disabled>
-                      <Calendar className="mr-2 h-4 w-4" />
-                      Schedule Inspection
-                    </Button>
-                    <p className="text-xs text-muted-foreground mt-4">
-                      * Inspections will be available in Stage 4
-                    </p>
+                    <Link href="/inspections" className="block">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        Schedule Inspection
+                      </Button>
+                    </Link>
                   </>
                 ) : (
                   <>
