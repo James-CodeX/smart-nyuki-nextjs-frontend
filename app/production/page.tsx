@@ -11,8 +11,8 @@ export default function ProductionPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Production & Monitoring</h1>
-          <p className="text-gray-600">Track harvests and manage hive alerts</p>
+          <h1 className="text-2xl font-bold text-foreground">Production & Monitoring</h1>
+          <p className="text-muted-foreground">Track harvests and manage hive alerts</p>
         </div>
 
         <Tabs defaultValue="harvests" className="w-full">

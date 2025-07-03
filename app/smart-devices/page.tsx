@@ -49,8 +49,8 @@ export default function SmartDevicesPage() {
       <DashboardLayout>
         <div className="text-center py-12">
           <Smartphone className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No beekeeper profile</h3>
-          <p className="mt-1 text-sm text-gray-500">
+          <h3 className="mt-2 text-sm font-medium text-foreground">No beekeeper profile</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
             You need to create a beekeeper profile before managing smart devices.
           </p>
           <div className="mt-6">
@@ -71,8 +71,8 @@ export default function SmartDevicesPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Smart Devices</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-bold text-foreground">Smart Devices</h1>
+            <p className="text-muted-foreground mt-2">
               Manage your Smart-nyuki devices and their hive assignments
             </p>
           </div>
@@ -91,8 +91,8 @@ export default function SmartDevicesPage() {
               <div className="flex items-center">
                 <Smartphone className="h-8 w-8 text-blue-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Devices</p>
-                  <p className="text-2xl font-bold text-gray-900">{devices.length}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Total Devices</p>
+                  <p className="text-2xl font-bold text-foreground">{devices.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -103,8 +103,8 @@ export default function SmartDevicesPage() {
               <div className="flex items-center">
                 <Wifi className="h-8 w-8 text-green-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Assigned</p>
-                  <p className="text-2xl font-bold text-gray-900">{assignedDevices.length}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Assigned</p>
+                  <p className="text-2xl font-bold text-foreground">{assignedDevices.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -115,8 +115,8 @@ export default function SmartDevicesPage() {
               <div className="flex items-center">
                 <WifiOff className="h-8 w-8 text-orange-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Unassigned</p>
-                  <p className="text-2xl font-bold text-gray-900">{unassignedDevices.length}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Unassigned</p>
+                  <p className="text-2xl font-bold text-foreground">{unassignedDevices.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -129,8 +129,8 @@ export default function SmartDevicesPage() {
                   <div className="h-3 w-3 bg-green-600 rounded-full"></div>
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Active</p>
-                  <p className="text-2xl font-bold text-gray-900">{activeDevices.length}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Active</p>
+                  <p className="text-2xl font-bold text-foreground">{activeDevices.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -220,7 +220,7 @@ function DeviceSection({
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading devices...</p>
+          <p className="mt-2 text-muted-foreground">Loading devices...</p>
         </div>
       </div>
     )
@@ -232,8 +232,8 @@ function DeviceSection({
         <CardContent className="py-12">
           <div className="text-center">
             <Smartphone className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">{title}</h3>
-            <p className="mt-1 text-sm text-gray-500">{emptyMessage}</p>
+            <h3 className="mt-2 text-sm font-medium text-foreground">{title}</h3>
+            <p className="mt-1 text-sm text-muted-foreground">{emptyMessage}</p>
           </div>
         </CardContent>
       </Card>

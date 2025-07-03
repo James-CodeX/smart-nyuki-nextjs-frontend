@@ -70,8 +70,8 @@ export default function HivesPage() {
       <DashboardLayout>
         <div className="text-center py-12">
           <Layers className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No beekeeper profile</h3>
-          <p className="mt-1 text-sm text-gray-500">
+          <h3 className="mt-2 text-sm font-medium text-foreground">No beekeeper profile</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
             You need to create a beekeeper profile before managing hives.
           </p>
           <div className="mt-6">
@@ -92,8 +92,8 @@ export default function HivesPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Hives</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-bold text-foreground">Hives</h1>
+            <p className="text-muted-foreground mt-2">
               Manage all your hives across different apiaries.
             </p>
           </div>
@@ -106,7 +106,7 @@ export default function HivesPage() {
             </Link>
           ) : (
             <div className="text-right">
-              <p className="text-sm text-gray-500 mb-2">Create an apiary first</p>
+              <p className="text-sm text-muted-foreground mb-2">Create an apiary first</p>
               <Link href="/apiaries/create">
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
@@ -120,13 +120,13 @@ export default function HivesPage() {
 
       {isLoading ? (
         <div className="text-center py-12">
-          <div className="text-gray-500">Loading hives...</div>
+          <div className="text-muted-foreground">Loading hives...</div>
         </div>
       ) : hives.length === 0 ? (
         <div className="text-center py-12">
           <Layers className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No hives</h3>
-          <p className="mt-1 text-sm text-gray-500">
+          <h3 className="mt-2 text-sm font-medium text-foreground">No hives</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
             {apiaries.length === 0 
               ? "Create your first apiary to start adding hives."
               : "Get started by adding your first hive."
@@ -196,7 +196,7 @@ export default function HivesPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 text-sm text-gray-600">
+                <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center">
                     <MapPin className="h-4 w-4 mr-2" />
                     <span>{hive.apiary.name}</span>
@@ -234,8 +234,8 @@ export default function HivesPage() {
               <div className="flex items-center">
                 <Layers className="h-8 w-8 text-blue-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Hives</p>
-                  <p className="text-2xl font-bold text-gray-900">{hives.length}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Total Hives</p>
+                  <p className="text-2xl font-bold text-foreground">{hives.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -246,8 +246,8 @@ export default function HivesPage() {
               <div className="flex items-center">
                 <Power className="h-8 w-8 text-green-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Active Hives</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-muted-foreground">Active Hives</p>
+                  <p className="text-2xl font-bold text-foreground">
                     {hives.filter(hive => hive.is_active).length}
                   </p>
                 </div>
@@ -260,8 +260,8 @@ export default function HivesPage() {
               <div className="flex items-center">
                 <div className="h-8 w-8 text-blue-600 flex items-center justify-center text-lg">📡</div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Smart Hives</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-muted-foreground">Smart Hives</p>
+                  <p className="text-2xl font-bold text-foreground">
                     {hives.filter(hive => hive.has_smart_device).length}
                   </p>
                 </div>
@@ -274,8 +274,8 @@ export default function HivesPage() {
               <div className="flex items-center">
                 <MapPin className="h-8 w-8 text-amber-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Locations</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-muted-foreground">Locations</p>
+                  <p className="text-2xl font-bold text-foreground">
                     {new Set(hives.map(hive => hive.apiary.id)).size}
                   </p>
                 </div>

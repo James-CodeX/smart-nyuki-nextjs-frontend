@@ -124,7 +124,7 @@ export function SmartDeviceCard({
               <Smartphone className="h-5 w-5 text-blue-600" />
               <div>
                 <CardTitle className="text-lg">{device.serial_number}</CardTitle>
-                <p className="text-sm text-gray-600">{device.device_type}</p>
+                <p className="text-sm text-muted-foreground">{device.device_type}</p>
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -207,7 +207,7 @@ export function SmartDeviceCard({
                   <p className="text-sm font-medium text-green-700">
 Assigned to {device.hive_name || 'Unknown Hive'}
                   </p>
-                  <p className="text-xs text-gray-600 flex items-center">
+                  <p className="text-xs text-muted-foreground flex items-center">
                     <MapPin className="h-3 w-3 mr-1" />
 {device.apiary_name || 'Unknown Apiary'}
                   </p>
@@ -229,7 +229,7 @@ Assigned to {device.hive_name || 'Unknown Hive'}
             {device.battery_level !== undefined && (
               <div className="flex items-center space-x-2">
                 <BatteryIcon className={`h-4 w-4 ${getBatteryColor(device.battery_level)}`} />
-                <span className="text-gray-600">
+                <span className="text-muted-foreground">
                   {device.battery_level}%
                 </span>
               </div>
@@ -239,7 +239,7 @@ Assigned to {device.hive_name || 'Unknown Hive'}
             {device.last_sync_at && (
               <div className="flex items-center space-x-2">
                 <Calendar className="h-4 w-4 text-gray-400" />
-                <span className="text-gray-600 text-xs">
+                <span className="text-muted-foreground text-xs">
                   {new Date(device.last_sync_at).toLocaleDateString()}
                 </span>
               </div>
@@ -263,7 +263,7 @@ Assigned to {device.hive_name || 'Unknown Hive'}
 
           {/* Device Details */}
           <div className="pt-2 border-t">
-            <div className="text-xs text-gray-500 space-y-1">
+            <div className="text-xs text-muted-foreground space-y-1">
               <p>Added: {new Date(device.created_at).toLocaleDateString()}</p>
               {device.last_sync_at && (
                 <p>Last sync: {new Date(device.last_sync_at).toLocaleDateString()}</p>

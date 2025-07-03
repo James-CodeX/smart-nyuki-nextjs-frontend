@@ -40,8 +40,8 @@ export default function ApiariesPage() {
       <DashboardLayout>
         <div className="text-center py-12">
           <MapPin className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No beekeeper profile</h3>
-          <p className="mt-1 text-sm text-gray-500">
+          <h3 className="mt-2 text-sm font-medium text-foreground">No beekeeper profile</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
             You need to create a beekeeper profile before managing apiaries.
           </p>
           <div className="mt-6">
@@ -62,8 +62,8 @@ export default function ApiariesPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Apiaries</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-bold text-foreground">Apiaries</h1>
+            <p className="text-muted-foreground mt-2">
               Manage your beekeeping locations and apiaries.
             </p>
           </div>
@@ -78,13 +78,13 @@ export default function ApiariesPage() {
 
       {isLoading ? (
         <div className="text-center py-12">
-          <div className="text-gray-500">Loading apiaries...</div>
+          <div className="text-muted-foreground">Loading apiaries...</div>
         </div>
       ) : apiaries.length === 0 ? (
         <div className="text-center py-12">
           <MapPin className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No apiaries</h3>
-          <p className="mt-1 text-sm text-gray-500">
+          <h3 className="mt-2 text-sm font-medium text-foreground">No apiaries</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
             Get started by creating your first apiary.
           </p>
           <div className="mt-6">
@@ -124,7 +124,7 @@ export default function ApiariesPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 text-sm text-gray-600">
+                <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center">
                     <MapPin className="h-4 w-4 mr-2" />
                     <span>
@@ -165,8 +165,8 @@ export default function ApiariesPage() {
               <div className="flex items-center">
                 <MapPin className="h-8 w-8 text-green-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Apiaries</p>
-                  <p className="text-2xl font-bold text-gray-900">{apiaries.length}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Total Apiaries</p>
+                  <p className="text-2xl font-bold text-foreground">{apiaries.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -177,8 +177,8 @@ export default function ApiariesPage() {
               <div className="flex items-center">
                 <BarChart3 className="h-8 w-8 text-blue-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Hives</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-muted-foreground">Total Hives</p>
+                  <p className="text-2xl font-bold text-foreground">
                     {apiaries.reduce((total, apiary) => total + (apiary.hives?.length || 0), 0)}
                   </p>
                 </div>
@@ -191,8 +191,8 @@ export default function ApiariesPage() {
               <div className="flex items-center">
                 <div className="h-8 w-8 text-amber-600 flex items-center justify-center text-lg">📍</div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Avg. Hives per Apiary</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-muted-foreground">Avg. Hives per Apiary</p>
+                  <p className="text-2xl font-bold text-foreground">
                     {apiaries.length > 0 
                       ? Math.round(apiaries.reduce((total, apiary) => total + (apiary.hives?.length || 0), 0) / apiaries.length)
                       : 0

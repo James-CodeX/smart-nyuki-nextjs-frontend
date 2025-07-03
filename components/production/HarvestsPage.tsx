@@ -93,8 +93,8 @@ export function HarvestsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Honey</p>
-                <p className="text-2xl font-bold text-gray-900">{totalHoney.toFixed(1)}kg</p>
+                <p className="text-sm font-medium text-muted-foreground">Total Honey</p>
+                <p className="text-2xl font-bold text-foreground">{totalHoney.toFixed(1)}kg</p>
               </div>
               <div className="p-3 bg-amber-100 rounded-full">
                 <Package className="h-6 w-6 text-amber-600" />
@@ -107,8 +107,8 @@ export function HarvestsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Wax</p>
-                <p className="text-2xl font-bold text-gray-900">{totalWax.toFixed(1)}kg</p>
+                <p className="text-sm font-medium text-muted-foreground">Total Wax</p>
+                <p className="text-2xl font-bold text-foreground">{totalWax.toFixed(1)}kg</p>
               </div>
               <div className="p-3 bg-yellow-100 rounded-full">
                 <Package className="h-6 w-6 text-yellow-600" />
@@ -121,8 +121,8 @@ export function HarvestsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Pollen</p>
-                <p className="text-2xl font-bold text-gray-900">{totalPollen.toFixed(1)}kg</p>
+                <p className="text-sm font-medium text-muted-foreground">Total Pollen</p>
+                <p className="text-2xl font-bold text-foreground">{totalPollen.toFixed(1)}kg</p>
               </div>
               <div className="p-3 bg-orange-100 rounded-full">
                 <Package className="h-6 w-6 text-orange-600" />
@@ -135,8 +135,8 @@ export function HarvestsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Avg Honey/Harvest</p>
-                <p className="text-2xl font-bold text-gray-900">{averageHoney.toFixed(1)}kg</p>
+                <p className="text-sm font-medium text-muted-foreground">Avg Honey/Harvest</p>
+                <p className="text-2xl font-bold text-foreground">{averageHoney.toFixed(1)}kg</p>
               </div>
               <div className="p-3 bg-green-100 rounded-full">
                 <TrendingUp className="h-6 w-6 text-green-600" />
@@ -152,7 +152,7 @@ export function HarvestsPage() {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>Harvest Records</CardTitle>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Manage your hive harvest data
               </p>
             </div>
@@ -179,7 +179,7 @@ export function HarvestsPage() {
           {actualFilteredHarvests.length === 0 ? (
             <div className="text-center py-12">
               <Package className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <p className="text-gray-500 mb-4">No harvest records yet</p>
+              <p className="text-muted-foreground mb-4">No harvest records yet</p>
               <Button
                 variant="outline"
                 onClick={() => setShowHarvestForm(true)}
@@ -195,39 +195,39 @@ export function HarvestsPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <h3 className="font-medium text-gray-900">{harvest.hive_name}</h3>
+                        <h3 className="font-medium text-foreground">{harvest.hive_name}</h3>
                         <Badge variant="outline">{harvest.apiary_name}</Badge>
                       </div>
                       
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                         <div className="flex items-center">
                           <Calendar className="h-4 w-4 text-gray-400 mr-2" />
-                          <span className="text-gray-600">
+                          <span className="text-muted-foreground">
                             {moment(harvest.harvest_date).format('MMM DD, YYYY')}
                           </span>
                         </div>
                         <div className="flex items-center">
                           <User className="h-4 w-4 text-gray-400 mr-2" />
-                          <span className="text-gray-600">{harvest.harvested_by_name}</span>
+                          <span className="text-muted-foreground">{harvest.harvested_by_name}</span>
                         </div>
-                        <div className="text-gray-600">
+                        <div className="text-muted-foreground">
                           <span className="font-medium">Honey:</span> {harvest.honey_kg}kg
                         </div>
                         {harvest.wax_kg && (
-                          <div className="text-gray-600">
+                          <div className="text-muted-foreground">
                             <span className="font-medium">Wax:</span> {harvest.wax_kg}kg
                           </div>
                         )}
                       </div>
                       
                       {harvest.processing_method && (
-                        <div className="mt-2 text-sm text-gray-600">
+                        <div className="mt-2 text-sm text-muted-foreground">
                           <span className="font-medium">Processing:</span> {harvest.processing_method}
                         </div>
                       )}
                       
                       {harvest.quality_notes && (
-                        <div className="mt-2 text-sm text-gray-500">
+                        <div className="mt-2 text-sm text-muted-foreground">
                           <span className="font-medium">Notes:</span> {harvest.quality_notes}
                         </div>
                       )}

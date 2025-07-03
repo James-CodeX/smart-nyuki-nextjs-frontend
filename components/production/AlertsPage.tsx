@@ -70,7 +70,7 @@ export function AlertsPage() {
     return (
       <div className="space-y-6">
         <div className="text-center py-12">
-          <div className="text-gray-500">Loading alerts...</div>
+          <div className="text-muted-foreground">Loading alerts...</div>
         </div>
       </div>
     )
@@ -87,8 +87,8 @@ export function AlertsPage() {
                 <Bell className="h-6 w-6 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Alerts</p>
-                <p className="text-2xl font-bold text-gray-900">{alerts.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Total Alerts</p>
+                <p className="text-2xl font-bold text-foreground">{alerts.length}</p>
               </div>
             </div>
           </CardContent>
@@ -101,8 +101,8 @@ export function AlertsPage() {
                 <AlertTriangle className="h-6 w-6 text-red-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Unresolved</p>
-                <p className="text-2xl font-bold text-gray-900">{unresolvedAlerts.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Unresolved</p>
+                <p className="text-2xl font-bold text-foreground">{unresolvedAlerts.length}</p>
               </div>
             </div>
           </CardContent>
@@ -115,8 +115,8 @@ export function AlertsPage() {
                 <AlertCircle className="h-6 w-6 text-orange-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Critical</p>
-                <p className="text-2xl font-bold text-gray-900">{criticalAlerts.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Critical</p>
+                <p className="text-2xl font-bold text-foreground">{criticalAlerts.length}</p>
               </div>
             </div>
           </CardContent>
@@ -129,8 +129,8 @@ export function AlertsPage() {
                 <CheckCircle className="h-6 w-6 text-green-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Resolved</p>
-                <p className="text-2xl font-bold text-gray-900">{resolvedAlerts.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Resolved</p>
+                <p className="text-2xl font-bold text-foreground">{resolvedAlerts.length}</p>
               </div>
             </div>
           </CardContent>
@@ -140,8 +140,8 @@ export function AlertsPage() {
       {/* Header with Add Button */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Alert Management</h2>
-          <p className="text-gray-600">Monitor and manage hive alerts and notifications</p>
+          <h2 className="text-lg font-semibold text-foreground">Alert Management</h2>
+          <p className="text-muted-foreground">Monitor and manage hive alerts and notifications</p>
         </div>
         <Dialog open={showAlertForm} onOpenChange={setShowAlertForm}>
           <DialogTrigger asChild>
@@ -180,7 +180,7 @@ export function AlertsPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <h3 className="font-medium text-gray-900">{alert.hive_name}</h3>
+                        <h3 className="font-medium text-foreground">{alert.hive_name}</h3>
                         <Badge variant="outline">{alert.apiary_name}</Badge>
                         <Badge className={`${getSeverityColor(alert.severity_display)} flex items-center`}>
                           {getSeverityIcon(alert.severity_display)}
@@ -192,10 +192,10 @@ export function AlertsPage() {
                         <div className="text-sm">
                           <span className="font-medium">Type:</span> {alert.alert_type_display}
                         </div>
-                        <div className="text-sm text-gray-700">
+                        <div className="text-sm text-muted-foreground">
                           <span className="font-medium">Message:</span> {alert.message}
                         </div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-muted-foreground">
                           <Clock className="h-3 w-3 inline mr-1" />
                           {moment(alert.created_at).format('MMM DD, YYYY [at] h:mm A')}
                         </div>
@@ -230,7 +230,7 @@ export function AlertsPage() {
           {alerts.length === 0 ? (
             <div className="text-center py-12">
               <Bell className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <p className="text-gray-500 mb-4">No alerts yet</p>
+              <p className="text-muted-foreground mb-4">No alerts yet</p>
               <Button
                 variant="outline"
                 onClick={() => setShowAlertForm(true)}
@@ -251,7 +251,7 @@ export function AlertsPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <h3 className="font-medium text-gray-900">{alert.hive_name}</h3>
+                        <h3 className="font-medium text-foreground">{alert.hive_name}</h3>
                         <Badge variant="outline">{alert.apiary_name}</Badge>
                         <Badge className={`${getSeverityColor(alert.severity_display)} flex items-center`}>
                           {getSeverityIcon(alert.severity_display)}
@@ -269,7 +269,7 @@ export function AlertsPage() {
                         <div className="text-sm">
                           <span className="font-medium">Type:</span> {alert.alert_type_display}
                         </div>
-                        <div className="text-sm text-gray-700">
+                        <div className="text-sm text-muted-foreground">
                           <span className="font-medium">Message:</span> {alert.message}
                         </div>
                         {alert.resolution_notes && (
@@ -277,7 +277,7 @@ export function AlertsPage() {
                             <span className="font-medium">Resolution:</span> {alert.resolution_notes}
                           </div>
                         )}
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-muted-foreground">
                           <Clock className="h-3 w-3 inline mr-1" />
                           Created: {moment(alert.created_at).format('MMM DD, YYYY [at] h:mm A')}
                           {alert.resolved_at && (

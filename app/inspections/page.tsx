@@ -123,8 +123,8 @@ function InspectionsPageContent() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Hive Inspections</h1>
-          <p className="text-gray-600">Schedule and track your hive inspections</p>
+          <h1 className="text-2xl font-bold text-foreground">Hive Inspections</h1>
+          <p className="text-muted-foreground">Schedule and track your hive inspections</p>
         </div>
         <Dialog open={showScheduleForm} onOpenChange={setShowScheduleForm}>
           <DialogTrigger asChild>
@@ -158,8 +158,8 @@ function InspectionsPageContent() {
                 <CalendarIcon className="h-6 w-6 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Scheduled</p>
-                <p className="text-2xl font-bold text-gray-900">{schedules.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Total Scheduled</p>
+                <p className="text-2xl font-bold text-foreground">{schedules.length}</p>
               </div>
             </div>
           </CardContent>
@@ -172,8 +172,8 @@ function InspectionsPageContent() {
                 <Clock className="h-6 w-6 text-yellow-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Upcoming</p>
-                <p className="text-2xl font-bold text-gray-900">{upcomingSchedules.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Upcoming</p>
+                <p className="text-2xl font-bold text-foreground">{upcomingSchedules.length}</p>
               </div>
             </div>
           </CardContent>
@@ -186,8 +186,8 @@ function InspectionsPageContent() {
                 <CheckCircle className="h-6 w-6 text-green-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Completed</p>
-                <p className="text-2xl font-bold text-gray-900">{completedSchedules.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Completed</p>
+                <p className="text-2xl font-bold text-foreground">{completedSchedules.length}</p>
               </div>
             </div>
           </CardContent>
@@ -200,8 +200,8 @@ function InspectionsPageContent() {
                 <AlertCircle className="h-6 w-6 text-red-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Overdue</p>
-                <p className="text-2xl font-bold text-gray-900">{overdueSchedules.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Overdue</p>
+                <p className="text-2xl font-bold text-foreground">{overdueSchedules.length}</p>
               </div>
             </div>
           </CardContent>
@@ -222,7 +222,7 @@ function InspectionsPageContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>Inspection Calendar</CardTitle>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-muted-foreground">
                     Click on a date to schedule an inspection, or click on an existing inspection to view/complete it.
                   </p>
                 </div>
@@ -272,7 +272,7 @@ function InspectionsPageContent() {
             <CardContent>
               <div className="space-y-4">
                 {upcomingSchedules.length === 0 ? (
-                  <p className="text-gray-500 text-center py-8">
+                  <p className="text-muted-foreground text-center py-8">
                     No upcoming inspections scheduled.
                   </p>
                 ) : (
@@ -280,11 +280,11 @@ function InspectionsPageContent() {
                     <div key={schedule.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex-1">
                         <h3 className="font-medium">{schedule.hive.name}</h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-muted-foreground">
                           {schedule.hive.apiary.name} • {moment(schedule.scheduled_date).format('MMMM Do, YYYY')}
                         </p>
                         {schedule.notes && (
-                          <p className="text-sm text-gray-500 mt-1">{schedule.notes}</p>
+                          <p className="text-sm text-muted-foreground mt-1">{schedule.notes}</p>
                         )}
                       </div>
                       <div className="flex items-center space-x-2">
@@ -321,7 +321,7 @@ function InspectionsPageContent() {
             <CardContent>
               <div className="space-y-4">
                 {completedSchedules.length === 0 ? (
-                  <p className="text-gray-500 text-center py-8">
+                  <p className="text-muted-foreground text-center py-8">
                     No completed inspections yet.
                   </p>
                 ) : (
@@ -329,11 +329,11 @@ function InspectionsPageContent() {
                     <div key={schedule.id} className="flex items-center justify-between p-4 border rounded-lg bg-green-50">
                       <div className="flex-1">
                         <h3 className="font-medium">{schedule.hive.name}</h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-muted-foreground">
                           {schedule.hive.apiary.name} • {moment(schedule.scheduled_date).format('MMMM Do, YYYY')}
                         </p>
                         {schedule.notes && (
-                          <p className="text-sm text-gray-500 mt-1">{schedule.notes}</p>
+                          <p className="text-sm text-muted-foreground mt-1">{schedule.notes}</p>
                         )}
                       </div>
                       <div className="flex items-center space-x-2">
@@ -381,7 +381,7 @@ function InspectionsPageContent() {
             <DialogTitle>
               Complete Inspection Report
               {selectedSchedule && (
-                <span className="text-sm font-normal text-gray-600 block">
+                <span className="text-sm font-normal text-muted-foreground block">
                   {selectedSchedule.hive.name} - {moment(selectedSchedule.scheduled_date).format('MMMM Do, YYYY')}
                 </span>
               )}

@@ -20,7 +20,7 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Full-width top bar */}
       <Navbar onSidebarToggle={toggleSidebar} />
       
@@ -31,7 +31,7 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
         {/* Main content with proper spacing for sidebar and border */}
         <main className={`flex-1 transition-all duration-300 ${
           isCollapsed ? 'lg:ml-16' : 'lg:ml-72'
-        } p-4 overflow-auto min-h-[calc(100vh-48px)] border-l border-gray-200`}>
+        } p-4 overflow-auto min-h-[calc(100vh-48px)] border-l border-border`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {children}
           </div>
@@ -55,10 +55,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   // Show loading while auth is being initialized
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-2 text-muted-foreground">Loading...</p>
         </div>
       </div>
     )

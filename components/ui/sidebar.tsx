@@ -27,6 +27,7 @@ import { useApiaryStore } from '@/store/apiary'
 import { useEffect } from 'react'
 import { AddSmartDeviceModal } from '@/components/smart-device/add-smart-device-modal'
 import { EditUserProfileDialog } from '@/components/dialogs/edit-user-profile-dialog'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 interface SidebarProps {
   isOpen: boolean
@@ -124,7 +125,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
     
     return (
       <div className="px-3 mb-2">
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
           {title}
         </h3>
       </div>
@@ -141,10 +142,10 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
         'relative overflow-hidden',
         isCollapsed ? 'justify-center px-2' : 'justify-start',
         item.disabled
-          ? 'text-gray-400 cursor-not-allowed'
+          ? 'text-muted-foreground cursor-not-allowed'
           : isActive
           ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg'
-          : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+          : 'text-foreground hover:bg-accent hover:text-accent-foreground'
       )}>
         <Icon className={cn(
           'h-5 w-5 flex-shrink-0 transition-colors',
@@ -160,7 +161,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 'ml-auto text-xs px-2 py-0.5 rounded-full',
                 isActive 
                   ? 'bg-white/20 text-white' 
-                  : 'bg-gray-200 text-gray-600'
+                  : 'bg-muted text-muted-foreground'
               )}>
                 {item.badge}
               </span>
@@ -233,7 +234,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       
       {/* Sidebar */}
       <aside className={cn(
-        'fixed left-0 top-0 z-40 h-screen bg-white border-r border-gray-200 transition-all duration-300 ease-in-out',
+        'fixed left-0 top-0 z-40 h-screen bg-background border-r border-border transition-all duration-300 ease-in-out',
         'flex flex-col shadow-xl lg:shadow-none',
         isCollapsed ? 'w-16' : 'w-72',
         'hidden lg:flex',
@@ -241,7 +242,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       )}>
         {/* Header - Mobile close only */}
         <div className={cn(
-          'flex items-center justify-end border-b border-gray-200 bg-gray-50',
+          'flex items-center justify-end border-b border-border bg-muted',
           'h-12 px-3 lg:hidden'
         )}>
           <div className="flex items-center space-x-1">
@@ -250,7 +251,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
               variant="ghost"
               size="sm"
               onClick={onToggle}
-              className="text-gray-600 hover:bg-gray-200 h-8 w-8"
+              className="text-muted-foreground hover:bg-accent h-8 w-8"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -299,27 +300,33 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
           </div>
         </nav>
 
-        {/* Collapse button at bottom */}
-        <div className="border-t border-gray-200 p-3">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleCollapse}
-            className={cn(
-              "w-full text-gray-600 hover:bg-gray-100 h-8",
-              isCollapsed ? "px-0" : "justify-start"
-            )}
-            title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            {isCollapsed ? (
-              <ChevronRight className="h-4 w-4" />
-            ) : (
-              <>
-                <ChevronLeft className="h-4 w-4 mr-2" />
-                <span className="text-sm">Collapse</span>
-              </>
-            )}
-          </Button>
+        {/* Theme and collapse buttons at bottom */}
+        <div className="border-t border-border p-3">
+          <div className="space-y-2">
+            {/* Theme toggle button */}
+            <ThemeToggle isCollapsed={isCollapsed} />
+            
+            {/* Collapse button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleCollapse}
+              className={cn(
+                "w-full text-muted-foreground hover:bg-accent hover:text-accent-foreground h-8 transition-colors duration-200",
+                isCollapsed ? "px-0" : "justify-start"
+              )}
+              title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            >
+              {isCollapsed ? (
+                <ChevronRight className="h-4 w-4" />
+              ) : (
+                <>
+                  <ChevronLeft className="h-4 w-4 mr-2" />
+                  <span className="text-sm">Collapse</span>
+                </>
+              )}
+            </Button>
+          </div>
         </div>
 
       </aside>
@@ -341,7 +348,7 @@ function SmartDeviceButton() {
         <Button
           variant="outline"
           size="sm"
-          className="w-full bg-gradient-to-r from-amber-100 to-orange-100 border-amber-300 text-amber-800 hover:from-amber-200 hover:to-orange-200 hover:border-amber-400 font-medium transition-all duration-200 shadow-sm"
+          className="w-full bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 hover:from-amber-200 hover:to-orange-200 dark:hover:from-amber-800/50 dark:hover:to-orange-800/50 hover:border-amber-400 dark:hover:border-amber-600 font-medium transition-all duration-200 shadow-sm"
         >
           <span className="mr-2 text-lg">🍯</span>
           Add Smart-Nyuki Device
