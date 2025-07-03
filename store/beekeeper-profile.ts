@@ -61,7 +61,9 @@ export const useBeekeeperProfileStore = create<BeekeeperProfileStore>((set, get)
     try {
       const updatedProfile = await apiClient.updateBeekeeperProfile(id, data);
       const { profiles } = get();
-      const updatedProfiles = profiles.map(profile => 
+      // Ensure profiles is an array before calling map
+      const currentProfiles = Array.isArray(profiles) ? profiles : [];
+      const updatedProfiles = currentProfiles.map(profile => 
         profile.id === id ? updatedProfile : profile
       );
       set({ 
@@ -81,7 +83,9 @@ export const useBeekeeperProfileStore = create<BeekeeperProfileStore>((set, get)
     try {
       await apiClient.deleteBeekeeperProfile(id);
       const { profiles } = get();
-      const filteredProfiles = profiles.filter(profile => profile.id !== id);
+      // Ensure profiles is an array before calling filter
+      const currentProfiles = Array.isArray(profiles) ? profiles : [];
+      const filteredProfiles = currentProfiles.filter(profile => profile.id !== id);
       set({ 
         profiles: filteredProfiles,
         currentProfile: filteredProfiles.length > 0 ? filteredProfiles[0] : null,

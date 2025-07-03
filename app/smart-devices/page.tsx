@@ -38,8 +38,8 @@ export default function SmartDevicesPage() {
     }
   }, [user, fetchDevices, fetchApiaries, fetchHives])
 
-  const assignedDevices = devices.filter(device => device.hive !== null)
-  const unassignedDevices = devices.filter(device => device.hive === null)
+  const assignedDevices = devices.filter(device => device.hive !== null || device.hive_name)
+  const unassignedDevices = devices.filter(device => device.hive === null && !device.hive_name)
   const activeDevices = devices.filter(device => device.is_active)
   const inactiveDevices = devices.filter(device => !device.is_active)
 

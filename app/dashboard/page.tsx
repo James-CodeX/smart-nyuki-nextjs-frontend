@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/store/auth'
 import { useApiaryStore } from '@/store/apiary'
 import { useHiveStore } from '@/store/hive'
-import { Home, MapPin, Calendar, Plus, Edit } from 'lucide-react'
+import { EditUserProfileDialog } from '@/components/dialogs/edit-user-profile-dialog'
+import { EditBeekeeperProfileDialog } from '@/components/dialogs/edit-beekeeper-profile-dialog'
+import { Plus, Edit, Home, Calendar, MapPin, Layers } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect } from 'react'
 
@@ -109,12 +111,12 @@ export default function DashboardPage() {
                     <p><strong>Established:</strong> {user.beekeeper_profile.established_date}</p>
                   </div>
                   <div className="flex gap-2 mt-4">
-                    <Link href="/profile/beekeeper/edit" className="flex-1">
+                    <EditBeekeeperProfileDialog profile={user.beekeeper_profile}>
                       <Button variant="outline" size="sm" className="w-full">
                         <Edit className="mr-2 h-4 w-4" />
                         Edit Profile
                       </Button>
-                    </Link>
+                    </EditBeekeeperProfileDialog>
                   </div>
                 </div>
               ) : (
@@ -208,12 +210,12 @@ export default function DashboardPage() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="text-sm font-medium text-gray-900">Personal Information</h4>
-                  <Link href="/profile/user/edit">
+                  <EditUserProfileDialog>
                     <Button variant="outline" size="sm">
                       <Edit className="mr-1 h-3 w-3" />
                       Edit
                     </Button>
-                  </Link>
+                  </EditUserProfileDialog>
                 </div>
                 <div className="space-y-2 text-sm text-gray-600">
                   <p><strong>Name:</strong> {user?.full_name}</p>

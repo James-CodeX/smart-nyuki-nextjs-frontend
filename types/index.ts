@@ -256,6 +256,10 @@ export interface SmartDevice {
       name: string;
     };
   } | null;
+  // New fields from backend API
+  hive_name?: string;
+  apiary_name?: string;
+  beekeeper_name?: string;
   device_type: string;
   last_sync_at?: string;
   battery_level?: number;

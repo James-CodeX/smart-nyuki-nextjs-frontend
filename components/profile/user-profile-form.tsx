@@ -84,15 +84,9 @@ export function UserProfileForm({ onSuccess, onCancel }: UserProfileFormProps) {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Edit Profile</CardTitle>
-        <CardDescription>
-          Update your personal information
-        </CardDescription>
-      </CardHeader>
+    <div className="w-full">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4">
+        <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="first_name">First Name</Label>
@@ -145,18 +139,13 @@ export function UserProfileForm({ onSuccess, onCancel }: UserProfileFormProps) {
               Email cannot be changed from this form
             </p>
           </div>
-        </CardContent>
-        <CardFooter className="flex gap-4">
-          <Button type="submit" disabled={isLoading} className="flex-1">
+        </div>
+        <div className="flex gap-4 mt-6">
+          <Button type="submit" disabled={isLoading} className="w-full">
             {isLoading ? 'Updating...' : 'Update Profile'}
           </Button>
-          {onCancel && (
-            <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
-              Cancel
-            </Button>
-          )}
-        </CardFooter>
+        </div>
       </form>
-    </Card>
+    </div>
   )
 }

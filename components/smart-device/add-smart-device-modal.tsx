@@ -7,9 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { useSmartDeviceStore } from '@/store/smart-device';
-import { useHiveStore } from '@/store/hive';
 import { Apiary, Hive, CreateSmartDeviceRequest } from '@/types';
 import { useToast } from '@/components/ui/use-toast';
+import { apiClient } from '@/lib/api';
 
 interface AddSmartDeviceModalProps {
   apiaries: Apiary[];
@@ -27,15 +27,37 @@ export function AddSmartDeviceModal({ apiaries, children }: AddSmartDeviceModalP
   });
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const { createDevice, isLoading } = useSmartDeviceStore();
-  const { hives, fetchHives } = useHiveStore();
   const [selectedApiary, setSelectedApiary] = useState<string>('');
+  const [availableHives, setAvailableHives] = useState<any[]>([]);
+  const [loadingHives, setLoadingHives] = useState<boolean>(false);
   const { toast } = useToast();
 
+  // Fetch available hives when apiary is selected
   useEffect(() => {
+    const fetchAvailableHives = async (apiaryId: string) => {
+      setLoadingHives(true);
+      try {
+        const data = await apiClient.getAvailableHives(apiaryId);
+        setAvailableHives(data.available_options || []);
+      } catch (error) {
+        console.error('Error fetching available hives:', error);
+        setAvailableHives([]);
+        toast({
+          title: 'Error',
+          description: 'Failed to load available hives. Please try again.',
+          variant: 'destructive',
+        });
+      } finally {
+        setLoadingHives(false);
+      }
+    };
+
     if (selectedApiary) {
-      fetchHives({ apiary: selectedApiary }).catch(console.error);
+      fetchAvailableHives(selectedApiary);
+    } else {
+      setAvailableHives([]);
     }
-  }, [selectedApiary, fetchHives]);
+  }, [selectedApiary, toast]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -205,18 +227,16 @@ export function AddSmartDeviceModal({ apiaries, children }: AddSmartDeviceModalP
             <Select
               value={formData.hive || ''}
               onValueChange={(value) => handleSelectChange(value === 'none' ? undefined : value, 'hive')}
-              disabled={!selectedApiary}
+              disabled={!selectedApiary || loadingHives}
             >
               <SelectTrigger className={errors.hive ? 'border-red-500' : ''}>
                 <SelectValue placeholder={selectedApiary ? 'Select a hive or leave unassigned' : 'Select an apiary first'} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='none'>Leave unassigned</SelectItem>
-                {hives
-                  .filter(hive => hive.apiary.id === selectedApiary)
-                  .map((hive) => (
-                  <SelectItem key={hive.id} value={hive.id}>
-                    {hive.name}
+                {availableHives.map((option) => (
+                  <SelectItem key={option.id || 'unassigned'} value={option.id || 'none'}>
+                    {option.name}
+                    {option.type === 'hive' && option.hive_type && ` (${option.hive_type})`}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -224,6 +244,16 @@ export function AddSmartDeviceModal({ apiaries, children }: AddSmartDeviceModalP
             {!selectedApiary && (
               <p className='text-sm text-gray-500 mt-1'>
                 Select an apiary to see available hives
+              </p>
+            )}
+            {loadingHives && (
+              <p className='text-sm text-blue-500 mt-1'>
+                Loading available hives...
+              </p>
+            )}
+            {selectedApiary && !loadingHives && availableHives.length === 1 && (
+              <p className='text-sm text-orange-500 mt-1'>
+                No available hives in this apiary. All hives already have smart devices.
               </p>
             )}
             {errors.hive && (

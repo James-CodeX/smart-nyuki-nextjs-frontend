@@ -317,6 +317,15 @@ class ApiClient {
     });
   }
 
+  async getAvailableHives(apiaryId: string): Promise<any> {
+    return this.request<any>(`/apiaries/apiaries/${apiaryId}/available_hives/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
   async softDeleteApiary(id: string): Promise<{ message: string }> {
     return this.request<{ message: string }>(`/apiaries/apiaries/${id}/soft_delete/`, {
       method: 'POST',

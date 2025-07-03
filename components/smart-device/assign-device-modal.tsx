@@ -60,7 +60,7 @@ export function AssignDeviceModal({ device, apiaries, hives, open, onOpenChange 
               ) : (
                 availableHives.map(hive => (
                   <SelectItem key={hive.id} value={hive.id}>
-                    {hive.name} (Apiary: {hive.apiary?.name || 'Unknown Apiary'})
+                    {hive.name} (Apiary: {hive.apiary_name || 'Unknown Apiary'})
                   </SelectItem>
                 ))
               )}

@@ -160,18 +160,9 @@ export function BeekeeperProfileForm({ profile, onSuccess, onCancel }: Beekeeper
   }
 
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader>
-        <CardTitle>{isEditing ? 'Edit Beekeeper Profile' : 'Create Beekeeper Profile'}</CardTitle>
-        <CardDescription>
-          {isEditing 
-            ? 'Update your beekeeper profile information'
-            : 'Set up your beekeeper profile to access all Smart Nyuki features'
-          }
-        </CardDescription>
-      </CardHeader>
+    <div className="w-full">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4">
+        <div className="space-y-4">
           {/* Location Fields */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -308,18 +299,13 @@ export function BeekeeperProfileForm({ profile, onSuccess, onCancel }: Beekeeper
               )}
             </div>
           </div>
-        </CardContent>
-        <CardFooter className="flex gap-4">
-          <Button type="submit" disabled={isLoading} className="flex-1">
+        </div>
+        <div className="flex gap-4 mt-6">
+          <Button type="submit" disabled={isLoading} className="w-full">
             {isLoading ? (isEditing ? 'Updating...' : 'Creating...') : (isEditing ? 'Update Profile' : 'Create Profile')}
           </Button>
-          {onCancel && (
-            <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
-              Cancel
-            </Button>
-          )}
-        </CardFooter>
+        </div>
       </form>
-    </Card>
+    </div>
   )
 }

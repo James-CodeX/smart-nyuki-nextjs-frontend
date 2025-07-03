@@ -156,7 +156,7 @@ export function SmartDeviceCard({
                     Edit Device
                   </DropdownMenuItem>
                   
-                  {device.hive ? (
+                  {device.hive || device.hive_name ? (
                     <DropdownMenuItem onClick={handleUnassign}>
                       <Unlink className="mr-2 h-4 w-4" />
                       Unassign from Hive
@@ -200,16 +200,16 @@ export function SmartDeviceCard({
         <CardContent className="space-y-4">
           {/* Assignment Status */}
           <div className="flex items-center space-x-2">
-            {device.hive ? (
+            {device.hive || device.hive_name ? (
               <>
                 <Wifi className="h-4 w-4 text-green-600" />
                 <div className="flex-1">
                   <p className="text-sm font-medium text-green-700">
-                    Assigned to {device.hive?.name || 'Unknown Hive'}
+Assigned to {device.hive_name || 'Unknown Hive'}
                   </p>
                   <p className="text-xs text-gray-600 flex items-center">
                     <MapPin className="h-3 w-3 mr-1" />
-                    {device.hive?.apiary?.name || 'Unknown Apiary'}
+{device.apiary_name || 'Unknown Apiary'}
                   </p>
                 </div>
               </>
@@ -247,7 +247,7 @@ export function SmartDeviceCard({
           </div>
 
           {/* Quick Actions */}
-          {showAssignAction && !device.hive && (
+          {showAssignAction && !device.hive && !device.hive_name && (
             <div className="pt-2 border-t">
               <Button 
                 onClick={() => setShowAssignModal(true)}
