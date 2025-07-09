@@ -48,7 +48,7 @@ function InspectionsPageContent() {
     allDay: true,
     resource: schedule,
     style: {
-      backgroundColor: schedule.is_completed ? '#10b981' : '#f59e0b',
+      backgroundColor: schedule.is_completed ? 'rgb(34, 197, 94)' : 'rgb(251, 146, 60)',
       color: 'white',
     },
   }))
@@ -326,7 +326,7 @@ function InspectionsPageContent() {
                   </p>
                 ) : (
                   completedSchedules.map((schedule) => (
-                    <div key={schedule.id} className="flex items-center justify-between p-4 border rounded-lg bg-green-50">
+                    <div key={schedule.id} className="flex items-center justify-between p-4 border rounded-lg bg-green-50 dark:bg-green-900/20">
                       <div className="flex-1">
                         <h3 className="font-medium">{schedule.hive.name}</h3>
                         <p className="text-sm text-muted-foreground">

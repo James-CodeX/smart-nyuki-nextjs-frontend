@@ -191,7 +191,7 @@ export function HarvestsPage() {
           ) : (
             <div className="space-y-4">
               {actualFilteredHarvests.map((harvest) => (
-                <div key={harvest.id} className="border rounded-lg p-4 hover:bg-gray-50">
+                <div key={harvest.id} className="border rounded-lg p-4">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
