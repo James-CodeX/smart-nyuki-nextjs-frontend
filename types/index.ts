@@ -179,6 +179,118 @@ export interface ApiaryStats {
   hive_types: Record<string, number>;
 }
 
+// Stage 3: Smart Metrics Types
+export interface SmartMetrics {
+  average_temperature: number;
+  average_humidity: number;
+  total_weight: number;
+  average_weight: number;
+  average_sound_level: number;
+  temperature_range?: {
+    min: number;
+    max: number;
+  };
+  humidity_range?: {
+    min: number;
+    max: number;
+  };
+  readings_count?: number;
+}
+
+export interface ApiarySmartMetrics {
+  apiary_id: string;
+  apiary_name: string;
+  smart_status: 'no_hives' | 'not_smart' | 'partially_smart' | 'fully_smart';
+  smart_status_display: string;
+  hive_counts: {
+    total_hives: number;
+    smart_hives: number;
+    non_smart_hives: number;
+    smart_percentage: number;
+  };
+  current_metrics: SmartMetrics | null;
+  last_24h_metrics: SmartMetrics | null;
+  last_week_metrics: SmartMetrics | null;
+  hive_latest_readings: Array<{
+    hive_id: string;
+    hive_name: string;
+    latest_reading: SensorReading;
+  }>;
+  total_readings: number;
+  last_updated: string | null;
+}
+
+export interface ApiarySmartOverview {
+  apiary_id: string;
+  apiary_name: string;
+  smart_status: 'no_hives' | 'not_smart' | 'partially_smart' | 'fully_smart';
+  smart_status_display: string;
+  hive_counts: {
+    total_hives: number;
+    smart_hives: number;
+    non_smart_hives: number;
+    smart_percentage: number;
+  };
+  total_readings: number;
+  has_metrics: boolean;
+}
+
+export interface ApiariesSmartOverview {
+  apiaries: ApiarySmartOverview[];
+  summary: {
+    total_apiaries: number;
+    fully_smart_apiaries: number;
+    partially_smart_apiaries: number;
+    not_smart_apiaries: number;
+    no_hives_apiaries: number;
+    total_hives: number;
+    total_smart_hives: number;
+    total_readings: number;
+    smart_apiaries_percentage: number;
+  };
+}
+
+export interface SensorReading {
+  id: string;
+  device: string;
+  device_serial: string;
+  hive_name: string;
+  temperature: string;
+  humidity: string;
+  weight: string;
+  sound_level: number;
+  battery_level: number;
+  status_code: number;
+  timestamp: string;
+  created_at: string;
+}
+
+export interface CreateSensorReadingRequest {
+  device_serial: string;
+  temperature: number;
+  humidity: number;
+  weight: number;
+  sound_level?: number;
+  battery_level?: number;
+  status_code?: number;
+  timestamp?: string;
+}
+
+export interface HiveSensorData {
+  hive_id: string;
+  hive_name: string;
+  device_count: number;
+  total_readings: number;
+  readings: SensorReading[];
+}
+
+export interface HiveLatestSensorData {
+  hive_id: string;
+  hive_name: string;
+  has_smart_device: boolean;
+  latest_reading: SensorReading | null;
+}
+
 export interface PaginatedResponse<T> {
   count: number;
   next: string | null;

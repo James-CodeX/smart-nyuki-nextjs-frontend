@@ -3,8 +3,15 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
+} from '@/components/ui/dropdown-menu'
 import { useHiveStore } from '@/store/hive'
 import { useAuthStore } from '@/store/auth'
 import { 
@@ -15,10 +22,14 @@ import {
   Power,
   PowerOff,
   Calendar,
-  Layers
+  Layers,
+  MoreVertical
 } from 'lucide-react'
 import { LatestSensorReading } from '@/components/sensor-data/latest-sensor-reading'
 import { SensorDataHistory } from '@/components/sensor-data/sensor-data-history'
+import { TemperatureChart } from '@/components/sensor-charts/temperature-chart'
+import { HumidityChart } from '@/components/sensor-charts/humidity-chart'
+import { WeightChart } from '@/components/sensor-charts/weight-chart'
 import Link from 'next/link'
 import { Hive } from '@/types'
 
@@ -133,7 +144,16 @@ export default function HiveDetailPage() {
                 </span>
               )}
             </div>
-            <div className="flex items-center mt-2">
+            
+            {/* Apiary Name */}
+            <div className="mt-1 mb-2">
+              <div className="flex items-center text-muted-foreground">
+                <MapPin className="h-4 w-4 mr-1" />
+                <span className="text-base">{hive.apiary_name || 'Unknown Apiary'}</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center">
               <span className={`inline-flex px-3 py-1 text-sm rounded-full ${getHiveTypeColor(hive.hive_type)}`}>
                 {hive.hive_type}
               </span>
@@ -146,43 +166,87 @@ export default function HiveDetailPage() {
               </span>
             </div>
           </div>
-          <div className="flex space-x-2">
-            <Button
-              variant="outline"
-              onClick={handleToggleActive}
-              disabled={actionLoading === 'toggle'}
-              className={hive.is_active ? 'text-red-600 hover:text-red-700' : 'text-green-600 hover:text-green-700'}
-            >
-              {hive.is_active ? (
-                <>
-                  <PowerOff className="mr-2 h-4 w-4" />
-                  Deactivate
-                </>
-              ) : (
-                <>
-                  <Power className="mr-2 h-4 w-4" />
-                  Activate
-                </>
-              )}
-            </Button>
-            <Link href={`/hives/${hive.id}/edit`}>
-              <Button variant="outline">
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="h-8 w-8 p-0"
+                disabled={actionLoading !== null}
+              >
+                <MoreVertical className="h-4 w-4" />
               </Button>
-            </Link>
-            <Button
-              variant="outline"
-              onClick={handleDeleteHive}
-              disabled={actionLoading === 'delete'}
-              className="text-red-600 hover:text-red-700"
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
-            </Button>
-          </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem 
+                onClick={handleToggleActive}
+                disabled={actionLoading === 'toggle'}
+                className={hive.is_active ? 'text-red-600' : 'text-green-600'}
+              >
+                {hive.is_active ? (
+                  <>
+                    <PowerOff className="mr-2 h-4 w-4" />
+                    Deactivate
+                  </>
+                ) : (
+                  <>
+                    <Power className="mr-2 h-4 w-4" />
+                    Activate
+                  </>
+                )}
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem asChild>
+                <Link href={`/hives/${hive.id}/edit`}>
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit Hive
+                </Link>
+              </DropdownMenuItem>
+              
+              <DropdownMenuSeparator />
+              
+              <DropdownMenuItem 
+                onClick={handleDeleteHive}
+                disabled={actionLoading === 'delete'}
+                className="text-red-600 focus:text-red-600"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Hive
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
+
+
+      {/* Sensor Data Section */}
+      {hive.has_smart_device && (
+        <div className="space-y-6">
+          <LatestSensorReading 
+            hiveId={hive.id} 
+            hiveName={hive.name} 
+          />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <TemperatureChart 
+              hiveId={hive.id} 
+              hiveName={hive.name} 
+              hours={24}
+            />
+            <HumidityChart 
+              hiveId={hive.id} 
+              hiveName={hive.name} 
+              hours={24}
+            />
+          </div>
+          
+          <WeightChart 
+            hiveId={hive.id} 
+            hiveName={hive.name} 
+            hours={24}
+          />
+        </div>
+      )}
 
       {/* Hive Details Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -284,42 +348,15 @@ export default function HiveDetailPage() {
         </Card>
       </div>
 
-      {/* Smart Device Sensor Data */}
+      {/* Sensor Data History */}
       {hive.has_smart_device && (
-        <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-foreground">Smart Device Data</h2>
-          
-          {/* Latest Sensor Reading */}
-          <LatestSensorReading 
-            hiveId={hive.id} 
-            hiveName={hive.name} 
-          />
-          
-          {/* Sensor Data History */}
-          <SensorDataHistory 
-            hiveId={hive.id} 
-            hiveName={hive.name} 
-            limit={5}
-          />
-        </div>
+        <SensorDataHistory 
+          hiveId={hive.id} 
+          hiveName={hive.name} 
+          limit={5}
+        />
       )}
 
-      {/* Activity Timeline - Placeholder for future features */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-          <CardDescription>
-            Track inspections, treatments, and other hive activities
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-8 text-muted-foreground">
-            <Layers className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
-            <p>Activity tracking will be available in future updates</p>
-            <p className="text-sm">Stay tuned for inspection logs, treatment records, and more!</p>
-          </div>
-        </CardContent>
-      </Card>
     </DashboardLayout>
   )
 }

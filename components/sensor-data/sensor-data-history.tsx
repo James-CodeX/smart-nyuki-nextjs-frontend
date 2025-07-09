@@ -24,31 +24,52 @@ interface SensorDataHistoryProps {
   limit?: number
 }
 
-export function SensorDataHistory({ hiveId, hiveName, limit = 10 }: SensorDataHistoryProps) {
+export function SensorDataHistory({ hiveId, hiveName, limit = 5 }: SensorDataHistoryProps) {
   const [sensorData, setSensorData] = useState<HiveSensorData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [currentLimit, setCurrentLimit] = useState(limit)
+  const [hasMoreData, setHasMoreData] = useState(true)
 
-  const fetchSensorData = async () => {
+  const fetchSensorData = async (loadMore = false) => {
     try {
-      setIsLoading(true)
+      if (loadMore) {
+        setIsLoadingMore(true)
+      } else {
+        setIsLoading(true)
+        setCurrentLimit(limit)
+      }
       setError(null)
+      
+      const limitToUse = loadMore ? currentLimit + 5 : currentLimit
       const data = await apiClient.getHiveSensorReadings(hiveId, {
-        limit,
+        limit: limitToUse,
         ordering: '-timestamp'
       })
+      
       setSensorData(data)
+      setCurrentLimit(limitToUse)
+      
+      // Check if there's more data available
+      setHasMoreData(data.total_readings > limitToUse)
+      
     } catch (err) {
       console.error('Failed to fetch sensor data:', err)
       setError('Failed to load sensor data')
     } finally {
       setIsLoading(false)
+      setIsLoadingMore(false)
     }
   }
 
   useEffect(() => {
     fetchSensorData()
   }, [hiveId, limit])
+
+  const handleLoadMore = () => {
+    fetchSensorData(true)
+  }
 
   const formatTemperature = (temp: string) => {
     const value = parseFloat(temp)
@@ -124,7 +145,7 @@ export function SensorDataHistory({ hiveId, hiveName, limit = 10 }: SensorDataHi
             <span>{error}</span>
           </div>
           <div className="text-center mt-4">
-            <Button variant="outline" onClick={fetchSensorData}>
+            <Button variant="outline" onClick={() => fetchSensorData(false)}>
               <RefreshCw className="h-4 w-4 mr-2" />
               Retry
             </Button>
@@ -164,7 +185,7 @@ export function SensorDataHistory({ hiveId, hiveName, limit = 10 }: SensorDataHi
             <TrendingUp className="h-5 w-5 mr-2 text-blue-600" />
             Sensor Data History
           </CardTitle>
-          <Button variant="outline" size="sm" onClick={fetchSensorData}>
+          <Button variant="outline" size="sm" onClick={() => fetchSensorData(false)}>
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
           </Button>
@@ -248,13 +269,47 @@ export function SensorDataHistory({ hiveId, hiveName, limit = 10 }: SensorDataHi
           ))}
         </div>
         
-        {sensorData.total_readings > limit && (
-          <div className="mt-4 text-center">
-            <p className="text-sm text-muted-foreground">
-              Showing {sensorData.readings.length} of {sensorData.total_readings} readings
-            </p>
-          </div>
-        )}
+        {/* Show More Button and Status */}
+        <div className="mt-6 space-y-3">
+          {sensorData.total_readings > currentLimit && (
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-3">
+                Showing {sensorData.readings.length} of {sensorData.total_readings} readings
+              </p>
+            </div>
+          )}
+          
+          {hasMoreData && (
+            <div className="text-center">
+              <Button 
+                variant="outline" 
+                onClick={handleLoadMore}
+                disabled={isLoadingMore}
+                className="w-full sm:w-auto"
+              >
+                {isLoadingMore ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Loading more...
+                  </>
+                ) : (
+                  <>
+                    <TrendingUp className="h-4 w-4 mr-2" />
+                    Show More (Load 5 more)
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+          
+          {!hasMoreData && sensorData.total_readings > limit && (
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">
+                All {sensorData.total_readings} readings loaded
+              </p>
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   )

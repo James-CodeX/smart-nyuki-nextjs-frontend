@@ -339,6 +339,25 @@ class ApiClient {
     });
   }
 
+  // Stage 3: Apiary Smart Metrics endpoints
+  async getApiarySmartMetrics(id: string): Promise<ApiarySmartMetrics> {
+    return this.request<ApiarySmartMetrics>(`/apiaries/apiaries/${id}/smart_metrics/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getApiariesSmartOverview(): Promise<ApiariesSmartOverview> {
+    return this.request<ApiariesSmartOverview>('/apiaries/apiaries/smart_overview/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
   // Stage 2: Hives endpoints
   async getHives(filters?: Record<string, any>): Promise<PaginatedResponse<Hive>> {
     const params = new URLSearchParams();
