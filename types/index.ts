@@ -703,6 +703,86 @@ export interface CreateSensorReadingRequest {
   timestamp?: string;
 }
 
+// Stage 3: Apiary Smart Metrics Types
+export interface ApiarySmartMetrics {
+  apiary_id: string;
+  apiary_name: string;
+  smart_status: 'no_hives' | 'not_smart' | 'partially_smart' | 'fully_smart';
+  smart_status_display: string;
+  hive_counts: {
+    total_hives: number;
+    smart_hives: number;
+    non_smart_hives: number;
+    smart_percentage: number;
+  };
+  current_metrics: {
+    average_temperature: number;
+    average_humidity: number;
+    total_weight: number;
+    average_weight: number;
+    average_sound_level: number;
+    temperature_range: {
+      min: number;
+      max: number;
+    };
+    humidity_range: {
+      min: number;
+      max: number;
+    };
+  } | null;
+  last_24h_metrics: {
+    average_temperature: number;
+    average_humidity: number;
+    total_weight: number;
+    average_weight: number;
+    average_sound_level: number;
+    readings_count: number;
+  } | null;
+  last_week_metrics: {
+    average_temperature: number;
+    average_humidity: number;
+    total_weight: number;
+    average_weight: number;
+    average_sound_level: number;
+    readings_count: number;
+  } | null;
+  hive_latest_readings: Array<{
+    hive_id: string;
+    hive_name: string;
+    latest_reading: SensorReading;
+  }>;
+  total_readings: number;
+  last_updated: string;
+}
+
+export interface ApiarySmartOverview {
+  apiaries: Array<{
+    apiary_id: string;
+    apiary_name: string;
+    smart_status: 'no_hives' | 'not_smart' | 'partially_smart' | 'fully_smart';
+    smart_status_display: string;
+    hive_counts: {
+      total_hives: number;
+      smart_hives: number;
+      non_smart_hives: number;
+      smart_percentage: number;
+    };
+    total_readings: number;
+    has_metrics: boolean;
+  }>;
+  summary: {
+    total_apiaries: number;
+    fully_smart_apiaries: number;
+    partially_smart_apiaries: number;
+    not_smart_apiaries: number;
+    no_hives_apiaries: number;
+    total_hives: number;
+    total_smart_hives: number;
+    total_readings: number;
+    smart_apiaries_percentage: number;
+  };
+}
+
 export interface ProductionStore {
   harvests: Harvest[];
   alerts: Alert[];

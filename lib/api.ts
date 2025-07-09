@@ -41,6 +41,8 @@ import {
   HiveSensorData,
   HiveLatestSensorData,
   CreateSensorReadingRequest,
+  ApiarySmartMetrics,
+  ApiarySmartOverview,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -447,6 +449,25 @@ class ApiClient {
 
   async getHivesByType(): Promise<Record<string, Hive[]>> {
     return this.request<Record<string, Hive[]>>('/apiaries/hives/by_type/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  // Stage 3: Apiary Smart Metrics endpoints
+  async getApiarySmartMetrics(apiaryId: string): Promise<ApiarySmartMetrics> {
+    return this.request<ApiarySmartMetrics>(`/apiaries/apiaries/${apiaryId}/smart_metrics/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getApiariesSmartOverview(): Promise<ApiarySmartOverview> {
+    return this.request<ApiarySmartOverview>('/apiaries/apiaries/smart_overview/', {
       method: 'GET',
       headers: {
         ...this.getAuthHeaders(),

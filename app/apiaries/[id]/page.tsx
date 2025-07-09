@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { Apiary, ApiaryStats } from '@/types'
+import { ApiarySmartMetrics } from '@/components/apiary-metrics/apiary-smart-metrics'
 
 export default function ApiaryDetailPage() {
   const params = useParams()
@@ -145,13 +146,22 @@ export default function ApiaryDetailPage() {
 
   return (
     <DashboardLayout>
+      {/* Top Navigation Bar */}
       <div className="mb-6">
-        <Link href="/apiaries">
-          <Button variant="outline" size="sm">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Apiaries
-          </Button>
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link href="/apiaries">
+            <Button variant="outline" size="sm">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Apiaries
+            </Button>
+          </Link>
+          <Link href={`/hives/create?apiary=${apiary.id}`}>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Hive
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Apiary Header */}
@@ -183,89 +193,12 @@ export default function ApiaryDetailPage() {
         </div>
       </div>
 
-      {/* Apiary Info Card */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Apiary Information</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <MapPin className="h-5 w-5 text-muted-foreground mr-3" />
-                <div>
-                  <p className="font-medium text-foreground">Location</p>
-                  <p className="text-muted-foreground">
-                    {apiary.address || `${apiary.latitude}, ${apiary.longitude}`}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="h-5 w-5 text-muted-foreground mr-3 flex items-center justify-center text-sm">
-                  🧑‍🚀
-                </div>
-                <div>
-                  <p className="font-medium text-foreground">Beekeeper</p>
-                  <p className="text-muted-foreground">
-                    {apiary?.beekeeper?.user?.full_name || 'Unknown'} ({apiary?.beekeeper?.experience_level || 'Unknown'})
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="h-5 w-5 text-muted-foreground mr-3 flex items-center justify-center text-sm">
-                  📅
-                </div>
-                <div>
-                  <p className="font-medium text-foreground">Created</p>
-                  <p className="text-muted-foreground">
-                    {new Date(apiary.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Statistics Card */}
-        {stats && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Statistics</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Total Hives</span>
-                  <span className="font-semibold text-foreground">{stats.total_hives}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Active Hives</span>
-                  <span className="font-semibold text-green-600">{stats.active_hives}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Inactive Hives</span>
-                  <span className="font-semibold text-red-600">{stats.inactive_hives}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Smart Hives</span>
-                  <span className="font-semibold text-blue-600">{stats.smart_hives}</span>
-                </div>
-                
-                {Object.keys(stats.hive_types).length > 0 && (
-                  <div className="pt-4 border-t">
-                    <p className="font-medium text-foreground mb-2">Hive Types</p>
-                    {Object.entries(stats.hive_types).map(([type, count]) => (
-                      <div key={type} className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">{type}</span>
-                        <span className="font-medium text-foreground">{count}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+      {/* Smart Metrics Section */}
+      <div className="mb-8">
+        <ApiarySmartMetrics 
+          apiaryId={apiary.id} 
+          apiaryName={apiary.name} 
+        />
       </div>
 
       {/* Hives Section */}
@@ -277,12 +210,6 @@ export default function ApiaryDetailPage() {
               Manage hives in this apiary
             </p>
           </div>
-          <Link href={`/hives/create?apiary=${apiary.id}`}>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Hive
-            </Button>
-          </Link>
         </div>
 
         {hiveLoading ? (
@@ -375,6 +302,91 @@ export default function ApiaryDetailPage() {
               </Card>
             ))}
           </div>
+        )}
+      </div>
+
+      {/* Apiary Info Card */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Apiary Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <MapPin className="h-5 w-5 text-muted-foreground mr-3" />
+                <div>
+                  <p className="font-medium text-foreground">Location</p>
+                  <p className="text-muted-foreground">
+                    {apiary.address || `${apiary.latitude}, ${apiary.longitude}`}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="h-5 w-5 text-muted-foreground mr-3 flex items-center justify-center text-sm">
+                  🧑‍🚀
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Beekeeper</p>
+                  <p className="text-muted-foreground">
+                    {apiary?.beekeeper?.user?.full_name || 'Unknown'} ({apiary?.beekeeper?.experience_level || 'Unknown'})
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="h-5 w-5 text-muted-foreground mr-3 flex items-center justify-center text-sm">
+                  📅
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Created</p>
+                  <p className="text-muted-foreground">
+                    {new Date(apiary.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Statistics Card */}
+        {stats && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Statistics</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Total Hives</span>
+                  <span className="font-semibold text-foreground">{stats.total_hives}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Active Hives</span>
+                  <span className="font-semibold text-green-600">{stats.active_hives}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Inactive Hives</span>
+                  <span className="font-semibold text-red-600">{stats.inactive_hives}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Smart Hives</span>
+                  <span className="font-semibold text-blue-600">{stats.smart_hives}</span>
+                </div>
+                
+                {Object.keys(stats.hive_types).length > 0 && (
+                  <div className="pt-4 border-t">
+                    <p className="font-medium text-foreground mb-2">Hive Types</p>
+                    {Object.entries(stats.hive_types).map(([type, count]) => (
+                      <div key={type} className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">{type}</span>
+                        <span className="font-medium text-foreground">{count}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </DashboardLayout>
