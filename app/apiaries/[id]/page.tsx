@@ -15,7 +15,6 @@ import {
   Trash2, 
   Plus, 
   Layers, 
-  BarChart3,
   Power,
   PowerOff
 } from 'lucide-react'
@@ -123,11 +122,11 @@ export default function ApiaryDetailPage() {
 
   const getHiveTypeColor = (type: string) => {
     const colors = {
-      'Langstroth': 'text-blue-600 bg-blue-100',
-      'Top Bar': 'text-green-600 bg-green-100',
-      'Warre': 'text-purple-600 bg-purple-100',
-      'Flow Hive': 'text-amber-600 bg-amber-100',
-      'Other': 'text-gray-600 bg-gray-100'
+      'Langstroth': 'text-blue-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30',
+      'Top Bar': 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30',
+      'Warre': 'text-purple-600 bg-purple-100 dark:text-purple-400 dark:bg-purple-900/30',
+      'Flow Hive': 'text-amber-600 bg-amber-100 dark:text-amber-400 dark:bg-amber-900/30',
+      'Other': 'text-muted-foreground bg-muted'
     }
     return colors[type as keyof typeof colors] || colors['Other']
   }
@@ -136,7 +135,7 @@ export default function ApiaryDetailPage() {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
-          <div className="text-gray-500">
+          <div className="text-muted-foreground">
             {apiaryLoading ? 'Loading apiary...' : 'Apiary not found'}
           </div>
         </div>
@@ -159,8 +158,8 @@ export default function ApiaryDetailPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{apiary.name}</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-bold text-foreground">{apiary.name}</h1>
+            <p className="text-muted-foreground mt-2">
               {apiary.description || 'No description provided'}
             </p>
           </div>
@@ -193,32 +192,32 @@ export default function ApiaryDetailPage() {
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center">
-                <MapPin className="h-5 w-5 text-gray-400 mr-3" />
+                <MapPin className="h-5 w-5 text-muted-foreground mr-3" />
                 <div>
-                  <p className="font-medium">Location</p>
-                  <p className="text-gray-600">
+                  <p className="font-medium text-foreground">Location</p>
+                  <p className="text-muted-foreground">
                     {apiary.address || `${apiary.latitude}, ${apiary.longitude}`}
                   </p>
                 </div>
               </div>
               <div className="flex items-center">
-                <div className="h-5 w-5 text-gray-400 mr-3 flex items-center justify-center text-sm">
+                <div className="h-5 w-5 text-muted-foreground mr-3 flex items-center justify-center text-sm">
                   🧑‍🚀
                 </div>
                 <div>
-                  <p className="font-medium">Beekeeper</p>
-<p className="text-gray-600">
+                  <p className="font-medium text-foreground">Beekeeper</p>
+                  <p className="text-muted-foreground">
                     {apiary?.beekeeper?.user?.full_name || 'Unknown'} ({apiary?.beekeeper?.experience_level || 'Unknown'})
                   </p>
                 </div>
               </div>
               <div className="flex items-center">
-                <div className="h-5 w-5 text-gray-400 mr-3 flex items-center justify-center text-sm">
+                <div className="h-5 w-5 text-muted-foreground mr-3 flex items-center justify-center text-sm">
                   📅
                 </div>
                 <div>
-                  <p className="font-medium">Created</p>
-                  <p className="text-gray-600">
+                  <p className="font-medium text-foreground">Created</p>
+                  <p className="text-muted-foreground">
                     {new Date(apiary.created_at).toLocaleDateString()}
                   </p>
                 </div>
@@ -236,29 +235,29 @@ export default function ApiaryDetailPage() {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Total Hives</span>
-                  <span className="font-semibold">{stats.total_hives}</span>
+                  <span className="text-muted-foreground">Total Hives</span>
+                  <span className="font-semibold text-foreground">{stats.total_hives}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Active Hives</span>
+                  <span className="text-muted-foreground">Active Hives</span>
                   <span className="font-semibold text-green-600">{stats.active_hives}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Inactive Hives</span>
+                  <span className="text-muted-foreground">Inactive Hives</span>
                   <span className="font-semibold text-red-600">{stats.inactive_hives}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Smart Hives</span>
+                  <span className="text-muted-foreground">Smart Hives</span>
                   <span className="font-semibold text-blue-600">{stats.smart_hives}</span>
                 </div>
                 
                 {Object.keys(stats.hive_types).length > 0 && (
                   <div className="pt-4 border-t">
-                    <p className="font-medium text-gray-900 mb-2">Hive Types</p>
+                    <p className="font-medium text-foreground mb-2">Hive Types</p>
                     {Object.entries(stats.hive_types).map(([type, count]) => (
                       <div key={type} className="flex justify-between text-sm">
-                        <span className="text-gray-600">{type}</span>
-                        <span className="font-medium">{count}</span>
+                        <span className="text-muted-foreground">{type}</span>
+                        <span className="font-medium text-foreground">{count}</span>
                       </div>
                     ))}
                   </div>
@@ -273,8 +272,8 @@ export default function ApiaryDetailPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Hives</h2>
-            <p className="text-gray-600 mt-1">
+            <h2 className="text-2xl font-bold text-foreground">Hives</h2>
+            <p className="text-muted-foreground mt-1">
               Manage hives in this apiary
             </p>
           </div>
@@ -288,13 +287,13 @@ export default function ApiaryDetailPage() {
 
         {hiveLoading ? (
           <div className="text-center py-12">
-            <div className="text-gray-500">Loading hives...</div>
+            <div className="text-muted-foreground">Loading hives...</div>
           </div>
         ) : hives.length === 0 ? (
           <div className="text-center py-12">
-            <Layers className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No hives</h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <Layers className="mx-auto h-12 w-12 text-muted-foreground" />
+            <h3 className="mt-2 text-sm font-medium text-foreground">No hives</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
               Get started by adding your first hive to this apiary.
             </p>
             <div className="mt-6">
@@ -315,7 +314,7 @@ export default function ApiaryDetailPage() {
                     <CardTitle className="text-lg flex items-center">
                       {hive.name}
                       {hive.has_smart_device && (
-                        <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                        <span className="ml-2 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 px-2 py-1 rounded-full">
                           Smart
                         </span>
                       )}
@@ -352,20 +351,20 @@ export default function ApiaryDetailPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2 text-sm text-gray-600">
+                  <div className="space-y-2 text-sm text-muted-foreground">
                     <div className="flex items-center">
-                      <span className="font-medium mr-2">Status:</span>
+                      <span className="font-medium mr-2 text-foreground">Status:</span>
                       <span className={hive.is_active ? 'text-green-600' : 'text-red-600'}>
                         {hive.is_active ? 'Active' : 'Inactive'}
                       </span>
                     </div>
                     <div className="flex items-center">
-                      <span className="font-medium mr-2">Installed:</span>
+                      <span className="font-medium mr-2 text-foreground">Installed:</span>
                       <span>{new Date(hive.installation_date).toLocaleDateString()}</span>
                     </div>
                   </div>
                   
-                  <div className="mt-4 pt-4 border-t border-gray-100">
+                  <div className="mt-4 pt-4 border-t border-border">
                     <Link href={`/hives/${hive.id}`}>
                       <Button variant="outline" size="sm" className="w-full">
                         View Details

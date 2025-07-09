@@ -126,7 +126,7 @@ export interface Apiary {
 
 export interface Hive {
   id: string;
-  apiary: string; // UUID
+  apiary: string | Apiary; // UUID or nested Apiary object (depends on serializer)
   apiary_name: string;
   name: string;
   hive_type: 'Langstroth' | 'Top Bar' | 'Warre' | 'Flow Hive' | 'Other';

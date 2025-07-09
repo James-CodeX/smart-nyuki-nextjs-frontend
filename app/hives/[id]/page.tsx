@@ -87,11 +87,11 @@ export default function HiveDetailPage() {
 
   const getHiveTypeColor = (type: string) => {
     const colors = {
-      'Langstroth': 'text-blue-600 bg-blue-100',
-      'Top Bar': 'text-green-600 bg-green-100',
-      'Warre': 'text-purple-600 bg-purple-100',
-      'Flow Hive': 'text-amber-600 bg-amber-100',
-      'Other': 'text-gray-600 bg-gray-100'
+      'Langstroth': 'text-blue-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30',
+      'Top Bar': 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30',
+      'Warre': 'text-purple-600 bg-purple-100 dark:text-purple-400 dark:bg-purple-900/30',
+      'Flow Hive': 'text-amber-600 bg-amber-100 dark:text-amber-400 dark:bg-amber-900/30',
+      'Other': 'text-muted-foreground bg-muted'
     }
     return colors[type as keyof typeof colors] || colors['Other']
   }
@@ -100,7 +100,7 @@ export default function HiveDetailPage() {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
-          <div className="text-gray-500">
+          <div className="text-muted-foreground">
             {isLoading ? 'Loading hive...' : 'Hive not found'}
           </div>
         </div>
@@ -124,9 +124,9 @@ export default function HiveDetailPage() {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-gray-900 mr-4">{hive.name}</h1>
+              <h1 className="text-3xl font-bold text-foreground mr-4">{hive.name}</h1>
               {hive.has_smart_device && (
-                <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                <span className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 px-3 py-1 rounded-full text-sm font-medium">
                   Smart Device
                 </span>
               )}
@@ -137,8 +137,8 @@ export default function HiveDetailPage() {
               </span>
               <span className={`ml-3 inline-flex px-3 py-1 text-sm rounded-full ${
                 hive.is_active 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-red-100 text-red-800'
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
+                  : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
               }`}>
                 {hive.is_active ? 'Active' : 'Inactive'}
               </span>
@@ -192,50 +192,50 @@ export default function HiveDetailPage() {
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center">
-                <Layers className="h-5 w-5 text-gray-400 mr-3" />
+                <Layers className="h-5 w-5 text-muted-foreground mr-3" />
                 <div>
-                  <p className="font-medium">Hive Type</p>
-                  <p className="text-gray-600">{hive.hive_type}</p>
+                  <p className="font-medium text-foreground">Hive Type</p>
+                  <p className="text-muted-foreground">{hive.hive_type}</p>
                 </div>
               </div>
               <div className="flex items-center">
-                <Calendar className="h-5 w-5 text-gray-400 mr-3" />
+                <Calendar className="h-5 w-5 text-muted-foreground mr-3" />
                 <div>
-                  <p className="font-medium">Installation Date</p>
-                  <p className="text-gray-600">
+                  <p className="font-medium text-foreground">Installation Date</p>
+                  <p className="text-muted-foreground">
                     {new Date(hive.installation_date).toLocaleDateString()}
                   </p>
                 </div>
               </div>
               <div className="flex items-center">
-                <div className="h-5 w-5 text-gray-400 mr-3 flex items-center justify-center text-sm">
+                <div className="h-5 w-5 text-muted-foreground mr-3 flex items-center justify-center text-sm">
                   📡
                 </div>
                 <div>
-                  <p className="font-medium">Smart Device</p>
-                  <p className="text-gray-600">
+                  <p className="font-medium text-foreground">Smart Device</p>
+                  <p className="text-muted-foreground">
                     {hive.has_smart_device ? 'Yes' : 'No'}
                   </p>
                 </div>
               </div>
               <div className="flex items-center">
-                <div className="h-5 w-5 text-gray-400 mr-3 flex items-center justify-center text-sm">
+                <div className="h-5 w-5 text-muted-foreground mr-3 flex items-center justify-center text-sm">
                   ⚡
                 </div>
                 <div>
-                  <p className="font-medium">Status</p>
+                  <p className="font-medium text-foreground">Status</p>
                   <p className={hive.is_active ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
                     {hive.is_active ? 'Active' : 'Inactive'}
                   </p>
                 </div>
               </div>
               <div className="flex items-center">
-                <div className="h-5 w-5 text-gray-400 mr-3 flex items-center justify-center text-sm">
+                <div className="h-5 w-5 text-muted-foreground mr-3 flex items-center justify-center text-sm">
                   📅
                 </div>
                 <div>
-                  <p className="font-medium">Created</p>
-                  <p className="text-gray-600">
+                  <p className="font-medium text-foreground">Created</p>
+                  <p className="text-muted-foreground">
                     {new Date(hive.created_at).toLocaleDateString()}
                   </p>
                 </div>
@@ -252,26 +252,26 @@ export default function HiveDetailPage() {
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center">
-                <MapPin className="h-5 w-5 text-gray-400 mr-3" />
+                <MapPin className="h-5 w-5 text-muted-foreground mr-3" />
                 <div>
-                  <p className="font-medium">Apiary Name</p>
-                  <p className="text-gray-600">{hive.apiary_name || 'Unknown Apiary'}</p>
+                  <p className="font-medium text-foreground">Apiary Name</p>
+                  <p className="text-muted-foreground">{hive.apiary_name || 'Unknown Apiary'}</p>
                 </div>
               </div>
               <div className="flex items-center">
-                <div className="h-5 w-5 text-gray-400 mr-3 flex items-center justify-center text-sm">
+                <div className="h-5 w-5 text-muted-foreground mr-3 flex items-center justify-center text-sm">
                   📍
                 </div>
                 <div>
-                  <p className="font-medium">Location</p>
-                  <p className="text-gray-600">
+                  <p className="font-medium text-foreground">Location</p>
+                  <p className="text-muted-foreground">
                     Location details unavailable (requires apiary detail fetch)
                   </p>
                 </div>
               </div>
               {/* TODO: Description requires full apiary details from backend */}
               <div className="pt-4 border-t">
-                <Link href={`/apiaries/${hive.apiary}`}>
+                <Link href={`/apiaries/${typeof hive.apiary === 'string' ? hive.apiary : hive.apiary.id}`}>
                   <Button variant="outline" size="sm" className="w-full">
                     View Apiary Details
                   </Button>
@@ -291,8 +291,8 @@ export default function HiveDetailPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-gray-500">
-            <Layers className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+          <div className="text-center py-8 text-muted-foreground">
+            <Layers className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
             <p>Activity tracking will be available in future updates</p>
             <p className="text-sm">Stay tuned for inspection logs, treatment records, and more!</p>
           </div>
