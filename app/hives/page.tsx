@@ -118,6 +118,65 @@ export default function HivesPage() {
         </div>
       </div>
 
+      {/* Statistics */}
+      {hives.length > 0 && (
+        <div className="mb-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Layers className="h-8 w-8 text-blue-600" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">Total Hives</p>
+                  <p className="text-2xl font-bold text-foreground">{hives.length}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Power className="h-8 w-8 text-green-600" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">Active Hives</p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {hives.filter(hive => hive.is_active).length}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="h-8 w-8 text-blue-600 flex items-center justify-center text-lg">📡</div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">Smart Hives</p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {hives.filter(hive => hive.has_smart_device).length}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <MapPin className="h-8 w-8 text-amber-600" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">Locations</p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {new Set(hives.map(hive => hive.apiary)).size}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {isLoading ? (
         <div className="text-center py-12">
           <div className="text-muted-foreground">Loading hives...</div>
@@ -223,65 +282,6 @@ export default function HivesPage() {
               </CardContent>
             </Card>
           ))}
-        </div>
-      )}
-
-      {/* Statistics */}
-      {hives.length > 0 && (
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Layers className="h-8 w-8 text-blue-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Total Hives</p>
-                  <p className="text-2xl font-bold text-foreground">{hives.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Power className="h-8 w-8 text-green-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Active Hives</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {hives.filter(hive => hive.is_active).length}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="h-8 w-8 text-blue-600 flex items-center justify-center text-lg">📡</div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Smart Hives</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {hives.filter(hive => hive.has_smart_device).length}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <MapPin className="h-8 w-8 text-amber-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">Locations</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {new Set(hives.map(hive => hive.apiary)).size}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       )}
     </DashboardLayout>
