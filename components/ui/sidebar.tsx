@@ -17,7 +17,8 @@ import {
   ChevronRight,
   Shield,
   LogOut,
-  Smartphone
+  Smartphone,
+  Bell
 } from 'lucide-react'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
@@ -85,9 +86,17 @@ const navigationSections = {
         section: 'management' as const
       },
       {
-        name: 'Production',
+        name: 'Harvests',
         href: '/production',
         icon: TrendingUp,
+        badge: 'Available',
+        disabled: false,
+        section: 'management' as const
+      },
+      {
+        name: 'Alerts',
+        href: '/alerts',
+        icon: Bell,
         badge: 'Available',
         disabled: false,
         section: 'management' as const

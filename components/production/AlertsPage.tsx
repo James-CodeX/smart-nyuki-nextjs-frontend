@@ -138,11 +138,7 @@ export function AlertsPage() {
       </div>
 
       {/* Header with Add Button */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-lg font-semibold text-foreground">Alert Management</h2>
-          <p className="text-muted-foreground">Monitor and manage hive alerts and notifications</p>
-        </div>
+      <div className="flex justify-end items-center">
         <Dialog open={showAlertForm} onOpenChange={setShowAlertForm}>
           <DialogTrigger asChild>
             <Button>
