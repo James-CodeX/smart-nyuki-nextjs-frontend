@@ -258,9 +258,9 @@ export interface SensorReading {
   temperature: string;
   humidity: string;
   weight: string;
-  sound_level: number;
-  battery_level: number;
-  status_code: number;
+  sound_level?: number;
+  battery_level?: number;
+  status_code?: number;
   timestamp: string;
   created_at: string;
 }
@@ -662,126 +662,6 @@ export interface AlertStats {
 }
 
 // Production Store State
-// Stage 3: Sensor Data Types
-export interface SensorReading {
-  id: string;
-  device: string; // UUID
-  device_serial: string;
-  temperature: string; // Decimal as string
-  humidity: string; // Decimal as string
-  weight: string; // Decimal as string
-  sound_level?: number;
-  battery_level?: number;
-  status_code?: number;
-  timestamp: string;
-  created_at: string;
-}
-
-export interface HiveSensorData {
-  hive_id: string;
-  hive_name: string;
-  device_count: number;
-  total_readings: number;
-  readings: SensorReading[];
-}
-
-export interface HiveLatestSensorData {
-  hive_id: string;
-  hive_name: string;
-  has_smart_device: boolean;
-  latest_reading: SensorReading | null;
-}
-
-export interface CreateSensorReadingRequest {
-  device_serial: string;
-  temperature: number;
-  humidity: number;
-  weight: number;
-  sound_level?: number;
-  battery_level?: number;
-  status_code?: number;
-  timestamp?: string;
-}
-
-// Stage 3: Apiary Smart Metrics Types
-export interface ApiarySmartMetrics {
-  apiary_id: string;
-  apiary_name: string;
-  smart_status: 'no_hives' | 'not_smart' | 'partially_smart' | 'fully_smart';
-  smart_status_display: string;
-  hive_counts: {
-    total_hives: number;
-    smart_hives: number;
-    non_smart_hives: number;
-    smart_percentage: number;
-  };
-  current_metrics: {
-    average_temperature: number;
-    average_humidity: number;
-    total_weight: number;
-    average_weight: number;
-    average_sound_level: number;
-    temperature_range: {
-      min: number;
-      max: number;
-    };
-    humidity_range: {
-      min: number;
-      max: number;
-    };
-  } | null;
-  last_24h_metrics: {
-    average_temperature: number;
-    average_humidity: number;
-    total_weight: number;
-    average_weight: number;
-    average_sound_level: number;
-    readings_count: number;
-  } | null;
-  last_week_metrics: {
-    average_temperature: number;
-    average_humidity: number;
-    total_weight: number;
-    average_weight: number;
-    average_sound_level: number;
-    readings_count: number;
-  } | null;
-  hive_latest_readings: Array<{
-    hive_id: string;
-    hive_name: string;
-    latest_reading: SensorReading;
-  }>;
-  total_readings: number;
-  last_updated: string;
-}
-
-export interface ApiarySmartOverview {
-  apiaries: Array<{
-    apiary_id: string;
-    apiary_name: string;
-    smart_status: 'no_hives' | 'not_smart' | 'partially_smart' | 'fully_smart';
-    smart_status_display: string;
-    hive_counts: {
-      total_hives: number;
-      smart_hives: number;
-      non_smart_hives: number;
-      smart_percentage: number;
-    };
-    total_readings: number;
-    has_metrics: boolean;
-  }>;
-  summary: {
-    total_apiaries: number;
-    fully_smart_apiaries: number;
-    partially_smart_apiaries: number;
-    not_smart_apiaries: number;
-    no_hives_apiaries: number;
-    total_hives: number;
-    total_smart_hives: number;
-    total_readings: number;
-    smart_apiaries_percentage: number;
-  };
-}
 
 export interface ProductionStore {
   harvests: Harvest[];

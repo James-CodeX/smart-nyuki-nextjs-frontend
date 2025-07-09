@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { ApiarySmartMetrics } from '@/types'
+import type { ApiarySmartMetrics } from '@/types'
 import { apiClient } from '@/lib/api'
 import { 
   Thermometer, 
@@ -187,7 +187,10 @@ export function ApiarySmartMetrics({ apiaryId, apiaryName }: ApiarySmartMetricsP
                   <div className="text-sm text-muted-foreground">Temperature</div>
                   <div className="text-xl font-bold">{formatTemperature(metrics.current_metrics.average_temperature)}</div>
                   <div className="text-xs text-muted-foreground">
-                    {formatTemperature(metrics.current_metrics.temperature_range.min)} - {formatTemperature(metrics.current_metrics.temperature_range.max)}
+                    {metrics.current_metrics.temperature_range ? 
+                      `${formatTemperature(metrics.current_metrics.temperature_range.min)} - ${formatTemperature(metrics.current_metrics.temperature_range.max)}` : 
+                      'Range not available'
+                    }
                   </div>
                 </div>
               </div>
@@ -198,7 +201,10 @@ export function ApiarySmartMetrics({ apiaryId, apiaryName }: ApiarySmartMetricsP
                   <div className="text-sm text-muted-foreground">Humidity</div>
                   <div className="text-xl font-bold">{formatHumidity(metrics.current_metrics.average_humidity)}</div>
                   <div className="text-xs text-muted-foreground">
-                    {formatHumidity(metrics.current_metrics.humidity_range.min)} - {formatHumidity(metrics.current_metrics.humidity_range.max)}
+                    {metrics.current_metrics.humidity_range ? 
+                      `${formatHumidity(metrics.current_metrics.humidity_range.min)} - ${formatHumidity(metrics.current_metrics.humidity_range.max)}` : 
+                      'Range not available'
+                    }
                   </div>
                 </div>
               </div>
@@ -357,7 +363,7 @@ export function ApiarySmartMetrics({ apiaryId, apiaryName }: ApiarySmartMetricsP
         <CardContent className="py-4">
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span>Total Readings: {metrics.total_readings.toLocaleString()}</span>
-            <span>Last Updated: {formatDateTime(metrics.last_updated)}</span>
+            <span>Last Updated: {metrics.last_updated ? formatDateTime(metrics.last_updated) : 'Never'}</span>
           </div>
         </CardContent>
       </Card>

@@ -43,6 +43,7 @@ import {
   CreateSensorReadingRequest,
   ApiarySmartMetrics,
   ApiarySmartOverview,
+  ApiariesSmartOverview,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -456,24 +457,6 @@ class ApiClient {
     });
   }
 
-  // Stage 3: Apiary Smart Metrics endpoints
-  async getApiarySmartMetrics(apiaryId: string): Promise<ApiarySmartMetrics> {
-    return this.request<ApiarySmartMetrics>(`/apiaries/apiaries/${apiaryId}/smart_metrics/`, {
-      method: 'GET',
-      headers: {
-        ...this.getAuthHeaders(),
-      },
-    });
-  }
-
-  async getApiariesSmartOverview(): Promise<ApiarySmartOverview> {
-    return this.request<ApiarySmartOverview>('/apiaries/apiaries/smart_overview/', {
-      method: 'GET',
-      headers: {
-        ...this.getAuthHeaders(),
-      },
-    });
-  }
 
   // Stage 3: Smart Device endpoints
   async getSmartDevices(filters?: Record<string, any>): Promise<PaginatedResponse<SmartDevice>> {
