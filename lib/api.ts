@@ -37,6 +37,10 @@ import {
   ResolveAlertRequest,
   ProductionStats,
   AlertStats,
+  SensorReading,
+  HiveSensorData,
+  HiveLatestSensorData,
+  CreateSensorReadingRequest,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -493,6 +497,78 @@ class ApiClient {
 
   async getSmartDeviceStats(id: string): Promise<any> {
     return this.request<any>(`/devices/devices/${id}/stats/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  // Stage 3: Sensor Readings endpoints
+  async getSensorReadings(filters?: Record<string, any>): Promise<PaginatedResponse<SensorReading>> {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, value.toString());
+        }
+      });
+    }
+    
+    const queryString = params.toString();
+    const endpoint = `/devices/sensor-readings/${queryString ? `?${queryString}` : ''}`;
+    
+    return this.request<PaginatedResponse<SensorReading>>(endpoint, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async createSensorReading(data: CreateSensorReadingRequest): Promise<SensorReading> {
+    return this.request<SensorReading>('/devices/sensor-readings/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getSensorReading(id: string): Promise<SensorReading> {
+    return this.request<SensorReading>(`/devices/sensor-readings/${id}/`, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  // Stage 3: Hive Sensor Data endpoints
+  async getHiveSensorReadings(hiveId: string, filters?: Record<string, any>): Promise<HiveSensorData> {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, value.toString());
+        }
+      });
+    }
+    
+    const queryString = params.toString();
+    const endpoint = `/apiaries/hives/${hiveId}/sensor_readings/${queryString ? `?${queryString}` : ''}`;
+    
+    return this.request<HiveSensorData>(endpoint, {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getHiveLatestSensorReading(hiveId: string): Promise<HiveLatestSensorData> {
+    return this.request<HiveLatestSensorData>(`/apiaries/hives/${hiveId}/latest_sensor_reading/`, {
       method: 'GET',
       headers: {
         ...this.getAuthHeaders(),

@@ -18,7 +18,8 @@ import {
   Shield,
   LogOut,
   Smartphone,
-  Bell
+  Bell,
+  Thermometer
 } from 'lucide-react'
 import { Button } from './button'
 import { cn } from '@/lib/utils'
@@ -77,7 +78,13 @@ const navigationSections = {
         icon: Smartphone,
         section: 'management' as const
       },
-{
+      {
+        name: 'Sensor Data',
+        href: '/sensor-data',
+        icon: Thermometer,
+        section: 'management' as const
+      },
+      {
         name: 'Inspections',
         href: '/inspections',
         icon: Calendar,

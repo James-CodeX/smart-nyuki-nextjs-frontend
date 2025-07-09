@@ -135,6 +135,9 @@ export interface Hive {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  // Smart device and sensor data (added when fetching with sensor data)
+  smart_devices?: SmartDevice[];
+  latest_sensor_reading?: SensorReading | null;
 }
 
 export interface CreateApiaryRequest {
@@ -547,6 +550,47 @@ export interface AlertStats {
 }
 
 // Production Store State
+// Stage 3: Sensor Data Types
+export interface SensorReading {
+  id: string;
+  device: string; // UUID
+  device_serial: string;
+  temperature: string; // Decimal as string
+  humidity: string; // Decimal as string
+  weight: string; // Decimal as string
+  sound_level?: number;
+  battery_level?: number;
+  status_code?: number;
+  timestamp: string;
+  created_at: string;
+}
+
+export interface HiveSensorData {
+  hive_id: string;
+  hive_name: string;
+  device_count: number;
+  total_readings: number;
+  readings: SensorReading[];
+}
+
+export interface HiveLatestSensorData {
+  hive_id: string;
+  hive_name: string;
+  has_smart_device: boolean;
+  latest_reading: SensorReading | null;
+}
+
+export interface CreateSensorReadingRequest {
+  device_serial: string;
+  temperature: number;
+  humidity: number;
+  weight: number;
+  sound_level?: number;
+  battery_level?: number;
+  status_code?: number;
+  timestamp?: string;
+}
+
 export interface ProductionStore {
   harvests: Harvest[];
   alerts: Alert[];

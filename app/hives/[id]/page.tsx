@@ -17,6 +17,8 @@ import {
   Calendar,
   Layers
 } from 'lucide-react'
+import { LatestSensorReading } from '@/components/sensor-data/latest-sensor-reading'
+import { SensorDataHistory } from '@/components/sensor-data/sensor-data-history'
 import Link from 'next/link'
 import { Hive } from '@/types'
 
@@ -281,6 +283,26 @@ export default function HiveDetailPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Smart Device Sensor Data */}
+      {hive.has_smart_device && (
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-foreground">Smart Device Data</h2>
+          
+          {/* Latest Sensor Reading */}
+          <LatestSensorReading 
+            hiveId={hive.id} 
+            hiveName={hive.name} 
+          />
+          
+          {/* Sensor Data History */}
+          <SensorDataHistory 
+            hiveId={hive.id} 
+            hiveName={hive.name} 
+            limit={5}
+          />
+        </div>
+      )}
 
       {/* Activity Timeline - Placeholder for future features */}
       <Card>
