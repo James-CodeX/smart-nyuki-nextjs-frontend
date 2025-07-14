@@ -98,7 +98,7 @@ export default function ApiariesPage() {
                 <div className="ml-4">
                   <p className="text-sm font-medium text-muted-foreground">Total Hives</p>
                   <p className="text-2xl font-bold text-foreground">
-                    {apiaries.reduce((total, apiary) => total + (apiary.hives?.length || 0), 0)}
+                    {apiaries.reduce((total, apiary) => total + (apiary.hives_count || 0), 0)}
                   </p>
                 </div>
               </div>
@@ -113,7 +113,7 @@ export default function ApiariesPage() {
                   <p className="text-sm font-medium text-muted-foreground">Avg. Hives per Apiary</p>
                   <p className="text-2xl font-bold text-foreground">
                     {apiaries.length > 0 
-                      ? Math.round(apiaries.reduce((total, apiary) => total + (apiary.hives?.length || 0), 0) / apiaries.length)
+                      ? Math.round(apiaries.reduce((total, apiary) => total + (apiary.hives_count || 0), 0) / apiaries.length)
                       : 0
                     }
                   </p>
@@ -181,7 +181,7 @@ export default function ApiariesPage() {
                   </div>
                   <div className="flex items-center">
                     <BarChart3 className="h-4 w-4 mr-2" />
-                    <span>{apiary.hives?.length || 0} hives</span>
+                    <span>{apiary.hives_count || 0} hives</span>
                   </div>
                 </div>
                 

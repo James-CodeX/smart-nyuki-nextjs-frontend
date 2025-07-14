@@ -119,7 +119,8 @@ export interface Apiary {
   coordinates: [number, number];
   address?: string;
   description?: string;
-  hives?: Hive[];
+  hives?: Hive[];  // Optional array when fetching detailed apiary data
+  hives_count?: number;  // Count field from list endpoint (as per API spec)
   created_at: string;
   updated_at: string;
 }
