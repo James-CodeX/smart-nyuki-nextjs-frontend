@@ -50,24 +50,48 @@ export function HumidityChart({ hiveId, hiveName, hours = 24 }: HumidityChartPro
       setIsLoading(true)
       setError(null)
       
+      // Calculate the start time based on the selected period
+      const endTime = new Date()
+      const startTime = new Date(endTime.getTime() - (period * 60 * 60 * 1000)) // period hours ago
+      
+      // Fetch more readings to ensure we have enough data for the time range
       const response = await apiClient.getHiveSensorReadings(hiveId, {
-        limit: Math.min(period * 6, 100),
-        ordering: '-timestamp'
+        limit: Math.min(period * 10, 200), // Increased limit to ensure we get enough data
+        ordering: '-timestamp',
+        start_time: startTime.toISOString(),
+        end_time: endTime.toISOString()
       })
       
       if (response.readings && response.readings.length > 0) {
-        const data = response.readings
-          .reverse()
-          .map(reading => ({
-            time: new Date(reading.timestamp).toLocaleTimeString('en-US', { 
-              hour: '2-digit', 
-              minute: '2-digit',
-              hour12: false 
-            }),
-            humidity: parseFloat(reading.humidity),
-            timestamp: reading.timestamp,
-            formattedTime: new Date(reading.timestamp).toLocaleString()
-          }))
+        // Filter readings to only include those within the selected time period
+        const filteredReadings = response.readings.filter(reading => {
+          const readingTime = new Date(reading.timestamp)
+          return readingTime >= startTime && readingTime <= endTime
+        })
+        
+        const data = filteredReadings
+          .reverse() // Show chronological order
+          .map(reading => {
+            const readingDate = new Date(reading.timestamp)
+            return {
+              time: period <= 48 
+                ? readingDate.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: false 
+                  })
+                : readingDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                  }),
+              humidity: parseFloat(reading.humidity),
+              timestamp: reading.timestamp,
+              formattedTime: readingDate.toLocaleString()
+            }
+          })
         
         setChartData(data)
       } else {

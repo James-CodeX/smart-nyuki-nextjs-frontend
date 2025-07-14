@@ -121,6 +121,9 @@ export interface Apiary {
   description?: string;
   hives?: Hive[];  // Optional array when fetching detailed apiary data
   hives_count?: number;  // Count field from list endpoint (as per API spec)
+  // Smart status fields (optional, available when fetching with smart overview)
+  smart_status?: 'no_hives' | 'not_smart' | 'partially_smart' | 'fully_smart';
+  smart_status_display?: string;
   created_at: string;
   updated_at: string;
 }

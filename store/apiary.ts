@@ -16,9 +16,23 @@ export const useApiaryStore = create<ApiaryStore>((set, get) => ({
   fetchApiaries: async () => {
     set({ isLoading: true });
     try {
-      const response = await apiClient.getApiaries();
+      const [apiariesResponse, smartOverviewResponse] = await Promise.all([
+        apiClient.getApiaries(),
+        apiClient.getApiariesSmartOverview().catch(() => ({ apiaries: [], summary: {} })) // Fallback if smart overview fails
+      ]);
+      
+      // Merge smart status data with apiaries
+      const apiariesWithSmartStatus = apiariesResponse.results.map(apiary => {
+        const smartData = smartOverviewResponse.apiaries.find(smart => smart.apiary_id === apiary.id);
+        return {
+          ...apiary,
+          smart_status: smartData?.smart_status,
+          smart_status_display: smartData?.smart_status_display
+        };
+      });
+      
       set({ 
-        apiaries: response.results,
+        apiaries: apiariesWithSmartStatus,
         isLoading: false 
       });
     } catch (error) {

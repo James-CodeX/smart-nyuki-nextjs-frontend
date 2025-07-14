@@ -4,9 +4,16 @@ import { useEffect, useState } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { useApiaryStore } from '@/store/apiary'
 import { useAuthStore } from '@/store/auth'
-import { Plus, MapPin, Edit, Trash2, BarChart3 } from 'lucide-react'
+import { Plus, MapPin, Edit, Trash2, BarChart3, MoreVertical } from 'lucide-react'
 import Link from 'next/link'
 import { CreateBeekeeperProfileDialog } from '@/components/dialogs/create-beekeeper-profile-dialog'
 
@@ -151,25 +158,48 @@ export default function ApiariesPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">{apiary.name}</CardTitle>
-                  <div className="flex space-x-1">
-                    <Link href={`/apiaries/${apiary.id}/edit`}>
-                      <Button variant="outline" size="sm">
-                        <Edit className="h-4 w-4" />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <MoreVertical className="h-4 w-4" />
                       </Button>
-                    </Link>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDelete(apiary.id)}
-                      disabled={deletingId === apiary.id}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem asChild>
+                        <Link href={`/apiaries/${apiary.id}/edit`} className="flex items-center">
+                          <Edit className="h-4 w-4 mr-2" />
+                          Edit
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => handleDelete(apiary.id)}
+                        disabled={deletingId === apiary.id}
+                        className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
-                <CardDescription>
-                  {apiary.description || 'No description provided'}
-                </CardDescription>
+                <div className="flex items-center justify-between">
+                  <CardDescription className="flex-1">
+                    {apiary.description || 'No description provided'}
+                  </CardDescription>
+                  {apiary.smart_status_display && (
+                    <Badge 
+                      variant="outline" 
+                      className={`ml-2 text-xs ${
+                        apiary.smart_status === 'fully_smart' ? 'text-green-600 border-green-200 bg-green-50' :
+                        apiary.smart_status === 'partially_smart' ? 'text-yellow-600 border-yellow-200 bg-yellow-50' :
+                        apiary.smart_status === 'not_smart' ? 'text-gray-600 border-gray-200 bg-gray-50' :
+                        'text-red-600 border-red-200 bg-red-50'
+                      }`}
+                    >
+                      {apiary.smart_status_display}
+                    </Badge>
+                  )}
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2 text-sm text-muted-foreground">
