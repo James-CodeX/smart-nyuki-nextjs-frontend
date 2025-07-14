@@ -10,13 +10,10 @@ import {
   Settings, 
   Menu, 
   X, 
-  User,
   Calendar,
   TrendingUp,
   ChevronLeft,
   ChevronRight,
-  Shield,
-  LogOut,
   Smartphone,
   Bell,
   Thermometer
@@ -28,7 +25,6 @@ import { useAuthStore } from '@/store/auth'
 import { useApiaryStore } from '@/store/apiary'
 import { useEffect } from 'react'
 import { AddSmartDeviceModal } from '@/components/smart-device/add-smart-device-modal'
-import { EditUserProfileDialog } from '@/components/dialogs/edit-user-profile-dialog'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 interface SidebarProps {
@@ -114,12 +110,6 @@ const navigationSections = {
     title: 'Account',
     items: [
       {
-        name: 'Profile',
-        href: '#',
-        icon: User,
-        section: 'account' as const
-      },
-      {
         name: 'Settings',
         href: '/settings',
         icon: Settings,
@@ -203,24 +193,6 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       )
     }
 
-    // Special handling for Profile item
-    if (item.name === 'Profile') {
-      return (
-        <EditUserProfileDialog>
-          <div 
-            title={isCollapsed ? item.name : undefined}
-            className="block relative cursor-pointer"
-            onClick={() => {
-              if (window.innerWidth < 1024) {
-                onToggle()
-              }
-            }}
-          >
-            {content}
-          </div>
-        </EditUserProfileDialog>
-      )
-    }
 
     return (
       <Link
