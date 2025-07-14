@@ -360,7 +360,8 @@ export interface SmartDevice {
     };
     experience_level: string;
   };
-  hive?: {
+  // According to stage3.md, hive can be either a UUID string or nested object
+  hive?: string | {
     id: string;
     name: string;
     apiary: {

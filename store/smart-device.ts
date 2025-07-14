@@ -17,7 +17,43 @@ export const useSmartDeviceStore = create<SmartDeviceStore>()(
         set({ isLoading: true })
         try {
           const response = await apiClient.getSmartDevices(filters)
-          set({ devices: response.results })
+          
+          // First set the devices immediately so cards show up, but hide battery levels
+          const devicesWithoutBattery = response.results.map(device => ({
+            ...device,
+            battery_level: device.hive || device.hive_name ? undefined : device.battery_level // Hide battery for assigned devices
+          }))
+          set({ devices: devicesWithoutBattery, isLoading: false })
+          
+          // Then fetch latest sensor readings for assigned devices in the background
+          const devicesWithLatestData = await Promise.all(
+            response.results.map(async (device) => {
+              // Check if device is assigned to a hive - according to stage3.md, hive is a UUID string
+              const hiveId = device.hive || (device.hive?.id)
+              
+              if (hiveId) {
+                try {
+                  // Fetch latest sensor reading for the hive
+                  const latestReading = await apiClient.getHiveLatestSensorReading(hiveId)
+                  if (latestReading.latest_reading && latestReading.latest_reading.battery_level !== undefined) {
+                    // Update battery level with the latest reading
+                    return {
+                      ...device,
+                      battery_level: latestReading.latest_reading.battery_level,
+                      last_sync_at: latestReading.latest_reading.timestamp
+                    }
+                  }
+                } catch (error) {
+                  // If fetching sensor reading fails, use device's stored battery level
+                  console.warn('Failed to fetch latest sensor reading for device:', device.serial_number, error)
+                }
+              }
+              return device
+            })
+          )
+          
+          // Update devices with the latest sensor data
+          set({ devices: devicesWithLatestData })
         } catch (error) {
           console.error('Failed to fetch smart devices:', error)
           throw error

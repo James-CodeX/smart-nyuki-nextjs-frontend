@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -21,7 +21,8 @@ import {
   Power,
   PowerOff,
   Link as LinkIcon,
-  Unlink
+  Unlink,
+  Loader2
 } from 'lucide-react'
 import {
   DropdownMenu,
@@ -50,6 +51,7 @@ export function SmartDeviceCard({
   const { toast } = useToast()
   const [showAssignModal, setShowAssignModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [batteryLoading, setBatteryLoading] = useState(false)
 
   const handleToggleActive = async () => {
     try {
@@ -226,21 +228,44 @@ Assigned to {device.hive_name || 'Unknown Hive'}
           {/* Device Info */}
           <div className="grid grid-cols-2 gap-4 text-sm">
             {/* Battery Level */}
-            {device.battery_level !== undefined && (
+            <div className="flex flex-col space-y-1">
               <div className="flex items-center space-x-2">
-                <BatteryIcon className={`h-4 w-4 ${getBatteryColor(device.battery_level)}`} />
-                <span className="text-muted-foreground">
-                  {device.battery_level}%
-                </span>
+                {device.battery_level !== undefined ? (
+                  <>
+                    <BatteryIcon className={`h-4 w-4 ${getBatteryColor(device.battery_level)}`} />
+                    <span className="text-muted-foreground font-medium">
+                      {device.battery_level}%
+                    </span>
+                  </>
+                ) : (device.hive || device.hive_name) ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                    <span className="text-muted-foreground text-sm">
+                      Loading...
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Battery className="h-4 w-4 text-gray-400" />
+                    <span className="text-muted-foreground text-sm">
+                      No data
+                    </span>
+                  </>
+                )}
               </div>
-            )}
+              {device.last_sync_at && (
+                <span className="text-xs text-muted-foreground pl-6">
+                  {new Date(device.last_sync_at).toLocaleString()}
+                </span>
+              )}
+            </div>
 
             {/* Last Sync */}
             {device.last_sync_at && (
               <div className="flex items-center space-x-2">
                 <Calendar className="h-4 w-4 text-gray-400" />
                 <span className="text-muted-foreground text-xs">
-                  {new Date(device.last_sync_at).toLocaleDateString()}
+                  Last sync: {new Date(device.last_sync_at).toLocaleDateString()}
                 </span>
               </div>
             )}
