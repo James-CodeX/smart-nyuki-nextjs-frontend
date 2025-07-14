@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import { SmartMetricsSkeleton } from '@/components/ui/smart-metrics-skeleton'
 import type { ApiarySmartMetrics } from '@/types'
 import { apiClient } from '@/lib/api'
 import { 
@@ -79,14 +80,7 @@ export function ApiarySmartMetrics({ apiaryId, apiaryName }: ApiarySmartMetricsP
   }
 
   if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-center py-12">
-          <RefreshCw className="h-8 w-8 animate-spin text-blue-600 mr-2" />
-          <span className="text-lg text-muted-foreground">Loading smart metrics...</span>
-        </div>
-      </div>
-    )
+    return <SmartMetricsSkeleton />
   }
 
   if (error) {

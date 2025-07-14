@@ -132,12 +132,24 @@ export default function ApiaryDetailPage() {
     return colors[type as keyof typeof colors] || colors['Other']
   }
 
-  if (apiaryLoading || !apiary) {
+  if (apiaryLoading || (!apiary && currentApiary === null)) {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
           <div className="text-muted-foreground">
-            {apiaryLoading ? 'Loading apiary...' : 'Apiary not found'}
+            Loading apiary...
+          </div>
+        </div>
+      </DashboardLayout>
+    )
+  }
+
+  if (!apiary) {
+    return (
+      <DashboardLayout>
+        <div className="text-center py-12">
+          <div className="text-muted-foreground">
+            Apiary not found
           </div>
         </div>
       </DashboardLayout>
