@@ -861,6 +861,7 @@ export interface ProductionStore {
   fetchAlerts: (filters?: Record<string, any>) => Promise<void>;
   createAlert: (data: CreateAlertRequest) => Promise<void>;
   resolveAlert: (id: string, data: ResolveAlertRequest) => Promise<void>;
+  resolveAllAlerts: (notes?: string) => Promise<any>;
   fetchAlert: (id: string) => Promise<void>;
   
   // New alert system methods

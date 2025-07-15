@@ -189,5 +189,16 @@ export const useProductionStore = create<ProductionStore>()(
         set({ isLoading: false });
       }
     },
+
+    resolveAllAlerts: async (notes?: string) => {
+      set({ isLoading: true });
+      try {
+        const result = await apiClient.resolveAllAlerts({ resolution_notes: notes });
+        await get().fetchAlerts(); // Refresh alerts after resolving all
+        return result;
+      } finally {
+        set({ isLoading: false });
+      }
+    },
   }))
 );

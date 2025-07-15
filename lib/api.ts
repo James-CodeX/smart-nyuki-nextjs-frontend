@@ -914,6 +914,16 @@ class ApiClient {
     });
   }
 
+  async resolveAllAlerts(data: { resolution_notes?: string }): Promise<{ message: string; resolved_count: number }> {
+    return this.request<{ message: string; resolved_count: number }>('/production/alerts/resolve_all/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
   async getProductionStats(): Promise<ProductionStats> {
     return this.request<ProductionStats>('/production/stats/', {
       method: 'GET',

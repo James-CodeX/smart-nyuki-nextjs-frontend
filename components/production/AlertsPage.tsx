@@ -15,27 +15,29 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AlertForm } from './AlertForm'
 import { ResolveAlertDialog } from './ResolveAlertDialog'
-import { Plus, Bell, AlertTriangle, CheckCircle, Clock, AlertCircle, RefreshCw, Play, Activity } from 'lucide-react'
+import { Plus, Bell, AlertTriangle, CheckCircle, Clock, AlertCircle, RefreshCw, Play, Activity, CheckCheck } from 'lucide-react'
 import { Alert, AlertStats } from '@/types'
 import { useToast } from '@/components/ui/use-toast'
 import moment from 'moment'
+
 
 export function AlertsPage() {
   const { 
     alerts, 
     fetchAlerts, 
     resolveAlert, 
+    resolveAllAlerts,
     isLoading,
     checkAllAlerts,
     fetchAlertStats,
     fetchActiveAlerts,
     scheduleAlertCheck
   } = useProductionStore()
-  const [showAlertForm, setShowAlertForm] = useState(false)
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
   const [showResolveDialog, setShowResolveDialog] = useState(false)
   const [alertStats, setAlertStats] = useState<AlertStats | null>(null)
   const [isCheckingAlerts, setIsCheckingAlerts] = useState(false)
+  const [isResolvingAll, setIsResolvingAll] = useState(false)
   const [activeTab, setActiveTab] = useState('all')
   const { toast } = useToast()
 
@@ -124,6 +126,37 @@ export function AlertsPage() {
         description: 'Failed to schedule alert check',
         variant: 'destructive',
       })
+    }
+  }
+
+  const handleResolveAllAlerts = async () => {
+    if (unresolvedAlerts.length === 0) {
+      toast({
+        title: 'No Alerts to Resolve',
+        description: 'All alerts are already resolved',
+      })
+      return
+    }
+
+    setIsResolvingAll(true)
+    try {
+      const result = await resolveAllAlerts('Bulk resolved by user')
+
+      await fetchAlerts() // Refresh the alerts list
+
+      toast({
+        title: 'Success',
+        description: `${result.resolved_count} alerts resolved successfully`,
+      })
+    } catch (error) {
+      console.error('Failed to resolve all alerts:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to resolve all alerts',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsResolvingAll(false)
     }
   }
 
@@ -224,7 +257,7 @@ export function AlertsPage() {
             ) : (
               <Play className="h-4 w-4 mr-2" />
             )}
-            Check All Alerts
+            Check All Manually
           </Button>
           <Button
             variant="outline"
@@ -251,25 +284,18 @@ export function AlertsPage() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <Dialog open={showAlertForm} onOpenChange={setShowAlertForm}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Create Alert
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>Create New Alert</DialogTitle>
-              </DialogHeader>
-              <AlertForm
-                onSuccess={() => {
-                  setShowAlertForm(false)
-                  fetchAlerts()
-                }}
-              />
-            </DialogContent>
-          </Dialog>
+          <Button
+            variant="default"
+            onClick={handleResolveAllAlerts}
+            disabled={isResolvingAll || unresolvedAlerts.length === 0}
+          >
+            {isResolvingAll ? (
+              <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <CheckCheck className="h-4 w-4 mr-2" />
+            )}
+            Resolve All ({unresolvedAlerts.length})
+          </Button>
         </div>
       </div>
 
@@ -340,13 +366,7 @@ export function AlertsPage() {
             <div className="text-center py-12">
               <Bell className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <p className="text-muted-foreground mb-4">No alerts yet</p>
-              <Button
-                variant="outline"
-                onClick={() => setShowAlertForm(true)}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Create Your First Alert
-              </Button>
+              <p className="text-sm text-muted-foreground">Alerts will appear here when they are triggered by your hive monitoring system.</p>
             </div>
           ) : (
             <div className="space-y-4">
