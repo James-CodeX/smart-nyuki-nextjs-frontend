@@ -29,7 +29,7 @@ export const useSmartDeviceStore = create<SmartDeviceStore>()(
           const devicesWithLatestData = await Promise.all(
             response.results.map(async (device) => {
               // Check if device is assigned to a hive - according to stage3.md, hive is a UUID string
-              const hiveId = device.hive || (device.hive?.id)
+              const hiveId = device.hive
               
               if (hiveId) {
                 try {
