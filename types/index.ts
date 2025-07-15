@@ -485,7 +485,7 @@ export interface UpdateInspectionScheduleRequest {
   weather_conditions?: string;
 }
 
-export interface CreateInspectionReportRequest {
+export interface UpdateInspectionReportRequest {
   schedule?: string; // UUID - optional link to schedule
   hive: string; // UUID
   inspection_date: string; // YYYY-MM-DD
@@ -499,11 +499,176 @@ export interface CreateInspectionReportRequest {
   notes?: string;
 }
 
-export interface UpdateInspectionReportRequest {
-  honey_level?: 'Low' | 'Medium' | 'High';
-  colony_health?: 'Poor' | 'Fair' | 'Good' | 'Excellent';
+// Settings Types
+export interface UserSettings {
+  id: string;
+  timezone: string;
+  language: string;
+  temperature_unit: 'Celsius' | 'Fahrenheit';
+  weight_unit: 'Kilograms' | 'Pounds';
+  date_format: 'DD/MM/YYYY' | 'MM/DD/YYYY' | 'YYYY-MM-DD';
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AlertThresholds {
+  id: string;
+  hive: string | null;
+  hive_name?: string;
+  is_global: boolean;
+  temperature_min: number;
+  temperature_max: number;
+  humidity_min: number;
+  humidity_max: number;
+  weight_change_threshold: number;
+  sound_level_threshold: number;
+  battery_warning_level: number;
+  inspection_reminder_days: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface NotificationSettings {
+  id: string;
+  push_notifications: boolean;
+  email_notifications: boolean;
+  sms_notifications: boolean;
+  alert_sound: boolean;
+  quiet_hours_start: string;
+  quiet_hours_end: string;
+  critical_alerts_override_quiet: boolean;
+  daily_summary_enabled: boolean;
+  daily_summary_time: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DataSyncSettings {
+  id: string;
+  auto_sync_enabled: boolean;
+  sync_frequency: 'Real-time' | 'Hourly' | 'Daily';
+  wifi_only_sync: boolean;
+  backup_enabled: boolean;
+  backup_frequency: 'Daily' | 'Weekly' | 'Monthly';
+  data_retention_days: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PrivacySettings {
+  id: string;
+  location_sharing: boolean;
+  analytics_enabled: boolean;
+  crash_reporting: boolean;
+  data_sharing_research: boolean;
+  profile_visibility: 'Private' | 'Public' | 'Community';
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AvailableHive {
+  id: string;
+  name: string;
+  apiary_name: string;
+  is_active: boolean;
+}
+
+// Settings Request Types
+export interface UpdateUserSettingsRequest {
+  timezone?: string;
+  language?: string;
+  temperature_unit?: 'Celsius' | 'Fahrenheit';
+  weight_unit?: 'Kilograms' | 'Pounds';
+  date_format?: 'DD/MM/YYYY' | 'MM/DD/YYYY' | 'YYYY-MM-DD';
+}
+
+export interface UpdateAlertThresholdsRequest {
+  hive?: string | null;
+  temperature_min?: number;
+  temperature_max?: number;
+  humidity_min?: number;
+  humidity_max?: number;
+  weight_change_threshold?: number;
+  sound_level_threshold?: number;
+  battery_warning_level?: number;
+  inspection_reminder_days?: number;
+}
+
+export interface UpdateNotificationSettingsRequest {
+  push_notifications?: boolean;
+  email_notifications?: boolean;
+  sms_notifications?: boolean;
+  alert_sound?: boolean;
+  quiet_hours_start?: string;
+  quiet_hours_end?: string;
+  critical_alerts_override_quiet?: boolean;
+  daily_summary_enabled?: boolean;
+  daily_summary_time?: string;
+}
+
+export interface UpdateDataSyncSettingsRequest {
+  auto_sync_enabled?: boolean;
+  sync_frequency?: 'Real-time' | 'Hourly' | 'Daily';
+  wifi_only_sync?: boolean;
+  backup_enabled?: boolean;
+  backup_frequency?: 'Daily' | 'Weekly' | 'Monthly';
+  data_retention_days?: number;
+}
+
+export interface UpdatePrivacySettingsRequest {
+  location_sharing?: boolean;
+  analytics_enabled?: boolean;
+  crash_reporting?: boolean;
+  data_sharing_research?: boolean;
+  profile_visibility?: 'Private' | 'Public' | 'Community';
+}
+
+// Settings Store State
+export interface SettingsStore {
+  userSettings: UserSettings | null;
+  alertThresholds: AlertThresholds[];
+  globalThresholds: AlertThresholds | null;
+  notificationSettings: NotificationSettings | null;
+  dataSyncSettings: DataSyncSettings | null;
+  privacySettings: PrivacySettings | null;
+  availableHives: AvailableHive[];
+  isLoading: boolean;
+  
+  // User Settings
+  fetchUserSettings: () => Promise<void>;
+  updateUserSettings: (data: UpdateUserSettingsRequest) => Promise<void>;
+  
+  // Alert Thresholds
+  fetchAlertThresholds: () => Promise<void>;
+  createAlertThreshold: (data: UpdateAlertThresholdsRequest) => Promise<void>;
+  updateAlertThreshold: (id: string, data: UpdateAlertThresholdsRequest) => Promise<void>;
+  deleteAlertThreshold: (id: string) => Promise<void>;
+  fetchGlobalThresholds: () => Promise<void>;
+  setGlobalThresholds: (data: UpdateAlertThresholdsRequest) => Promise<void>;
+  fetchAvailableHives: () => Promise<void>;
+  
+  // Notification Settings
+  fetchNotificationSettings: () => Promise<void>;
+  updateNotificationSettings: (data: UpdateNotificationSettingsRequest) => Promise<void>;
+  
+  // Data Sync Settings
+  fetchDataSyncSettings: () => Promise<void>;
+  updateDataSyncSettings: (data: UpdateDataSyncSettingsRequest) => Promise<void>;
+  
+  // Privacy Settings
+  fetchPrivacySettings: () => Promise<void>;
+  updatePrivacySettings: (data: UpdatePrivacySettingsRequest) => Promise<void>;
+}
+
+export interface CreateInspectionReportRequest {
+  schedule?: string; // UUID - optional link to schedule
+  hive: string; // UUID
+  inspection_date: string; // YYYY-MM-DD
+  queen_present?: boolean;
+  honey_level: 'Low' | 'Medium' | 'High';
+  colony_health: 'Poor' | 'Fair' | 'Good' | 'Excellent';
   varroa_mite_count?: number;
-  brood_pattern?: 'Solid' | 'Spotty' | 'None';
+  brood_pattern: 'Solid' | 'Spotty' | 'None';
   pest_observations?: string;
   actions_taken?: string;
   notes?: string;

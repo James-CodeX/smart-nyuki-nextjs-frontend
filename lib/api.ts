@@ -44,6 +44,17 @@ import {
   ApiarySmartMetrics,
   ApiarySmartOverview,
   ApiariesSmartOverview,
+  UserSettings,
+  AlertThresholds,
+  NotificationSettings,
+  DataSyncSettings,
+  PrivacySettings,
+  AvailableHive,
+  UpdateUserSettingsRequest,
+  UpdateAlertThresholdsRequest,
+  UpdateNotificationSettingsRequest,
+  UpdateDataSyncSettingsRequest,
+  UpdatePrivacySettingsRequest,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -918,6 +929,149 @@ class ApiClient {
       headers: {
         ...this.getAuthHeaders(),
       },
+    });
+  }
+
+  // Settings endpoints
+  async getUserSettings(): Promise<UserSettings> {
+    return this.request<UserSettings>('/settings/user-settings/my_settings/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async updateUserSettings(data: UpdateUserSettingsRequest): Promise<UserSettings> {
+    return this.request<UserSettings>('/settings/user-settings/my_settings/', {
+      method: 'PATCH',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getAlertThresholds(): Promise<PaginatedResponse<AlertThresholds>> {
+    return this.request<PaginatedResponse<AlertThresholds>>('/settings/alert-thresholds/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async createAlertThreshold(data: UpdateAlertThresholdsRequest): Promise<AlertThresholds> {
+    return this.request<AlertThresholds>('/settings/alert-thresholds/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateAlertThreshold(id: string, data: UpdateAlertThresholdsRequest): Promise<AlertThresholds> {
+    return this.request<AlertThresholds>(`/settings/alert-thresholds/${id}/`, {
+      method: 'PATCH',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteAlertThreshold(id: string): Promise<void> {
+    return this.request<void>(`/settings/alert-thresholds/${id}/`, {
+      method: 'DELETE',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getGlobalThresholds(): Promise<AlertThresholds> {
+    return this.request<AlertThresholds>('/settings/alert-thresholds/global_thresholds/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async setGlobalThresholds(data: UpdateAlertThresholdsRequest): Promise<void> {
+    return this.request<void>('/settings/alert-thresholds/set_global_thresholds/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getAvailableHives(): Promise<AvailableHive[]> {
+    return this.request<AvailableHive[]>('/settings/alert-thresholds/available_hives/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getNotificationSettings(): Promise<NotificationSettings> {
+    return this.request<NotificationSettings>('/settings/notification-settings/my_settings/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async updateNotificationSettings(data: UpdateNotificationSettingsRequest): Promise<NotificationSettings> {
+    return this.request<NotificationSettings>('/settings/notification-settings/my_settings/', {
+      method: 'PATCH',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getDataSyncSettings(): Promise<DataSyncSettings> {
+    return this.request<DataSyncSettings>('/settings/data-sync-settings/my_settings/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async updateDataSyncSettings(data: UpdateDataSyncSettingsRequest): Promise<DataSyncSettings> {
+    return this.request<DataSyncSettings>('/settings/data-sync-settings/my_settings/', {
+      method: 'PATCH',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getPrivacySettings(): Promise<PrivacySettings> {
+    return this.request<PrivacySettings>('/settings/privacy-settings/my_settings/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async updatePrivacySettings(data: UpdatePrivacySettingsRequest): Promise<PrivacySettings> {
+    return this.request<PrivacySettings>('/settings/privacy-settings/my_settings/', {
+      method: 'PATCH',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(data),
     });
   }
 }

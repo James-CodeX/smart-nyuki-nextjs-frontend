@@ -113,8 +113,7 @@ const navigationSections = {
         name: 'Settings',
         href: '/settings',
         icon: Settings,
-        badge: 'Soon',
-        disabled: true,
+        disabled: false,
         section: 'account' as const
       }
     ]
