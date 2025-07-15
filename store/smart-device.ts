@@ -28,8 +28,8 @@ export const useSmartDeviceStore = create<SmartDeviceStore>()(
           // Then fetch latest sensor readings for assigned devices in the background
           const devicesWithLatestData = await Promise.all(
             response.results.map(async (device) => {
-              // Check if device is assigned to a hive - according to stage3.md, hive is a UUID string
-              const hiveId = device.hive
+              // Check if device is assigned to a hive - hive can be either a string ID or an object with an id property
+              const hiveId = typeof device.hive === 'string' ? device.hive : device.hive?.id
               
               if (hiveId) {
                 try {
