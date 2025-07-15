@@ -54,8 +54,8 @@ export function ThemeToggle({ isCollapsed = false }: ThemeToggleProps) {
       size="sm"
       onClick={toggleTheme}
       className={cn(
-        "text-muted-foreground hover:bg-accent hover:text-accent-foreground h-8 transition-colors duration-200",
-        isCollapsed ? "w-8 px-0" : "w-full justify-start"
+        "w-full text-muted-foreground hover:bg-accent hover:text-accent-foreground h-8 transition-colors duration-200",
+        isCollapsed ? "px-0" : "justify-start"
       )}
       title={getLabel()}
     >

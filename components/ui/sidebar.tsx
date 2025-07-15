@@ -69,22 +69,9 @@ const navigationSections = {
         section: 'management' as const
       },
       {
-        name: 'Smart Devices',
-        href: '/smart-devices',
-        icon: Smartphone,
-        section: 'management' as const
-      },
-      {
-        name: 'Sensor Data',
-        href: '/sensor-data',
-        icon: Thermometer,
-        section: 'management' as const
-      },
-      {
         name: 'Inspections',
         href: '/inspections',
         icon: Calendar,
-        badge: 'Available',
         disabled: false,
         section: 'management' as const
       },
@@ -92,7 +79,6 @@ const navigationSections = {
         name: 'Harvests',
         href: '/production',
         icon: TrendingUp,
-        badge: 'Available',
         disabled: false,
         section: 'management' as const
       },
@@ -100,20 +86,24 @@ const navigationSections = {
         name: 'Alerts',
         href: '/alerts',
         icon: Bell,
-        badge: 'Available',
         disabled: false,
         section: 'management' as const
       }
     ]
   },
   account: {
-    title: 'Account',
+    title: 'Smart',
     items: [
       {
-        name: 'Settings',
-        href: '/settings',
-        icon: Settings,
-        disabled: false,
+        name: 'Smart Devices',
+        href: '/smart-devices',
+        icon: Smartphone,
+        section: 'account' as const
+      },
+      {
+        name: 'Sensor Data',
+        href: '/sensor-data',
+        icon: Thermometer,
         section: 'account' as const
       }
     ]
@@ -292,6 +282,28 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
           <div className="space-y-2">
             {/* Theme toggle button */}
             <ThemeToggle isCollapsed={isCollapsed} />
+            
+            {/* Settings button */}
+            <Link href="/settings">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "w-full text-muted-foreground hover:bg-accent hover:text-accent-foreground h-8 transition-colors duration-200",
+                  isCollapsed ? "px-0" : "justify-start"
+                )}
+                title={isCollapsed ? 'Settings' : undefined}
+              >
+                {isCollapsed ? (
+                  <Settings className="h-4 w-4" />
+                ) : (
+                  <>
+                    <Settings className="h-4 w-4 mr-2" />
+                    <span className="text-sm">Settings</span>
+                  </>
+                )}
+              </Button>
+            </Link>
             
             {/* Collapse button */}
             <Button

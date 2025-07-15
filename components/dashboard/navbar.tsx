@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { LogOut, User, Settings } from 'lucide-react'
 import { SidebarToggle } from '@/components/ui/sidebar'
 import { EditUserProfileDialog } from '@/components/dialogs/edit-user-profile-dialog'
@@ -106,6 +107,13 @@ export function Navbar({ onSidebarToggle }: NavbarProps) {
                   </DropdownMenuItem>
                 </CreateBeekeeperProfileDialog>
               )}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link href="/settings">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem 
                 className="cursor-pointer" 
