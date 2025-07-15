@@ -122,7 +122,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   fetchAvailableHives: async () => {
     set({ isLoading: true });
     try {
-      const availableHives = await apiClient.getAvailableHives();
+      const availableHives = await apiClient.getAvailableHivesForAlerts();
       set({ availableHives, isLoading: false });
     } catch (error) {
       console.error('Failed to fetch available hives:', error);

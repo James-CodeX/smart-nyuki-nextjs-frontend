@@ -1058,7 +1058,7 @@ class ApiClient {
     });
   }
 
-  async getAvailableHives(): Promise<AvailableHive[]> {
+  async getAvailableHivesForAlerts(): Promise<AvailableHive[]> {
     return this.request<AvailableHive[]>('/settings/alert-thresholds/available_hives/', {
       method: 'GET',
       headers: {
