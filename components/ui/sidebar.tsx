@@ -166,7 +166,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
         
         {/* Active indicator */}
         {isActive && (
-          <div className="absolute inset-y-0 left-0 w-1 bg-white rounded-r-full" />
+          <div className="absolute inset-y-0 left-0 w-1 bg-slate-700 dark:bg-white rounded-r-full" />
         )}
       </div>
     )
