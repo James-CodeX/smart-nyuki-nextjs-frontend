@@ -12,17 +12,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AlertForm } from './AlertForm'
 import { ResolveAlertDialog } from './ResolveAlertDialog'
-import { Plus, Bell, AlertTriangle, CheckCircle, Clock, AlertCircle } from 'lucide-react'
-import { Alert } from '@/types'
+import { Plus, Bell, AlertTriangle, CheckCircle, Clock, AlertCircle, RefreshCw, Play, Activity } from 'lucide-react'
+import { Alert, AlertStats } from '@/types'
+import { useToast } from '@/components/ui/use-toast'
 import moment from 'moment'
 
 export function AlertsPage() {
-  const { alerts, fetchAlerts, resolveAlert, isLoading } = useProductionStore()
+  const { 
+    alerts, 
+    fetchAlerts, 
+    resolveAlert, 
+    isLoading,
+    checkAllAlerts,
+    fetchAlertStats,
+    fetchActiveAlerts,
+    scheduleAlertCheck
+  } = useProductionStore()
   const [showAlertForm, setShowAlertForm] = useState(false)
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
   const [showResolveDialog, setShowResolveDialog] = useState(false)
+  const [alertStats, setAlertStats] = useState<AlertStats | null>(null)
+  const [isCheckingAlerts, setIsCheckingAlerts] = useState(false)
+  const [activeTab, setActiveTab] = useState('all')
+  const { toast } = useToast()
 
   useEffect(() => {
     const loadData = async () => {
@@ -61,10 +76,69 @@ export function AlertsPage() {
       setShowResolveDialog(false)
       setSelectedAlert(null)
       fetchAlerts()
+      toast({
+        title: 'Success',
+        description: 'Alert resolved successfully',
+      })
     } catch (error) {
       console.error('Failed to resolve alert:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to resolve alert',
+        variant: 'destructive',
+      })
     }
   }
+
+  const handleCheckAllAlerts = async () => {
+    setIsCheckingAlerts(true)
+    try {
+      const result = await checkAllAlerts()
+      toast({
+        title: 'Alert Check Complete',
+        description: `${result.alerts_created} new alerts created from ${result.hives_checked} hives`,
+      })
+    } catch (error) {
+      console.error('Failed to check alerts:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to check alerts',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsCheckingAlerts(false)
+    }
+  }
+
+  const handleScheduleCheck = async () => {
+    try {
+      const result = await scheduleAlertCheck()
+      toast({
+        title: 'Alert Check Scheduled',
+        description: `Alert check scheduled with task ID: ${result.task_id}`,
+      })
+    } catch (error) {
+      console.error('Failed to schedule alert check:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to schedule alert check',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const loadStats = async () => {
+    try {
+      const stats = await fetchAlertStats()
+      setAlertStats(stats)
+    } catch (error) {
+      console.error('Failed to load alert stats:', error)
+    }
+  }
+
+  useEffect(() => {
+    loadStats()
+  }, [alerts.length])
 
   if (isLoading) {
     return (
@@ -137,27 +211,66 @@ export function AlertsPage() {
         </Card>
       </div>
 
-      {/* Header with Add Button */}
-      <div className="flex justify-end items-center">
-        <Dialog open={showAlertForm} onOpenChange={setShowAlertForm}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Create Alert
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Create New Alert</DialogTitle>
-            </DialogHeader>
-            <AlertForm
-              onSuccess={() => {
-                setShowAlertForm(false)
-                fetchAlerts()
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+      {/* Header with Action Buttons */}
+      <div className="flex justify-between items-center">
+        <div className="flex items-center space-x-3">
+          <Button
+            variant="outline"
+            onClick={handleCheckAllAlerts}
+            disabled={isCheckingAlerts}
+          >
+            {isCheckingAlerts ? (
+              <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Play className="h-4 w-4 mr-2" />
+            )}
+            Check All Alerts
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleScheduleCheck}
+          >
+            <Activity className="h-4 w-4 mr-2" />
+            Schedule Check
+          </Button>
+          <Button
+            variant="outline"
+            onClick={loadStats}
+          >
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh Stats
+          </Button>
+        </div>
+        
+        <div className="flex items-center space-x-3">
+          <Button
+            variant="outline"
+            onClick={() => fetchAlerts()}
+            disabled={isLoading}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Dialog open={showAlertForm} onOpenChange={setShowAlertForm}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Create Alert
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>Create New Alert</DialogTitle>
+              </DialogHeader>
+              <AlertForm
+                onSuccess={() => {
+                  setShowAlertForm(false)
+                  fetchAlerts()
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Unresolved Alerts */}
@@ -172,7 +285,7 @@ export function AlertsPage() {
           <CardContent>
             <div className="space-y-4">
               {unresolvedAlerts.map((alert) => (
-                <div key={alert.id} className="border rounded-lg p-4 bg-red-50 border-red-200">
+                <div key={alert.id} className="border rounded-lg p-4 border-destructive/20 bg-destructive/10">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
@@ -225,7 +338,7 @@ export function AlertsPage() {
         <CardContent>
           {alerts.length === 0 ? (
             <div className="text-center py-12">
-              <Bell className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+              <Bell className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <p className="text-muted-foreground mb-4">No alerts yet</p>
               <Button
                 variant="outline"
@@ -241,7 +354,7 @@ export function AlertsPage() {
                 <div 
                   key={alert.id} 
                   className={`border rounded-lg p-4 ${
-                    alert.is_resolved ? 'bg-gray-50' : 'hover:bg-gray-50'
+                    alert.is_resolved ? 'bg-muted/50' : 'hover:bg-muted/50'
                   }`}
                 >
                   <div className="flex items-start justify-between">
@@ -254,7 +367,7 @@ export function AlertsPage() {
                           <span className="ml-1">{alert.severity_display}</span>
                         </Badge>
                         {alert.is_resolved && (
-                          <Badge variant="default" className="bg-green-600">
+                          <Badge variant="default" className="bg-green-600 hover:bg-green-700">
                             <CheckCircle className="h-3 w-3 mr-1" />
                             Resolved
                           </Badge>
@@ -269,7 +382,7 @@ export function AlertsPage() {
                           <span className="font-medium">Message:</span> {alert.message}
                         </div>
                         {alert.resolution_notes && (
-                          <div className="text-sm text-green-700 bg-green-50 p-2 rounded">
+                          <div className="text-sm text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/20 p-2 rounded border border-green-200 dark:border-green-800">
                             <span className="font-medium">Resolution:</span> {alert.resolution_notes}
                           </div>
                         )}

@@ -39,11 +39,11 @@ export function ResolveAlertDialog({ alert, open, onClose, onResolve }: ResolveA
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'Critical': return 'bg-red-100 text-red-800 border-red-200'
-      case 'High': return 'bg-orange-100 text-orange-800 border-orange-200'
-      case 'Medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-      case 'Low': return 'bg-blue-100 text-blue-800 border-blue-200'
-      default: return 'bg-gray-100 text-gray-800 border-gray-200'
+      case 'Critical': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-200 dark:border-red-800'
+      case 'High': return 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-200 dark:border-orange-800'
+      case 'Medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-200 dark:border-yellow-800'
+      case 'Low': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-800'
+      default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900/30 dark:text-gray-200 dark:border-gray-800'
     }
   }
 
@@ -81,9 +81,9 @@ export function ResolveAlertDialog({ alert, open, onClose, onResolve }: ResolveA
 
         <div className="space-y-6">
           {/* Alert Details */}
-          <div className="bg-gray-50 rounded-lg p-4">
+          <div className="bg-muted/50 rounded-lg p-4">
             <div className="flex items-center space-x-2 mb-3">
-              <h3 className="font-medium text-gray-900">{alert.hive_name || 'Unknown Hive'}</h3>
+              <h3 className="font-medium text-foreground">{alert.hive_name || 'Unknown Hive'}</h3>
               <Badge variant="outline">{alert.apiary_name || 'Unknown Apiary'}</Badge>
               <Badge className={`${getSeverityColor(alert.severity)} flex items-center`}>
                 <AlertTriangle className="h-3 w-3 mr-1" />
@@ -98,12 +98,12 @@ export function ResolveAlertDialog({ alert, open, onClose, onResolve }: ResolveA
               <div>
                 <span className="font-medium">Message:</span> {alert.message}
               </div>
-              <div className="text-gray-500">
+              <div className="text-muted-foreground">
                 <Clock className="h-3 w-3 inline mr-1" />
                 Created: {moment(alert.created_at).format('MMM DD, YYYY [at] h:mm A')}
               </div>
               {alert.trigger_values && (
-                <div className="bg-gray-100 p-2 rounded text-xs">
+                <div className="bg-muted/30 p-2 rounded text-xs border">
                   <span className="font-medium">Trigger Values:</span>
                   <pre className="mt-1">{JSON.stringify(alert.trigger_values, null, 2)}</pre>
                 </div>
@@ -120,7 +120,7 @@ export function ResolveAlertDialog({ alert, open, onClose, onResolve }: ResolveA
                 placeholder="Describe how this alert was resolved or what actions were taken..."
                 rows={4}
               />
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 Optional: Add notes about how you resolved this alert for future reference
               </p>
             </div>

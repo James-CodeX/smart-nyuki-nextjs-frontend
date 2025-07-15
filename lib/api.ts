@@ -924,11 +924,60 @@ class ApiClient {
   }
 
   async getAlertStats(): Promise<AlertStats> {
-    return this.request<AlertStats>('/production/alert-stats/', {
+    return this.request<AlertStats>('/production/alerts/stats/', {
       method: 'GET',
       headers: {
         ...this.getAuthHeaders(),
       },
+    });
+  }
+
+  // New Alert System endpoints
+  async checkAllAlerts(): Promise<{ message: string; alerts_created: number; hives_checked: number; timestamp: string }> {
+    return this.request<{ message: string; alerts_created: number; hives_checked: number; timestamp: string }>('/production/alerts/check_all_alerts/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async checkHiveAlerts(hiveId: string): Promise<{ message: string; alerts_created: number; hive_id: string; hive_name: string; timestamp: string }> {
+    return this.request<{ message: string; alerts_created: number; hive_id: string; hive_name: string; timestamp: string }>('/production/alerts/check_hive_alerts/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify({ hive_id: hiveId }),
+    });
+  }
+
+  async getActiveAlerts(): Promise<PaginatedResponse<Alert>> {
+    return this.request<PaginatedResponse<Alert>>('/production/alerts/active/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async getAlertsBySeverity(): Promise<Record<string, Alert[]>> {
+    return this.request<Record<string, Alert[]>>('/production/alerts/by_severity/', {
+      method: 'GET',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+    });
+  }
+
+  async scheduleAlertCheck(hiveId?: string): Promise<{ message: string; task_id: string; hive_id?: string; hive_name?: string; timestamp: string }> {
+    const body = hiveId ? { hive_id: hiveId } : {};
+    return this.request<{ message: string; task_id: string; hive_id?: string; hive_name?: string; timestamp: string }>('/production/alerts/schedule_alert_check/', {
+      method: 'POST',
+      headers: {
+        ...this.getAuthHeaders(),
+      },
+      body: JSON.stringify(body),
     });
   }
 

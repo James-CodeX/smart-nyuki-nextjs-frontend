@@ -136,5 +136,58 @@ export const useProductionStore = create<ProductionStore>()(
         set({ isLoading: false });
       }
     },
+
+    // New alert system methods
+    checkAllAlerts: async () => {
+      set({ isLoading: true });
+      try {
+        const result = await apiClient.checkAllAlerts();
+        await get().fetchAlerts(); // Refresh alerts after check
+        return result;
+      } finally {
+        set({ isLoading: false });
+      }
+    },
+
+    checkHiveAlerts: async (hiveId: string) => {
+      set({ isLoading: true });
+      try {
+        const result = await apiClient.checkHiveAlerts(hiveId);
+        await get().fetchAlerts(); // Refresh alerts after check
+        return result;
+      } finally {
+        set({ isLoading: false });
+      }
+    },
+
+    fetchActiveAlerts: async () => {
+      set({ isLoading: true });
+      try {
+        const response = await apiClient.getActiveAlerts();
+        set({ alerts: response.results, isLoading: false });
+      } catch (error) {
+        console.error('Failed to fetch active alerts:', error);
+        set({ isLoading: false });
+      }
+    },
+
+    fetchAlertsBySeverity: async () => {
+      set({ isLoading: true });
+      try {
+        return await apiClient.getAlertsBySeverity();
+      } finally {
+        set({ isLoading: false });
+      }
+    },
+
+    scheduleAlertCheck: async (hiveId?: string) => {
+      set({ isLoading: true });
+      try {
+        const result = await apiClient.scheduleAlertCheck(hiveId);
+        return result;
+      } finally {
+        set({ isLoading: false });
+      }
+    },
   }))
 );

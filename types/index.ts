@@ -823,12 +823,22 @@ export interface ProductionStats {
 }
 
 export interface AlertStats {
-  total_alerts: number;
-  unresolved_alerts: number;
-  critical_alerts: number;
-  alerts_this_week: number;
-  alert_types_distribution: Record<string, number>;
-  severity_distribution: Record<string, number>;
+  overview: {
+    total_alerts: number;
+    active_alerts: number;
+    resolved_alerts: number;
+    resolution_rate: number;
+  };
+  by_severity: Record<string, {
+    total: number;
+    active: number;
+    display_name: string;
+  }>;
+  by_type: Record<string, {
+    total: number;
+    active: number;
+    display_name: string;
+  }>;
 }
 
 // Production Store State
@@ -852,6 +862,13 @@ export interface ProductionStore {
   createAlert: (data: CreateAlertRequest) => Promise<void>;
   resolveAlert: (id: string, data: ResolveAlertRequest) => Promise<void>;
   fetchAlert: (id: string) => Promise<void>;
+  
+  // New alert system methods
+  checkAllAlerts: () => Promise<{ message: string; alerts_created: number; hives_checked: number; timestamp: string }>;
+  checkHiveAlerts: (hiveId: string) => Promise<{ message: string; alerts_created: number; hive_id: string; hive_name: string; timestamp: string }>;
+  fetchActiveAlerts: () => Promise<void>;
+  fetchAlertsBySeverity: () => Promise<Record<string, Alert[]>>;
+  scheduleAlertCheck: (hiveId?: string) => Promise<{ message: string; task_id: string; hive_id?: string; hive_name?: string; timestamp: string }>;
   
   // Stats methods
   fetchProductionStats: () => Promise<ProductionStats>;
