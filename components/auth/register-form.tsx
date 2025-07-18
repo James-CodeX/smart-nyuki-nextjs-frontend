@@ -104,9 +104,9 @@ export function RegisterForm() {
                 {...registerField('first_name')}
                 disabled={isLoading}
               />
-              {errors.first_name && (
-                <p className="text-sm text-red-500">{errors.first_name.message}</p>
-              )}
+            {errors.first_name && (
+              <p className="text-sm text-destructive">{errors.first_name.message}</p>
+            )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="last_name">Last Name</Label>
@@ -117,7 +117,7 @@ export function RegisterForm() {
                 disabled={isLoading}
               />
               {errors.last_name && (
-                <p className="text-sm text-red-500">{errors.last_name.message}</p>
+                <p className="text-sm text-destructive">{errors.last_name.message}</p>
               )}
             </div>
           </div>
@@ -131,7 +131,7 @@ export function RegisterForm() {
               disabled={isLoading}
             />
             {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
+              <p className="text-sm text-destructive">{errors.email.message}</p>
             )}
           </div>
           <div className="space-y-2">
@@ -144,7 +144,7 @@ export function RegisterForm() {
               disabled={isLoading}
             />
             {errors.phone_number && (
-              <p className="text-sm text-red-500">{errors.phone_number.message}</p>
+              <p className="text-sm text-destructive">{errors.phone_number.message}</p>
             )}
           </div>
           <div className="space-y-2">
@@ -157,9 +157,9 @@ export function RegisterForm() {
               disabled={isLoading}
             />
             {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
+              <p className="text-sm text-destructive">{errors.password.message}</p>
             )}
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               Example: MyPass123! (mix of letters, numbers, symbols)
             </p>
           </div>
@@ -173,7 +173,7 @@ export function RegisterForm() {
               disabled={isLoading}
             />
             {errors.password_confirm && (
-              <p className="text-sm text-red-500">{errors.password_confirm.message}</p>
+              <p className="text-sm text-destructive">{errors.password_confirm.message}</p>
             )}
           </div>
         </CardContent>

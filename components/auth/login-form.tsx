@@ -98,7 +98,7 @@ export function LoginForm() {
               disabled={isLoading}
             />
             {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
+              <p className="text-sm text-destructive">{errors.email.message}</p>
             )}
           </div>
           <div className="space-y-2">
@@ -111,7 +111,7 @@ export function LoginForm() {
               disabled={isLoading}
             />
             {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
+              <p className="text-sm text-destructive">{errors.password.message}</p>
             )}
           </div>
         </CardContent>
